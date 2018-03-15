@@ -104,19 +104,24 @@ public:
                                          isRowMajor()};
     }
 
-    MatrixView<DataT, vt> blockView(int st_row, int st_col, int nrow = -1,
-                                    int ncol = -1) const
+    MatrixView<DataT, vt> blockView(int st_row, int st_col, int ed_row = -1,
+                                    int ed_col = -1) const
     {
-        if (nrow < 0)
+        if (ed_row < 0)
         {
-            nrow += nRow() - st_row + 1;
+            ed_row += nRow() + 1;
         }
-        if (ncol < 0)
+        if (ed_col < 0)
         {
-            ncol += nCol() - st_col + 1;
+            ed_col += nCol() + 1;
         }
-        return MatrixView<DataT, vt>(&get(*this, st_row, st_col), nrow, ncol,
-                                     lDim(), isRowMajor());
+        assert(st_row <= ed_row);
+        assert(ed_row <= nRow());
+        assert(st_col <= ed_col);
+        assert(ed_col <= nCol());
+        return MatrixView<DataT, vt>(&get(*this, st_row, st_col),
+                                     ed_row - st_row, ed_col - st_col, lDim(),
+                                     isRowMajor());
     }
 };
 
@@ -197,20 +202,24 @@ public:
             MatrixView<DataT, vt>::isRowMajor()};
     }
 
-    MatrixMutView<DataT, vt> blockMutView(int st_row, int st_col, int nrow = -1,
-                                          int ncol = -1) const
+    MatrixMutView<DataT, vt> blockMutView(int st_row, int st_col,
+                                          int ed_row = -1, int ed_col = -1)
     {
-        if (nrow < 0)
+        if (ed_row < 0)
         {
-            nrow += MatrixView<DataT, vt>::nRow() - st_row + 1;
+            ed_row += MatrixView<DataT, vt>::nRow() + 1;
         }
-        if (ncol < 0)
+        if (ed_col < 0)
         {
-            ncol += MatrixView<DataT, vt>::nCol() - st_col + 1;
+            ed_col += MatrixView<DataT, vt>::nCol() + 1;
         }
-        return MatrixMutView<DataT, vt>(&get(*this, st_row, st_col), nrow, ncol,
-                                        MatrixView<DataT, vt>::lDim(),
-                                        MatrixView<DataT, vt>::isRowMajor());
+        assert(st_row <= ed_row);
+        assert(ed_row <= (MatrixView<DataT, vt>::nRow()));
+        assert(st_col <= ed_col);
+        assert(ed_col <= (MatrixView<DataT, vt>::nCol()));
+        return MatrixMutView<DataT, vt>(
+            &get(*this, st_row, st_col), ed_row - st_row, ed_col - st_col,
+            MatrixView<DataT, vt>::lDim(), MatrixView<DataT, vt>::isRowMajor());
     }
 };
 }

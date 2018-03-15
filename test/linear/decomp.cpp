@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "linear.hpp"
 using namespace sanity::linear;
-TEST(decomp, QR1)
+TEST(linear_decomp, QR1)
 {
     auto A = Matrix<Real>(3, 3,
                           {

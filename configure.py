@@ -84,14 +84,14 @@ def transform_src_files(source_files, obj_dir):
     return objs
 
 
-cpp_compiler = 'g++'
-linker = 'g++'
+cpp_compiler = 'clang'
+linker = 'clang'
 
 makefile_head = [
     """
 config?=debug
 build_dir:=build/${config}
-flags:= -Isrc -std=c++1z -Wall -Wfloat-conversion -Wsign-conversion -Wimplicit-fallthrough -Werror -MMD
+flags:= -Isrc -std=c++1z -Wall -Wfloat-conversion -Wsign-conversion -Wimplicit-fallthrough -Wno-return-type-c-linkage  -Werror -MMD
 gtest_dir:= googletest/googletest
 gtest_flags:=-isystem ${gtest_dir}/include -I${gtest_dir}
 link_flags:=-lstdc++ -lm -pthread -lblas -llapack

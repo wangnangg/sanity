@@ -73,33 +73,43 @@ public:
                                         isRowMajor()};
     }
 
-    MatrixView<DataT, General> blockView(int st_row, int st_col, int nrow = -1,
-                                         int ncol = -1) const
+    MatrixView<DataT, General> blockView(int st_row, int st_col,
+                                         int ed_row = -1, int ed_col = -1) const
     {
-        if (nrow < 0)
+        if (ed_row < 0)
         {
-            nrow += nRow() - st_row + 1;
+            ed_row += nRow() + 1;
         }
-        if (ncol < 0)
+        if (ed_col < 0)
         {
-            ncol += nCol() - st_col + 1;
+            ed_col += nCol() + 1;
         }
-        return MatrixView<DataT, General>(&get(*this, st_row, st_col), nrow,
-                                          ncol, lDim(), isRowMajor());
+        assert(st_row <= ed_row);
+        assert(ed_row <= nRow());
+        assert(st_col <= ed_col);
+        assert(ed_col <= nCol());
+        return MatrixView<DataT, General>(&get(*this, st_row, st_col),
+                                          ed_row - st_row, ed_col - st_col,
+                                          lDim(), isRowMajor());
     }
     MatrixMutView<DataT, General> blockMutView(int st_row, int st_col,
-                                               int nrow = -1, int ncol = -1)
+                                               int ed_row = -1, int ed_col = -1)
     {
-        if (nrow < 0)
+        if (ed_row < 0)
         {
-            nrow += nRow() - st_row + 1;
+            ed_row += nRow() + 1;
         }
-        if (ncol < 0)
+        if (ed_col < 0)
         {
-            ncol += nCol() - st_col + 1;
+            ed_col += nCol() + 1;
         }
-        return MatrixMutView<DataT, General>(&get(*this, st_row, st_col), nrow,
-                                             ncol, lDim(), isRowMajor());
+        assert(st_row <= ed_row);
+        assert(ed_row <= nRow());
+        assert(st_col <= ed_col);
+        assert(ed_col <= nCol());
+        return MatrixMutView<DataT, General>(&get(*this, st_row, st_col),
+                                             ed_row - st_row, ed_col - st_col,
+                                             lDim(), isRowMajor());
     }
 };
 template <typename DataT>
