@@ -9,8 +9,8 @@ TEST(linear_decomp, QR1)
                               4, 5, 6,  //
                               7, 8, 9   //
                           });
-    auto res = decompQR(A);
+    auto[Q, R] = decompQR(A);
 
-    std::cout << res.Q << std::endl;
-    std::cout << res.R << std::endl;
+    std::cout << Q << std::endl;
+    std::cout << R << std::endl;
 }
