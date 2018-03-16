@@ -1,4 +1,5 @@
 #pragma once
+#include <cassert>
 #include "type.hpp"
 namespace sanity::linear
 {
@@ -8,46 +9,104 @@ template <typename DataT>
 class VectorMutView;
 
 template <typename DataT>
-const DataT& get(const VectorView<DataT>& v, int i)
+DataT get(VectorView<DataT> v, int i);
+
+template <typename DataT>
+VectorView<DataT> constView(VectorMutView<DataT>& v)
 {
-    return *(v.data() + i);
+    return VectorView<DataT>(v.data(), v.inc(), v.size(), false);
 }
 
 template <typename DataT>
-DataT& get(const VectorMutView<DataT>& v, int i)
+VectorView<DataT> blockView(VectorView<DataT> v, int st, int ed = -1)
 {
-    return *(v.data() + i);
+    if (ed < 0)
+    {
+        ed += v.size() + 1;
+    }
+    assert(st <= ed);
+    assert(ed <= v.size());
+    return VectorView<DataT>(v.data() + st * v.inc(), v.inc(), ed - st);
+}
+
+template <typename DataT>
+VectorMutView<DataT> blockView(VectorMutView<DataT> v, int st, int ed = -1)
+{
+    if (ed < 0)
+    {
+        ed += v.size() + 1;
+    }
+    assert(st <= ed);
+    assert(ed <= v.size());
+    return VectorMutView<DataT>(v.data() + st * v.inc(), v.inc(), ed - st);
 }
 
 template <typename DataT>
 class VectorView
 {
-protected:
+    const DataT* _data;
+    int _inc;
+    int _size;
+    bool _conj;
+
+public:
+    VectorView(const DataT* data, int inc, int size, bool conj)
+        : _data(data), _inc(inc), _size(size), _conj(conj)
+    {
+    }
+    const DataT* data() const { return _data; }
+    int inc() const { return _inc; };
+    int size() const { return _size; }
+    bool conjugated() const { return _conj; }
+
+    DataT operator()(int i) { return get(*this, i); }
+};
+
+template <typename DataT>
+class VectorMutView
+{
     DataT* _data;
     int _inc;
     int _size;
 
 public:
-    VectorView(const DataT* data, int inc, int size)
-        : _data(const_cast<DataT*>(data)), _inc(inc), _size(size)
+    VectorMutView(DataT* data, int inc, int size)
+        : _data(data), _inc(inc), _size(size)
     {
     }
-    const DataT* data() const { return _data; }
-    const DataT& operator()(int i) { return get(*this, i); }
+    DataT* data() const { return _data; }
     int inc() const { return _inc; };
     int size() const { return _size; }
+
+    DataT& operator()(int i) const { return get(*this, i); }
+    operator VectorView<DataT>() const
+    {
+        return VectorView<DataT>(data(), inc(), size(), false);
+    }
 };
 
-template <typename DataT>
-class VectorMutView : public VectorView<DataT>
+template <>
+inline Real get<Real>(VectorView<Real> v, int i)
 {
-public:
-    VectorMutView(DataT* data, int inc, int size)
-        : VectorView<DataT>(data, inc, size)
+    return *(v.data() + i * v.inc());
+}
+
+template <>
+inline Complex get<Complex>(VectorView<Complex> v, int i)
+{
+    if (v.conjugated())
     {
+        return std::conj(*(v.data() + i * v.inc()));
     }
-    DataT* data() const { return VectorView<DataT>::_data; }
-    DataT& operator()(int i) const { return get(*this, i); }
-    operator VectorView<DataT>() const { return *this; }
-};
+    else
+    {
+        return *(v.data() + i * v.inc());
+    }
+}
+
+template <typename DataT>
+DataT& get(VectorMutView<DataT> v, int i)
+{
+    return *(v.data() + i * v.inc());
+}
 }
