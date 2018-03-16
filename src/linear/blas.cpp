@@ -80,4 +80,23 @@ void axpy(Complex a, VectorView<Complex> x, VectorMutView<Complex> y)
     assert(x.size() == y.size());
     cblas_zaxpy(x.size(), &a, x.data(), x.inc(), y.data(), y.inc());
 }
+
+void scal(Real a, VectorMutView<Real> x)
+{
+    cblas_dscal(x.size(), a, x.data(), x.inc());
+}
+void scal(Real a, VectorMutView<Complex> x)
+{
+    cblas_zdscal(x.size(), a, x.data(), x.inc());
+}
+void scal(Complex a, VectorMutView<Complex> x)
+{
+    cblas_zscal(x.size(), &a, x.data(), x.inc());
+}
+
+template <typename M>
+static enum CBLAS_ORDER mo(const M& A)
+{
+    return A.isRowMajor() ? CblasRowMajor : CblasColMajor;
+}
 }

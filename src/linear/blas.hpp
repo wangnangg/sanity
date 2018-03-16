@@ -22,4 +22,14 @@ void copy(VectorView<Real> x, VectorMutView<Real> y);
 void copy(VectorView<Complex> x, VectorMutView<Complex> y);
 void axpy(Real a, VectorView<Real> x, VectorMutView<Real> y);
 void axpy(Complex a, VectorView<Complex> x, VectorMutView<Complex> y);
+
+// rotation omitted
+
+void scal(Real a, VectorMutView<Real> x);
+void scal(Real a, VectorMutView<Complex> x);
+void scal(Complex a, VectorMutView<Complex> x);
+
+// y:=alpha*A*x+beta*y
+void gemv(Real a, MatrixView<Real, General> A, VectorView<Real> x, Real b,
+          VectorMutView<Real> y);
 }
