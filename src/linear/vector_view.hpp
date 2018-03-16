@@ -48,6 +48,6 @@ public:
     }
     DataT* data() const { return VectorView<DataT>::_data; }
     DataT& operator()(int i) const { return get(*this, i); }
-    VectorView<DataT> constView() const { return *this; }
+    operator VectorView<DataT>() const { return *this; }
 };
 }

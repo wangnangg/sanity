@@ -6,7 +6,7 @@
 template <typename M>
 static int ml(const M& v)
 {
-    return v.isRowMajor() ? LAPACK_ROW_MAJOR : LAPACK_COL_MAJOR;
+    return LAPACK_ROW_MAJOR;
 }
 
 namespace sanity::linear::lapack

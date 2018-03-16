@@ -97,7 +97,17 @@
 
 namespace sanity::linear
 {
-template <typename DataT, MatrixViewType vt>
+template <typename DataT, MatrixViewport vt>
+void copyFrom(MatrixMutView<DataT, vt> src, MatrixMutView<DataT, vt> dst)
+{
+    copyFrom(constView(src), dst);
+}
+template <typename DataT, MatrixViewport vt>
+void copyFrom(const Matrix<DataT>& src, MatrixMutView<DataT, vt> dst)
+{
+    copyFrom(constView(src), dst);
+}
+template <typename DataT, MatrixViewport vt>
 void copyFrom(MatrixView<DataT, vt> src, MatrixMutView<DataT, vt> dst)
 {
     assert(src.nRow() == dst.nRow());
@@ -119,7 +129,7 @@ std::ostream& operator<<(std::ostream& os, const Matrix<DataT>& mat)
     return os;
 }
 
-template <typename DataT, MatrixViewType vt>
+template <typename DataT, MatrixViewport vt>
 std::ostream& operator<<(std::ostream& os, MatrixView<DataT, vt> mat)
 {
     for (int i = 0; i < mat.nRow(); i++)
@@ -134,7 +144,7 @@ std::ostream& operator<<(std::ostream& os, MatrixView<DataT, vt> mat)
     return os;
 }
 
-template <typename DataT, MatrixViewType vt>
+template <typename DataT, MatrixViewport vt>
 std::ostream& operator<<(std::ostream& os, MatrixMutView<DataT, vt> mat)
 {
     for (int i = 0; i < mat.nRow(); i++)

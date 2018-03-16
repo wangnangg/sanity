@@ -57,7 +57,7 @@ TEST(linear_blas, swap)
     {
         auto x = Vector<Real>(3, {1, 2, 3});
         auto y = Vector<Real>(3, 0);
-        blas::swap(x.mutView(), y.mutView());
+        blas::swap(x.mut(), y.mut());
         ASSERT_EQ(x(0), 0);
         ASSERT_EQ(x(1), 0);
         ASSERT_EQ(x(2), 0);
@@ -69,7 +69,7 @@ TEST(linear_blas, swap)
         auto x =
             Vector<Complex>(3, {Complex(1, 2), Complex(2, 3), Complex(3, 4)});
         auto y = Vector<Complex>(3);
-        blas::swap(x.mutView(), y.mutView());
+        blas::swap(x.mut(), y.mut());
         ASSERT_LT(maxDiff(x, Vector<Complex>(3)), 1e-6);
         ASSERT_LT(maxDiff(y, Vector<Complex>(3, {Complex(1, 2), Complex(2, 3),
                                                  Complex(3, 4)})),
@@ -82,7 +82,7 @@ TEST(linear_blas, copy)
     {
         auto x = Vector<Real>(3, {1, 2, 3});
         auto y = Vector<Real>(3, 0);
-        blas::copy(x, y.mutView());
+        blas::copy(x, y.mut());
         ASSERT_EQ(x(0), 1);
         ASSERT_EQ(x(1), 2);
         ASSERT_EQ(x(2), 3);
@@ -95,7 +95,7 @@ TEST(linear_blas, copy)
         auto x =
             Vector<Complex>(3, {Complex(1, 2), Complex(2, 3), Complex(3, 4)});
         auto y = Vector<Complex>(3);
-        blas::copy(x, y.mutView());
+        blas::copy(x, y.mut());
         ASSERT_LT(maxDiff(x, Vector<Complex>(3, {Complex(1, 2), Complex(2, 3),
                                                  Complex(3, 4)})),
                   1e-6);
@@ -110,7 +110,7 @@ TEST(linear_blas, axpy)
     {
         auto x = Vector<Real>(3, {1, 2, 3});
         auto y = Vector<Real>(3, {1, 1, 1});
-        blas::axpy(0.5, x, y.mutView());
+        blas::axpy(0.5, x, y.mut());
         ASSERT_LT(maxDiff(y, Vector<Real>(3, {1.5, 2, 2.5})), 1e-6);
     }
     {
@@ -118,7 +118,7 @@ TEST(linear_blas, axpy)
             Vector<Complex>(3, {Complex(1, 2), Complex(2, 3), Complex(3, 4)});
         auto y =
             Vector<Complex>(3, {Complex(1, 2), Complex(2, 3), Complex(3, 4)});
-        blas::axpy(1, x, y.mutView());
+        blas::axpy(1, x, y.mut());
         ASSERT_LT(maxDiff(y, Vector<Complex>(3, {Complex(2, 4), Complex(4, 6),
                                                  Complex(6, 8)})),
                   1e-6);
@@ -128,12 +128,12 @@ TEST(linear_blas, axpy)
 TEST(linear_blas, scal)
 {
     auto x = Vector<Real>(3, {1, 2, 3});
-    blas::scal(2, x.mutView());
+    blas::scal(2, x.mut());
     ASSERT_LT(maxDiff(x, Vector<Real>(3, {2, 4, 6})), 1e-6);
     {
         auto y =
             Vector<Complex>(3, {Complex(1, 2), Complex(2, 3), Complex(3, 4)});
-        blas::scal(2, y.mutView());
+        blas::scal(2, y.mut());
         ASSERT_LT(maxDiff(y, Vector<Complex>(3, {Complex(2, 4), Complex(4, 6),
                                                  Complex(6, 8)})),
                   1e-6);
@@ -141,7 +141,7 @@ TEST(linear_blas, scal)
     {
         auto y =
             Vector<Complex>(3, {Complex(1, 2), Complex(2, 3), Complex(3, 4)});
-        blas::scal(Complex(0, 1), y.mutView());
+        blas::scal(Complex(0, 1), y.mut());
         ASSERT_LT(maxDiff(y, Vector<Complex>(3, {Complex(-2, 1), Complex(-3, 2),
                                                  Complex(-4, 3)})),
                   1e-6);

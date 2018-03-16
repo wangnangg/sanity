@@ -13,16 +13,16 @@ ResDecompQR<Real> decompQR(MatrixView<Real, General> A)
     int n = A.nCol();
     auto work = Matrix<Real>(A);
     auto tau = Vector<Real>(k);
-    int result = lapack::geqrf(work.mutView(), tau.mutView());
+    int result = lapack::geqrf(work.mut(), tau.mut());
     assert(result == 0);
 
     ResDecompQR<Real> res;
     res.R = Matrix<Real>(k, n, Real());
-    copyFrom(work.constView<Upper>(), res.R.mutView<Upper>());
+    copyFrom(viewport<Upper>(work), viewport<Upper>(res.R.mut()));
 
-    result = lapack::orgqr(work.mutView(), tau);
+    result = lapack::orgqr(work.mut(), tau);
     res.Q = Matrix<Real>(m, k);
-    copyFrom(work.blockView(0, 0, m, k), res.Q.mutView());
+    copyFrom(blockView(work, 0, 0, m, k), res.Q.mut());
 
     return res;
 }

@@ -44,7 +44,7 @@ public:
         return VectorView<DataT>(data(), inc(), size());
     }
 
-    VectorMutView<DataT> mutView()
+    VectorMutView<DataT> mut()
     {
         return VectorMutView<DataT>(data(), inc(), size());
     }
