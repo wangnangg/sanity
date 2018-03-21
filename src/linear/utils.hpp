@@ -5,115 +5,59 @@
 #include "matrix.hpp"
 #include "matrix_view.hpp"
 
-#define FOR_EACH_NONZERO(view, view_type, row_idx, col_idx, statement)         \
-    ({                                                                         \
-        switch (view_type)                                                     \
-        {                                                                      \
-            case General:                                                      \
-            {                                                                  \
-                for (int row_idx = 0; row_idx < view.nRow(); row_idx++)        \
-                {                                                              \
-                    for (int col_idx = 0; col_idx < view.nCol(); col_idx++)    \
-                    {                                                          \
-                        statement;                                             \
-                    }                                                          \
-                }                                                              \
-                break;                                                         \
-            }                                                                  \
-            case Diagonal:                                                     \
-            {                                                                  \
-                int n = std::min(view.nRow(), view.nCol());                    \
-                for (int row_idx = 0; row_idx < n; row_idx++)                  \
-                {                                                              \
-                    int col_idx = row_idx;                                     \
-                    {                                                          \
-                        statement;                                             \
-                    }                                                          \
-                }                                                              \
-                break;                                                         \
-            }                                                                  \
-            case StrictUpper:                                                  \
-            {                                                                  \
-                int n = std::min(view.nRow(), view.nCol());                    \
-                for (int row_idx = 0; row_idx < n; row_idx++)                  \
-                {                                                              \
-                    for (int col_idx = row_idx + 1; col_idx < view.nCol();     \
-                         col_idx++)                                            \
-                    {                                                          \
-                        statement;                                             \
-                    }                                                          \
-                }                                                              \
-                break;                                                         \
-            }                                                                  \
-            case Upper:                                                        \
-            {                                                                  \
-                {                                                              \
-                    int n = std::min(view.nRow(), view.nCol());                \
-                    for (int row_idx = 0; row_idx < n; row_idx++)              \
-                    {                                                          \
-                        for (int col_idx = row_idx; col_idx < view.nCol();     \
-                             col_idx++)                                        \
-                        {                                                      \
-                            statement;                                         \
-                        }                                                      \
-                    }                                                          \
-                    break;                                                     \
-                }                                                              \
-            }                                                                  \
-            case StrictLower:                                                  \
-            {                                                                  \
-                {                                                              \
-                    int n = std::min(view.nRow(), view.nCol());                \
-                    for (int col_idx = 0; col_idx < n; col_idx++)              \
-                    {                                                          \
-                        for (int row_idx = col_idx + 1; row_idx < view.nRow(); \
-                             row_idx++)                                        \
-                        {                                                      \
-                            statement;                                         \
-                        }                                                      \
-                    }                                                          \
-                    break;                                                     \
-                }                                                              \
-            }                                                                  \
-            case Lower:                                                        \
-            {                                                                  \
-                {                                                              \
-                    int n = std::min(view.nRow(), view.nCol());                \
-                    for (int col_idx = 0; col_idx < n; col_idx++)              \
-                    {                                                          \
-                        for (int row_idx = col_idx; row_idx < view.nRow();     \
-                             row_idx++)                                        \
-                        {                                                      \
-                            statement;                                         \
-                        }                                                      \
-                    }                                                          \
-                    break;                                                     \
-                }                                                              \
-            }                                                                  \
-            default:                                                           \
-                assert(false);                                                 \
-        }                                                                      \
-    })
-
 namespace sanity::linear
 {
-template <typename DataT, MatrixViewport vt>
-void copyFrom(MatrixMutView<DataT, vt> src, MatrixMutView<DataT, vt> dst)
+void copy(MatrixView<Real, General> src, MatrixMutView<Real, General> dst);
+void copy(MatrixView<Real, Upper> src, MatrixMutView<Real, Upper> dst);
+void copy(MatrixView<Real, Lower> src, MatrixMutView<Real, Lower> dst);
+void copy(MatrixView<Real, StrictUpper> src,
+          MatrixMutView<Real, StrictUpper> dst);
+void copy(MatrixView<Real, StrictLower> src,
+          MatrixMutView<Real, StrictLower> dst);
+void copy(MatrixView<Real, Diagonal> src, MatrixMutView<Real, Diagonal> dst);
+void copy(MatrixView<Complex, General> src,
+          MatrixMutView<Complex, General> dst);
+void copy(MatrixView<Complex, Upper> src, MatrixMutView<Complex, Upper> dst);
+void copy(MatrixView<Complex, Lower> src, MatrixMutView<Complex, Lower> dst);
+void copy(MatrixView<Complex, StrictUpper> src,
+          MatrixMutView<Complex, StrictUpper> dst);
+void copy(MatrixView<Complex, StrictLower> src,
+          MatrixMutView<Complex, StrictLower> dst);
+void copy(MatrixView<Complex, Diagonal> src,
+          MatrixMutView<Complex, Diagonal> dst);
+
+constexpr MatrixViewport transViewport(MatrixViewport vt)
 {
-    copyFrom(constView(src), dst);
+    switch (vt)
+    {
+        case Upper:
+            return Lower;
+        case Lower:
+            return Upper;
+        case StrictUpper:
+            return StrictLower;
+        case StrictLower:
+            return StrictUpper;
+        default:
+            return vt;
+    }
 }
+
 template <typename DataT, MatrixViewport vt>
-void copyFrom(const Matrix<DataT>& src, MatrixMutView<DataT, vt> dst)
+MatrixView<DataT, transViewport(vt)> transpose(MatrixView<DataT, vt> mat)
 {
-    copyFrom(constView(src), dst);
+    return MatrixView<DataT, transViewport(vt)>(
+        mat.data(), mat.nCol(), mat.nRow(), mat.lDim(), !mat.rowMajor(),
+        mat.conjugated());
 }
-template <typename DataT, MatrixViewport vt>
-void copyFrom(MatrixView<DataT, vt> src, MatrixMutView<DataT, vt> dst)
+
+template <typename DataT>
+MatrixView<DataT, General> transpose(const Matrix<DataT>& mat)
 {
-    assert(src.nRow() == dst.nRow());
-    assert(src.nCol() == dst.nCol());
-    FOR_EACH_NONZERO(src, vt, i, j, (dst(i, j) = src(i, j)));
+    return MatrixView<DataT, General>(mat.data(), mat.nCol(), mat.nRow(),
+                                      mat.nCol(), true, false);
 }
+
 template <typename DataT>
 std::ostream& operator<<(std::ostream& os, const Matrix<DataT>& mat)
 {

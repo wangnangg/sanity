@@ -18,11 +18,11 @@ ResDecompQR<Real> decompQR(MatrixView<Real, General> A)
 
     ResDecompQR<Real> res;
     res.R = Matrix<Real>(k, n, Real());
-    copyFrom(viewport<Upper>(work), viewport<Upper>(res.R.mut()));
+    copy(viewport<Upper>(work), viewport<Upper>(res.R.mut()));
 
     result = lapack::orgqr(work.mut(), tau);
     res.Q = Matrix<Real>(m, k);
-    copyFrom(blockView(work, 0, 0, m, k), res.Q.mut());
+    copy(blockView(work, 0, 0, m, k), res.Q.mut());
 
     return res;
 }

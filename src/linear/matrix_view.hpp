@@ -32,7 +32,7 @@ template <MatrixViewport vt>
 Real get(MatrixView<Real, vt> mat, int i, int j)
 {
     assert(mat.has(i, j));
-    if (mat.transposed())
+    if (mat.colMajor())
     {
         return *(mat.data() + i + j * mat.lDim());
     }
@@ -46,7 +46,7 @@ template <MatrixViewport vt>
 Complex get(MatrixView<Complex, vt> mat, int i, int j)
 {
     assert(mat.has(i, j));
-    if (mat.transposed())
+    if (mat.colMajor())
     {
         if (mat.conjugated())
         {
@@ -70,9 +70,10 @@ Complex get(MatrixView<Complex, vt> mat, int i, int j)
     }
 }
 
-template <typename DataT, MatrixViewport vt>
-MatrixView<DataT, vt> blockView(MatrixView<DataT, vt> mat, int st_row,
-                                int st_col, int ed_row = -1, int ed_col = -1)
+template <typename DataT>
+MatrixView<DataT, General> blockView(MatrixView<DataT, General> mat, int st_row,
+                                     int st_col, int ed_row = -1,
+                                     int ed_col = -1)
 {
     if (ed_row < 0)
     {
@@ -89,13 +90,15 @@ MatrixView<DataT, vt> blockView(MatrixView<DataT, vt> mat, int st_row,
     const DataT* start_p = mat.transposed()
                                ? (mat.data() + st_row + st_col * mat.lDim())
                                : (mat.data() + st_row * mat.lDim() + st_col);
-    return MatrixView<DataT, vt>(start_p, ed_row - st_row, ed_col - st_col,
-                                 mat.lDim(), mat.tranposed(), mat.conjugated());
+    return MatrixView<DataT, General>(start_p, ed_row - st_row, ed_col - st_col,
+                                      mat.lDim(), mat.tranposed(),
+                                      mat.conjugated());
 }
 
-template <typename DataT, MatrixViewport vt>
-MatrixMutView<DataT, vt> blockView(MatrixMutView<DataT, vt> mat, int st_row,
-                                   int st_col, int ed_row = -1, int ed_col = -1)
+template <typename DataT>
+MatrixMutView<DataT, General> blockView(MatrixMutView<DataT, General> mat,
+                                        int st_row, int st_col, int ed_row = -1,
+                                        int ed_col = -1)
 {
     if (ed_row < 0)
     {
@@ -110,9 +113,9 @@ MatrixMutView<DataT, vt> blockView(MatrixMutView<DataT, vt> mat, int st_row,
     assert(st_col <= ed_col);
     assert(ed_col <= mat.nCol());
     const DataT* start_p = mat.data() + st_row * mat.lDim() + st_col;
-    return MatrixMutView<DataT, vt>(start_p, ed_row - st_row, ed_col - st_col,
-                                    mat.lDim(), mat.tranposed(),
-                                    mat.conjugated());
+    return MatrixMutView<DataT, General>(start_p, ed_row - st_row,
+                                         ed_col - st_col, mat.lDim(),
+                                         mat.tranposed(), mat.conjugated());
 }
 
 template <
@@ -175,14 +178,6 @@ class MatrixView<DataT, Upper> : public MatrixViewBase<DataT>
 {
 public:
     using MatrixViewBase<DataT>::MatrixViewBase;
-    template <MatrixViewport src, std::enable_if_t<src == General, int> = 0>
-    MatrixView(const MatrixView<DataT, src>& v) : MatrixViewBase<DataT>(v)
-    {
-    }
-    template <MatrixViewport src, std::enable_if_t<src == General, int> = 0>
-    MatrixView(const MatrixMutView<DataT, src>& v) : MatrixViewBase<DataT>(v)
-    {
-    }
     bool has(int i, int j) const
     {
         if (i <= j)
@@ -202,11 +197,6 @@ class MatrixMutView<DataT, Upper> : public MatrixMutViewBase<DataT>
 {
 public:
     using MatrixMutViewBase<DataT>::MatrixMutViewBase;
-    template <MatrixViewport src, std::enable_if_t<src == General, int> = 0>
-    MatrixMutView(const MatrixMutView<DataT, src>& v)
-        : MatrixMutViewBase<DataT>(v)
-    {
-    }
     bool has(int i, int j) const
     {
         if (i <= j)
@@ -231,16 +221,6 @@ class MatrixView<DataT, StrictUpper> : public MatrixViewBase<DataT>
 {
 public:
     using MatrixViewBase<DataT>::MatrixViewBase;
-    template <MatrixViewport src,
-              std::enable_if_t<src == General || src == Upper, int> = 0>
-    MatrixView(const MatrixView<DataT, src>& v) : MatrixViewBase<DataT>(v)
-    {
-    }
-    template <MatrixViewport src,
-              std::enable_if_t<src == General || src == Upper, int> = 0>
-    MatrixView(const MatrixMutView<DataT, src>& v) : MatrixViewBase<DataT>(v)
-    {
-    }
     bool has(int i, int j) const
     {
         if (i < j)
@@ -260,13 +240,6 @@ class MatrixMutView<DataT, StrictUpper> : public MatrixMutViewBase<DataT>
 {
 public:
     using MatrixMutViewBase<DataT>::MatrixMutViewBase;
-    template <MatrixViewport src,
-              std::enable_if_t<src == General || src == Upper, int> = 0>
-    MatrixMutView(const MatrixMutView<DataT, src>& v)
-        : MatrixMutViewBase<DataT>(v)
-    {
-    }
-
     bool has(int i, int j) const
     {
         if (i < j)
@@ -291,14 +264,6 @@ class MatrixView<DataT, Lower> : public MatrixViewBase<DataT>
 {
 public:
     using MatrixViewBase<DataT>::MatrixViewBase;
-    template <MatrixViewport src, std::enable_if_t<src == General, int> = 0>
-    MatrixView(const MatrixView<DataT, src>& v) : MatrixViewBase<DataT>(v)
-    {
-    }
-    template <MatrixViewport src, std::enable_if_t<src == General, int> = 0>
-    MatrixView(const MatrixMutView<DataT, src>& v) : MatrixViewBase<DataT>(v)
-    {
-    }
     bool has(int i, int j) const
     {
         if (i >= j)
@@ -318,12 +283,6 @@ class MatrixMutView<DataT, Lower> : public MatrixMutViewBase<DataT>
 {
 public:
     using MatrixMutViewBase<DataT>::MatrixMutViewBase;
-    template <MatrixViewport src, std::enable_if_t<src == General, int> = 0>
-    MatrixMutView(const MatrixMutView<DataT, src>& v)
-        : MatrixMutViewBase<DataT>(v)
-    {
-    }
-
     bool has(int i, int j) const
     {
         if (i >= j)
@@ -348,16 +307,6 @@ class MatrixView<DataT, StrictLower> : public MatrixViewBase<DataT>
 {
 public:
     using MatrixViewBase<DataT>::MatrixViewBase;
-    template <MatrixViewport src,
-              std::enable_if_t<src == General || src == Lower, int> = 0>
-    MatrixView(const MatrixView<DataT, src>& v) : MatrixViewBase<DataT>(v)
-    {
-    }
-    template <MatrixViewport src,
-              std::enable_if_t<src == General || src == Lower, int> = 0>
-    MatrixView(const MatrixMutView<DataT, src>& v) : MatrixViewBase<DataT>(v)
-    {
-    }
     bool has(int i, int j) const
     {
         if (i > j)
@@ -377,13 +326,6 @@ class MatrixMutView<DataT, StrictLower> : public MatrixMutViewBase<DataT>
 {
 public:
     using MatrixMutViewBase<DataT>::MatrixMutViewBase;
-    template <MatrixViewport src,
-              std::enable_if_t<src == General || src == Lower, int> = 0>
-    MatrixMutView(const MatrixMutView<DataT, src>& v)
-        : MatrixMutViewBase<DataT>(v)
-    {
-    }
-
     bool has(int i, int j) const
     {
         if (i > j)
@@ -409,18 +351,6 @@ class MatrixView<DataT, Diagonal> : public MatrixViewBase<DataT>
 {
 public:
     using MatrixViewBase<DataT>::MatrixViewBase;
-    template <MatrixViewport src,
-              std::enable_if_t<src == General || src == Lower || src == Upper,
-                               int> = 0>
-    MatrixView(const MatrixView<DataT, src>& v) : MatrixViewBase<DataT>(v)
-    {
-    }
-    template <MatrixViewport src,
-              std::enable_if_t<src == General || src == Lower || src == Upper,
-                               int> = 0>
-    MatrixView(const MatrixMutView<DataT, src>& v) : MatrixViewBase<DataT>(v)
-    {
-    }
     bool has(int i, int j) const
     {
         if (i == j)
@@ -440,14 +370,6 @@ class MatrixMutView<DataT, Diagonal> : public MatrixMutViewBase<DataT>
 {
 public:
     using MatrixMutViewBase<DataT>::MatrixMutViewBase;
-    template <MatrixViewport src,
-              std::enable_if_t<src == General || src == Lower || src == Upper,
-                               int> = 0>
-    MatrixMutView(const MatrixMutView<DataT, src>& v)
-        : MatrixMutViewBase<DataT>(v)
-    {
-    }
-
     bool has(int i, int j) const
     {
         if (i == j)

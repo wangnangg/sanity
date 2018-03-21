@@ -18,21 +18,24 @@ protected:
     int _nrow;
     int _ncol;
     int _ldim;
-    bool _trans;
+    bool _col_major;
 
 public:
-    MatrixViewBase(const Real* data, int nrow, int ncol, int ldim, bool trans,
-                   bool)
-        : _data(data), _nrow(nrow), _ncol(ncol), _ldim(ldim), _trans(trans)
+    MatrixViewBase(const Real* data, int nrow, int ncol, int ldim,
+                   bool col_major, bool)
+        : _data(data),
+          _nrow(nrow),
+          _ncol(ncol),
+          _ldim(ldim),
+          _col_major(col_major)
     {
     }
 
     const Real* data() const { return _data; }
-
     int nRow() const { return _nrow; }
     int nCol() const { return _ncol; }
     int lDim() const { return _ldim; }
-    bool transposed() const { return _trans; }
+    bool colMajor() const { return _col_major; }
     bool conjugated() const { return false; }
 };
 
@@ -52,7 +55,6 @@ public:
     }
 
     Real* data() const { return _data; }
-
     int nRow() const { return _nrow; }
     int nCol() const { return _ncol; }
     int lDim() const { return _ldim; }
@@ -66,17 +68,17 @@ protected:
     int _nrow;
     int _ncol;
     int _ldim;
-    bool _trans;
+    bool _col_major;
     bool _conj;
 
 public:
     MatrixViewBase(const Complex* data, int nrow, int ncol, int ldim,
-                   bool trans, bool conj)
+                   bool col_major, bool conj)
         : _data(data),
           _nrow(nrow),
           _ncol(ncol),
           _ldim(ldim),
-          _trans(trans),
+          _col_major(col_major),
           _conj(conj)
     {
     }
@@ -86,7 +88,7 @@ public:
     int nRow() const { return _nrow; }
     int nCol() const { return _ncol; }
     int lDim() const { return _ldim; }
-    bool transposed() const { return _trans; }
+    bool colMajor() const { return _col_major; }
     bool conjugated() const { return _conj; }
 };
 

@@ -147,3 +147,33 @@ TEST(linear_blas, scal)
                   1e-6);
     }
 }
+
+TEST(linear_blas, gemv)
+{
+    {
+        auto A = Matrix<Real>(3, 4,
+                              {
+                                  1, 0, 0, 2,  //
+                                  1, 1, 0, 0,  //
+                                  0, 0, 1, 1,  //
+                              });
+        auto x = Vector<Real>(4, {1, 1, 1, 1});
+        auto y = Vector<Real>(3, {1, 2, 3});
+        blas::gemv(2, A, x, 1, y.mut());
+        ASSERT_LT(maxDiff(y, Vector<Real>(3, {7, 6, 7})), 1e-6);
+    }
+    {
+        auto _A = Matrix<Real>(4, 3,
+                               {
+                                   1, 1, 0,  //
+                                   0, 1, 0,  //
+                                   0, 0, 1,  //
+                                   2, 0, 1   //
+                               });
+        MatrixView<Real, General> A = transpose(_A);
+        auto x = Vector<Real>(4, {1, 1, 1, 1});
+        auto y = Vector<Real>(3, {1, 2, 3});
+        blas::gemv(2, A, x, 1, y.mut());
+        ASSERT_LT(maxDiff(y, Vector<Real>(3, {7, 6, 7})), 1e-6);
+    }
+}

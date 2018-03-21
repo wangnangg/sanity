@@ -6,7 +6,7 @@
 
 namespace sanity::linear
 {
-template <typename DataT>
+template <typename DataT = Real>
 class Matrix;
 
 template <typename DataT>
@@ -97,7 +97,7 @@ public:
     explicit Matrix(MatrixView<DataT, vt> v)
         : Matrix(v.nRow(), v.nCol(), DataT())
     {
-        copyFrom(v, this->mut());
+        copy(v, viewport<vt>(this->mut()));
     }
 
     const DataT* data() const { return &_data.front(); }

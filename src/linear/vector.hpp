@@ -6,7 +6,7 @@
 #include "vector_view.hpp"
 namespace sanity::linear
 {
-template <typename DataT>
+template <typename DataT = Real>
 class Vector;
 
 template <typename DataT>
