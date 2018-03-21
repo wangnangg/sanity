@@ -44,6 +44,10 @@ VectorMutView<DataT> blockView(VectorMutView<DataT> v, int st, int ed = -1)
 template <typename DataT>
 class VectorView
 {
+public:
+    static const bool Mutable = false;
+
+private:
     const DataT* _data;
     int _inc;
     int _size;
@@ -65,6 +69,10 @@ public:
 template <typename DataT>
 class VectorMutView
 {
+public:
+    static const bool Mutable = true;
+
+private:
     DataT* _data;
     int _inc;
     int _size;

@@ -99,18 +99,13 @@ static enum CBLAS_ORDER mo(const M &A)
 {
     return A.colMajor() ? CblasColMajor : CblasRowMajor;
 }
-template <typename M>
-static enum CBLAS_TRANSPOSE mt(const M &A)
-{
-    return CblasNoTrans;
-}
 
 void gemv(Real a, MatrixView<Real, General> A, VectorView<Real> x, Real b,
           VectorMutView<Real> y)
 {
     assert(A.nCol() == x.size());
     assert(A.nRow() == y.size());
-    cblas_dgemv(mo(A), mt(A), A.nRow(), A.nCol(), a, A.data(), A.lDim(),
+    cblas_dgemv(mo(A), CblasNoTrans, A.nRow(), A.nCol(), a, A.data(), A.lDim(),
                 x.data(), x.inc(), b, y.data(), y.inc());
 }
 
@@ -133,8 +128,8 @@ static ComplexOrderTrans co(const MatrixView<Complex, vt> &A)
         }
         else
         {
-            res.order = CblasRowMajor;
-            res.trans = CblasTrans;
+            res.order = CblasColMajor;
+            res.trans = CblasNoTrans;
         }
     }
     else
@@ -168,29 +163,29 @@ void trmv(MatrixView<Real, Upper> A, VectorMutView<Real> x)
 {
     assert(A.nRow() == A.nCol());
     assert(A.nRow() == x.size());
-    cblas_dtrmv(mo(A), CblasUpper, mt(A), CblasNonUnit, A.nRow(), A.data(),
-                A.lDim(), x.data(), x.inc());
+    cblas_dtrmv(mo(A), CblasUpper, CblasNoTrans, CblasNonUnit, A.nRow(),
+                A.data(), A.lDim(), x.data(), x.inc());
 }
 void trmv(MatrixView<Real, Lower> A, VectorMutView<Real> x)
 {
     assert(A.nRow() == A.nCol());
     assert(A.nRow() == x.size());
-    cblas_dtrmv(mo(A), CblasLower, mt(A), CblasNonUnit, A.nRow(), A.data(),
-                A.lDim(), x.data(), x.inc());
+    cblas_dtrmv(mo(A), CblasLower, CblasNoTrans, CblasNonUnit, A.nRow(),
+                A.data(), A.lDim(), x.data(), x.inc());
 }
 
 void trmv(MatrixView<Real, StrictUpper> A, VectorMutView<Real> x)
 {
     assert(A.nRow() == A.nCol());
     assert(A.nRow() == x.size());
-    cblas_dtrmv(mo(A), CblasUpper, mt(A), CblasUnit, A.nRow(), A.data(),
+    cblas_dtrmv(mo(A), CblasUpper, CblasNoTrans, CblasUnit, A.nRow(), A.data(),
                 A.lDim(), x.data(), x.inc());
 }
 void trmv(MatrixView<Real, StrictLower> A, VectorMutView<Real> x)
 {
     assert(A.nRow() == A.nCol());
     assert(A.nRow() == x.size());
-    cblas_dtrmv(mo(A), CblasLower, mt(A), CblasUnit, A.nRow(), A.data(),
+    cblas_dtrmv(mo(A), CblasLower, CblasNoTrans, CblasUnit, A.nRow(), A.data(),
                 A.lDim(), x.data(), x.inc());
 }
 void trmv(MatrixView<Complex, Upper> A, VectorMutView<Complex> x)
@@ -231,29 +226,29 @@ void trsv(MatrixView<Real, Upper> A, VectorMutView<Real> x)
 {
     assert(A.nRow() == A.nCol());
     assert(A.nRow() == x.size());
-    cblas_dtrsv(mo(A), CblasUpper, mt(A), CblasNonUnit, A.nRow(), A.data(),
-                A.lDim(), x.data(), x.inc());
+    cblas_dtrsv(mo(A), CblasUpper, CblasNoTrans, CblasNonUnit, A.nRow(),
+                A.data(), A.lDim(), x.data(), x.inc());
 }
 void trsv(MatrixView<Real, Lower> A, VectorMutView<Real> x)
 {
     assert(A.nRow() == A.nCol());
     assert(A.nRow() == x.size());
-    cblas_dtrsv(mo(A), CblasLower, mt(A), CblasNonUnit, A.nRow(), A.data(),
-                A.lDim(), x.data(), x.inc());
+    cblas_dtrsv(mo(A), CblasLower, CblasNoTrans, CblasNonUnit, A.nRow(),
+                A.data(), A.lDim(), x.data(), x.inc());
 }
 // unit diagonal
 void trsv(MatrixView<Real, StrictUpper> A, VectorMutView<Real> x)
 {
     assert(A.nRow() == A.nCol());
     assert(A.nRow() == x.size());
-    cblas_dtrsv(mo(A), CblasUpper, mt(A), CblasUnit, A.nRow(), A.data(),
+    cblas_dtrsv(mo(A), CblasUpper, CblasNoTrans, CblasUnit, A.nRow(), A.data(),
                 A.lDim(), x.data(), x.inc());
 }
 void trsv(MatrixView<Real, StrictLower> A, VectorMutView<Real> x)
 {
     assert(A.nRow() == A.nCol());
     assert(A.nRow() == x.size());
-    cblas_dtrsv(mo(A), CblasLower, mt(A), CblasUnit, A.nRow(), A.data(),
+    cblas_dtrsv(mo(A), CblasLower, CblasNoTrans, CblasUnit, A.nRow(), A.data(),
                 A.lDim(), x.data(), x.inc());
 }
 // solve A x = b

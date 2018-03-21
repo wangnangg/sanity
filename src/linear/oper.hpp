@@ -1,7 +1,9 @@
+#include <cmath>
+#include <type_traits>
 #include "matrix_view.hpp"
+#include "type_check.hpp"
+#include "utils.hpp"
 #include "vector_view.hpp"
 namespace sanity::linear
 {
-Real maxDiff(VectorView<Real> v1, VectorView<Real> v2);
-Real maxDiff(VectorView<Complex> v1, VectorView<Complex> v2);
 }

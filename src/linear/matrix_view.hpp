@@ -12,6 +12,26 @@ enum MatrixViewport
     Lower
 };
 
+constexpr bool subViewOf(MatrixViewport v1, MatrixViewport v2)
+{
+    switch (v1)
+    {
+        case General:
+            return v2 == General;
+        case Diagonal:
+            return v2 == General || v2 == Diagonal || v2 == Upper ||
+                   v2 == Lower;
+        case StrictUpper:
+            return v2 == General || v2 == StrictUpper || v2 == Upper;
+        case Upper:
+            return v2 == General || v2 == Upper;
+        case StrictLower:
+            return v2 == General || v2 == StrictLower || v2 == Lower;
+        case Lower:
+            return v2 == General || v2 == Lower;
+    }
+}
+
 template <typename DataT, MatrixViewport vt>
 class MatrixView;
 
@@ -87,11 +107,11 @@ MatrixView<DataT, General> blockView(MatrixView<DataT, General> mat, int st_row,
     assert(ed_row <= mat.nRow());
     assert(st_col <= ed_col);
     assert(ed_col <= mat.nCol());
-    const DataT* start_p = mat.transposed()
+    const DataT* start_p = mat.colMajor()
                                ? (mat.data() + st_row + st_col * mat.lDim())
                                : (mat.data() + st_row * mat.lDim() + st_col);
     return MatrixView<DataT, General>(start_p, ed_row - st_row, ed_col - st_col,
-                                      mat.lDim(), mat.tranposed(),
+                                      mat.lDim(), mat.colMajor(),
                                       mat.conjugated());
 }
 
@@ -115,7 +135,7 @@ MatrixMutView<DataT, General> blockView(MatrixMutView<DataT, General> mat,
     const DataT* start_p = mat.data() + st_row * mat.lDim() + st_col;
     return MatrixMutView<DataT, General>(start_p, ed_row - st_row,
                                          ed_col - st_col, mat.lDim(),
-                                         mat.tranposed(), mat.conjugated());
+                                         mat.coMajor(), mat.conjugated());
 }
 
 template <
@@ -125,7 +145,7 @@ template <
             (src == Upper && (target == StrictUpper || target == Diagonal)) ||
             (src == Lower && (target == StrictLower || target == Diagonal)),
         int> = 0>
-MatrixMutView<DataT, target> viewport(MatrixMutView<DataT, src> m)
+MatrixMutView<DataT, target> viewportCast(MatrixMutView<DataT, src> m)
 {
     return MatrixMutView<DataT, target>(m.data(), m.nRow(), m.nCol(), m.lDim());
 }
@@ -137,7 +157,7 @@ template <
             (src == Upper && (target == StrictUpper || target == Diagonal)) ||
             (src == Lower && (target == StrictLower || target == Diagonal)),
         int> = 0>
-MatrixView<DataT, target> viewport(MatrixView<DataT, src> m)
+MatrixView<DataT, target> viewportCast(MatrixView<DataT, src> m)
 {
     return MatrixView<DataT, target>(m.data(), m.nRow(), m.nCol(), m.lDim(),
                                      false, false);
@@ -154,18 +174,20 @@ template <typename DataT>
 class MatrixView<DataT, General> : public MatrixViewBase<DataT>
 {
 public:
+    const static MatrixViewport Viewport = General;
     using MatrixViewBase<DataT>::MatrixViewBase;
     bool has(int, int) const { return true; }
-    DataT operator()(int i, int j) { return get(*this, i, j); }
+    DataT operator()(int i, int j) const { return get(*this, i, j); }
 };
 
 template <typename DataT>
 class MatrixMutView<DataT, General> : public MatrixMutViewBase<DataT>
 {
 public:
+    const static MatrixViewport Viewport = General;
     using MatrixMutViewBase<DataT>::MatrixMutViewBase;
     bool has(int, int) const { return true; }
-    DataT& operator()(int i, int j) { return get(*this, i, j); }
+    DataT& operator()(int i, int j) const { return get(*this, i, j); }
 
     operator MatrixView<DataT, General>() const
     {
@@ -177,6 +199,7 @@ template <typename DataT>
 class MatrixView<DataT, Upper> : public MatrixViewBase<DataT>
 {
 public:
+    const static MatrixViewport Viewport = Upper;
     using MatrixViewBase<DataT>::MatrixViewBase;
     bool has(int i, int j) const
     {
@@ -189,13 +212,14 @@ public:
             return false;
         }
     }
-    DataT operator()(int i, int j) { return get(*this, i, j); }
+    DataT operator()(int i, int j) const { return get(*this, i, j); }
 };
 
 template <typename DataT>
 class MatrixMutView<DataT, Upper> : public MatrixMutViewBase<DataT>
 {
 public:
+    const static MatrixViewport Viewport = Upper;
     using MatrixMutViewBase<DataT>::MatrixMutViewBase;
     bool has(int i, int j) const
     {
@@ -208,7 +232,7 @@ public:
             return false;
         }
     }
-    DataT& operator()(int i, int j) { return get(*this, i, j); }
+    DataT& operator()(int i, int j) const { return get(*this, i, j); }
 
     operator MatrixView<DataT, Upper>() const
     {
@@ -220,6 +244,7 @@ template <typename DataT>
 class MatrixView<DataT, StrictUpper> : public MatrixViewBase<DataT>
 {
 public:
+    const static MatrixViewport Viewport = StrictUpper;
     using MatrixViewBase<DataT>::MatrixViewBase;
     bool has(int i, int j) const
     {
@@ -232,13 +257,14 @@ public:
             return false;
         }
     }
-    DataT operator()(int i, int j) { return get(*this, i, j); }
+    DataT operator()(int i, int j) const { return get(*this, i, j); }
 };
 
 template <typename DataT>
 class MatrixMutView<DataT, StrictUpper> : public MatrixMutViewBase<DataT>
 {
 public:
+    const static MatrixViewport Viewport = StrictUpper;
     using MatrixMutViewBase<DataT>::MatrixMutViewBase;
     bool has(int i, int j) const
     {
@@ -252,7 +278,7 @@ public:
         }
     }
 
-    DataT& operator()(int i, int j) { return get(*this, i, j); }
+    DataT& operator()(int i, int j) const { return get(*this, i, j); }
     operator MatrixView<DataT, StrictUpper>() const
     {
         return sanity::linear::constView(*this);
@@ -263,6 +289,7 @@ template <typename DataT>
 class MatrixView<DataT, Lower> : public MatrixViewBase<DataT>
 {
 public:
+    const static MatrixViewport Viewport = Lower;
     using MatrixViewBase<DataT>::MatrixViewBase;
     bool has(int i, int j) const
     {
@@ -275,13 +302,14 @@ public:
             return false;
         }
     }
-    DataT operator()(int i, int j) { return get(*this, i, j); }
+    DataT operator()(int i, int j) const { return get(*this, i, j); }
 };
 
 template <typename DataT>
 class MatrixMutView<DataT, Lower> : public MatrixMutViewBase<DataT>
 {
 public:
+    const static MatrixViewport Viewport = Lower;
     using MatrixMutViewBase<DataT>::MatrixMutViewBase;
     bool has(int i, int j) const
     {
@@ -295,7 +323,7 @@ public:
         }
     }
 
-    DataT& operator()(int i, int j) { return get(*this, i, j); }
+    DataT& operator()(int i, int j) const { return get(*this, i, j); }
     operator MatrixView<DataT, Lower>() const
     {
         return sanity::linear::constView(*this);
@@ -306,6 +334,7 @@ template <typename DataT>
 class MatrixView<DataT, StrictLower> : public MatrixViewBase<DataT>
 {
 public:
+    const static MatrixViewport Viewport = StrictLower;
     using MatrixViewBase<DataT>::MatrixViewBase;
     bool has(int i, int j) const
     {
@@ -325,6 +354,7 @@ template <typename DataT>
 class MatrixMutView<DataT, StrictLower> : public MatrixMutViewBase<DataT>
 {
 public:
+    const static MatrixViewport Viewport = StrictLower;
     using MatrixMutViewBase<DataT>::MatrixMutViewBase;
     bool has(int i, int j) const
     {
@@ -338,7 +368,7 @@ public:
         }
     }
 
-    DataT& operator()(int i, int j) { return get(*this, i, j); }
+    DataT& operator()(int i, int j) const { return get(*this, i, j); }
 
     operator MatrixView<DataT, StrictLower>() const
     {
@@ -350,6 +380,7 @@ template <typename DataT>
 class MatrixView<DataT, Diagonal> : public MatrixViewBase<DataT>
 {
 public:
+    const static MatrixViewport Viewport = Diagonal;
     using MatrixViewBase<DataT>::MatrixViewBase;
     bool has(int i, int j) const
     {
@@ -362,13 +393,14 @@ public:
             return false;
         }
     }
-    DataT operator()(int i, int j) { return get(*this, i, j); }
+    DataT operator()(int i, int j) const { return get(*this, i, j); }
 };
 
 template <typename DataT>
 class MatrixMutView<DataT, Diagonal> : public MatrixMutViewBase<DataT>
 {
 public:
+    const static MatrixViewport Viewport = Diagonal;
     using MatrixMutViewBase<DataT>::MatrixMutViewBase;
     bool has(int i, int j) const
     {
@@ -382,7 +414,7 @@ public:
         }
     }
 
-    DataT& operator()(int i, int j) { return get(*this, i, j); }
+    DataT& operator()(int i, int j) const { return get(*this, i, j); }
     operator MatrixView<DataT, Diagonal>() const
     {
         return sanity::linear::constView(*this);

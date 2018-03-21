@@ -14,7 +14,7 @@ DataT get(const Matrix<DataT>& m, int i, int j)
 {
     assert(i < m.nRow() && j < m.nCol());
     assert(i >= 0 && j >= 0);
-    return *(m.data() + i * m.nRow() + j);
+    return *(m.data() + i * m.nCol() + j);
 }
 
 template <typename DataT>
@@ -22,7 +22,7 @@ DataT& get(Matrix<DataT>& m, int i, int j)
 {
     assert(i < m.nRow() && j < m.nCol());
     assert(i >= 0 && j >= 0);
-    return *(m.data() + i * m.nRow() + j);
+    return *(m.data() + i * m.nCol() + j);
 }
 
 template <MatrixViewport vt = General, typename DataT>
@@ -39,13 +39,13 @@ MatrixMutView<DataT, vt> mutView(Matrix<DataT>& m)
 }
 
 template <MatrixViewport target, typename DataT>
-MatrixMutView<DataT, target> viewport(Matrix<DataT>& m)
+MatrixMutView<DataT, target> viewportCast(Matrix<DataT>& m)
 {
     return MatrixMutView<DataT, target>(m.data(), m.nRow(), m.nCol(), m.nCol());
 }
 
 template <MatrixViewport target, typename DataT>
-MatrixView<DataT, target> viewport(const Matrix<DataT>& m)
+MatrixView<DataT, target> viewportCast(const Matrix<DataT>& m)
 {
     return MatrixView<DataT, target>(m.data(), m.nRow(), m.nCol(), m.nCol(),
                                      false, false);
@@ -75,6 +75,10 @@ MatrixView<DataT, General> blockView(const Matrix<DataT>& mat, int st_row,
 template <typename DataT>
 class Matrix
 {
+public:
+    const static MatrixViewport Viewport = General;
+
+private:
     std::vector<DataT> _data;
     int _nrow;
     int _ncol;
@@ -97,7 +101,7 @@ public:
     explicit Matrix(MatrixView<DataT, vt> v)
         : Matrix(v.nRow(), v.nCol(), DataT())
     {
-        copy(v, viewport<vt>(this->mut()));
+        copy(v, viewportCast<vt>(mutView(*this)));
     }
 
     const DataT* data() const { return &_data.front(); }
@@ -107,17 +111,12 @@ public:
 
     DataT operator()(int i, int j) const { return get(*this, i, j); }
 
-    DataT& operator()(int i, int j) { get(*this, i, j); }
+    DataT& operator()(int i, int j) { return get(*this, i, j); }
 
     template <MatrixViewport vt = General>
     operator MatrixView<DataT, vt>() const
     {
         return constView<vt, DataT>(*this);
-    }
-
-    MatrixMutView<DataT, General> mut()
-    {
-        return sanity::linear::mutView<General, DataT>(*this);
     }
 };
 }

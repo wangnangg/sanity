@@ -13,6 +13,9 @@ class MatrixMutViewBase;
 template <>
 class MatrixViewBase<Real>
 {
+public:
+    static const bool Mutable = false;
+
 protected:
     const Real* _data;
     int _nrow;
@@ -42,6 +45,9 @@ public:
 template <>
 class MatrixMutViewBase<Real>
 {
+public:
+    static const bool Mutable = true;
+
 protected:
     Real* _data;
     int _nrow;

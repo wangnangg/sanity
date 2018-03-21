@@ -66,8 +66,6 @@ public:
 
     operator VectorView<DataT>() const { return constView(*this); }
 
-    VectorMutView<DataT> mut() { return mutView(*this); }
-
     DataT operator()(int i) { return get(*this, i); }
     const DataT& operator()(int i) const { return get(*this, i); }
 };
