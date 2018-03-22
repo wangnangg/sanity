@@ -5,7 +5,7 @@ using namespace sanity::linear;
 
 TEST(linear_matrix_view, viewportCast)
 {
-    auto A = Matrix<Real>(5, 6,
+    auto _A = Matrix<Real, ColMajor>(5, 6,
                           {
                               1, 2, 3, 4, 5, 6,  //
                               2, 3, 4, 5, 6, 1,  //
@@ -13,7 +13,7 @@ TEST(linear_matrix_view, viewportCast)
                               4, 5, 6, 1, 2, 3,  //
                               5, 6, 1, 2, 3, 4   //
                           });
-
+    auto A = constView(_A);
     std::cout << A << std::endl;
     std::cout << viewportCast<General>(A) << std::endl;
     std::cout << viewportCast<Upper>(A) << std::endl;
@@ -25,7 +25,7 @@ TEST(linear_matrix_view, viewportCast)
 
 TEST(linear_matrix_view, transpose)
 {
-    auto A = Matrix<Real>(5, 6,
+    auto _A = Matrix<Real, ColMajor>(5, 6,
                           {
                               1, 2, 3, 4, 5, 6,  //
                               2, 3, 4, 5, 6, 1,  //
@@ -33,7 +33,8 @@ TEST(linear_matrix_view, transpose)
                               4, 5, 6, 1, 2, 3,  //
                               5, 6, 1, 2, 3, 4   //
                           });
-    auto AT = Matrix<Real>(6, 5,
+    auto A = constView(_A);
+    auto _AT = Matrix<Real, ColMajor>(6, 5,
                            {
                                1, 2, 3, 4, 5,  //
                                2, 3, 4, 5, 6,  //
@@ -42,6 +43,7 @@ TEST(linear_matrix_view, transpose)
                                5, 6, 1, 2, 3,  //
                                6, 1, 2, 3, 4   //
                            });
+    auto AT = constView(_AT);
     {
         std::cout << A << std::endl;
         std::cout << transpose(AT) << std::endl;

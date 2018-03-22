@@ -8,108 +8,108 @@
 #include "vector.hpp"
 #include "vector_view.hpp"
 
-#define FOR_EACH_NONZERO(view, view_type, row_idx, col_idx, statement)         \
-    ({                                                                         \
-        switch (view_type)                                                     \
-        {                                                                      \
-            case General:                                                      \
-            {                                                                  \
-                for (int row_idx = 0; row_idx < view.nRow(); row_idx++)        \
-                {                                                              \
-                    for (int col_idx = 0; col_idx < view.nCol(); col_idx++)    \
-                    {                                                          \
-                        statement;                                             \
-                    }                                                          \
-                }                                                              \
-                break;                                                         \
-            }                                                                  \
-            case Diagonal:                                                     \
-            {                                                                  \
-                int n = std::min(view.nRow(), view.nCol());                    \
-                for (int row_idx = 0; row_idx < n; row_idx++)                  \
-                {                                                              \
-                    int col_idx = row_idx;                                     \
-                    {                                                          \
-                        statement;                                             \
-                    }                                                          \
-                }                                                              \
-                break;                                                         \
-            }                                                                  \
-            case StrictUpper:                                                  \
-            {                                                                  \
-                int n = std::min(view.nRow(), view.nCol());                    \
-                for (int row_idx = 0; row_idx < n; row_idx++)                  \
-                {                                                              \
-                    for (int col_idx = row_idx + 1; col_idx < view.nCol();     \
-                         col_idx++)                                            \
-                    {                                                          \
-                        statement;                                             \
-                    }                                                          \
-                }                                                              \
-                break;                                                         \
-            }                                                                  \
-            case Upper:                                                        \
-            {                                                                  \
-                {                                                              \
-                    int n = std::min(view.nRow(), view.nCol());                \
-                    for (int row_idx = 0; row_idx < n; row_idx++)              \
-                    {                                                          \
-                        for (int col_idx = row_idx; col_idx < view.nCol();     \
-                             col_idx++)                                        \
-                        {                                                      \
-                            statement;                                         \
-                        }                                                      \
-                    }                                                          \
-                    break;                                                     \
-                }                                                              \
-            }                                                                  \
-            case StrictLower:                                                  \
-            {                                                                  \
-                {                                                              \
-                    int n = std::min(view.nRow(), view.nCol());                \
-                    for (int col_idx = 0; col_idx < n; col_idx++)              \
-                    {                                                          \
-                        for (int row_idx = col_idx + 1; row_idx < view.nRow(); \
-                             row_idx++)                                        \
-                        {                                                      \
-                            statement;                                         \
-                        }                                                      \
-                    }                                                          \
-                    break;                                                     \
-                }                                                              \
-            }                                                                  \
-            case Lower:                                                        \
-            {                                                                  \
-                {                                                              \
-                    int n = std::min(view.nRow(), view.nCol());                \
-                    for (int col_idx = 0; col_idx < n; col_idx++)              \
-                    {                                                          \
-                        for (int row_idx = col_idx; row_idx < view.nRow();     \
-                             row_idx++)                                        \
-                        {                                                      \
-                            statement;                                         \
-                        }                                                      \
-                    }                                                          \
-                    break;                                                     \
-                }                                                              \
-            }                                                                  \
-            default:                                                           \
-                assert(false);                                                 \
-        }                                                                      \
+#define FOR_EACH_NONZERO(view_type, rowCount, colCount, row_idx, col_idx,   \
+                         statement)                                         \
+    ({                                                                      \
+        switch (view_type)                                                  \
+        {                                                                   \
+            case General:                                                   \
+            {                                                               \
+                for (int row_idx = 0; row_idx < rowCount; row_idx++)        \
+                {                                                           \
+                    for (int col_idx = 0; col_idx < colCount; col_idx++)    \
+                    {                                                       \
+                        statement;                                          \
+                    }                                                       \
+                }                                                           \
+                break;                                                      \
+            }                                                               \
+            case Diagonal:                                                  \
+            {                                                               \
+                int n = std::min(rowCount, colCount);                       \
+                for (int row_idx = 0; row_idx < n; row_idx++)               \
+                {                                                           \
+                    int col_idx = row_idx;                                  \
+                    {                                                       \
+                        statement;                                          \
+                    }                                                       \
+                }                                                           \
+                break;                                                      \
+            }                                                               \
+            case StrictUpper:                                               \
+            {                                                               \
+                int n = std::min(rowCount, colCount);                       \
+                for (int row_idx = 0; row_idx < n; row_idx++)               \
+                {                                                           \
+                    for (int col_idx = row_idx + 1; col_idx < colCount;     \
+                         col_idx++)                                         \
+                    {                                                       \
+                        statement;                                          \
+                    }                                                       \
+                }                                                           \
+                break;                                                      \
+            }                                                               \
+            case Upper:                                                     \
+            {                                                               \
+                {                                                           \
+                    int n = std::min(rowCount, colCount);                   \
+                    for (int row_idx = 0; row_idx < n; row_idx++)           \
+                    {                                                       \
+                        for (int col_idx = row_idx; col_idx < colCount;     \
+                             col_idx++)                                     \
+                        {                                                   \
+                            statement;                                      \
+                        }                                                   \
+                    }                                                       \
+                    break;                                                  \
+                }                                                           \
+            }                                                               \
+            case StrictLower:                                               \
+            {                                                               \
+                {                                                           \
+                    int n = std::min(rowCount, colCount);                   \
+                    for (int col_idx = 0; col_idx < n; col_idx++)           \
+                    {                                                       \
+                        for (int row_idx = col_idx + 1; row_idx < rowCount; \
+                             row_idx++)                                     \
+                        {                                                   \
+                            statement;                                      \
+                        }                                                   \
+                    }                                                       \
+                    break;                                                  \
+                }                                                           \
+            }                                                               \
+            case Lower:                                                     \
+            {                                                               \
+                {                                                           \
+                    int n = std::min(rowCount, colCount);                   \
+                    for (int col_idx = 0; col_idx < n; col_idx++)           \
+                    {                                                       \
+                        for (int row_idx = col_idx; row_idx < rowCount;     \
+                             row_idx++)                                     \
+                        {                                                   \
+                            statement;                                      \
+                        }                                                   \
+                    }                                                       \
+                    break;                                                  \
+                }                                                           \
+            }                                                               \
+            default:                                                        \
+                assert(false);                                              \
+        }                                                                   \
     })
 
 namespace sanity::linear
 {
-template <typename V1, typename V2,
-          std::enable_if_t<isVectorType<V1> && isVectorType<V2>, int> = 0>
-Real maxDiff(const V1& v1, const V2& v2)
+template <typename DataT, Conjugation ct1, Conjugation ct2>
+Real maxDiff(VectorView<DataT, ct1, Const> v1, VectorView<DataT, ct2, Const> v2)
 {
     assert(v1.size() == v2.size());
     int n = v1.size();
     Real max = 0;
     for (int i = 0; i < n; i++)
     {
-        Real v = std::abs(v1(i) - v2(i));
+        Real v = std::abs(get(v1, i) - ge(v2, i));
         if (max < v)
         {
             max = v;
@@ -118,130 +118,68 @@ Real maxDiff(const V1& v1, const V2& v2)
     return max;
 }
 
-template <typename M1, typename M2,
-          std::enable_if_t<isMatrixType<M1>         //
-                               && isMatrixType<M2>  //
-                               && M1::Viewport == M2::Viewport,
-                           int> = 0>
-Real maxDiff(const M1& mat1, const M2& mat2)
+template <typename DataT, MatrixViewport vt, MatrixStorage st1,
+          MatrixStorage st2, Conjugation ct1, Conjugation ct2>
+Real maxDiff(MatrixView<DataT, vt, st1, ct1, Const> mat1,
+             MatrixView<DataT, vt, st2, ct2, Const> mat2)
 {
     assert(mat1.nRow() == mat2.nRow());
     assert(mat1.nCol() == mat2.nCol());
     Real max = 0;
-    FOR_EACH_NONZERO(mat1, M1::Viewport, i, j, ({
-                         Real v = std::abs(mat1(i, j) - mat2(i, j));
+    FOR_EACH_NONZERO(vt, mat1.nRow(), mat1.nCol(), i, j, ({
+                         Real v = std::abs(get(mat1, i, j) - get(mat2, i, j));
                          if (max < v) max = v;
                      }));
     return max;
 }
 
-template <typename M1, typename M2,
-          std::enable_if_t<isMatrixType<M1> && isMatrixType<M2> &&
-                               M1::Viewport == M2::Viewport && isMutable<M2>,
-                           int> = 0>
-void copy(const M1& src, const M2& dst)
+template <typename DataT, MatrixViewport vt, MatrixStorage st1,
+          MatrixStorage st2, Conjugation ct1, Conjugation ct2>
+void copy(MatrixView<DataT, vt, st1, ct1, Const> src,
+          MatrixView<DataT, vt, st1, ct1, Mutable> dst)
 {
     assert(src.nRow() == dst.nRow());
     assert(src.nCol() == dst.nCol());
-    FOR_EACH_NONZERO(src, M1::Viewport, i, j, (dst(i, j) = src(i, j)));
+    FOR_EACH_NONZERO(vt, src.nRow(), src.nCol(), i, j,
+                     (set(dst, i, j, get(src, i, j))));
 }
 
-template <MatrixViewport vt>
-void setValue(Real val, const MatrixMutView<Real, vt> mat)
+template <typename DataT, MatrixViewport vt, MatrixStorage st, Conjugation ct>
+void setAll(DataT val, MatrixView<DataT, vt, st, ct, Mutable> mat);
+
+template <typename DataT, MatrixViewport vt, MatrixStorage st>
+void setAll(DataT val, MatrixView<DataT, vt, st, NoConj, Mutable> mat)
 {
-    FOR_EACH_NONZERO(mat, vt, i, j, (mat(i, j) = val));
+    FOR_EACH_NONZERO(vt, mat.nRow(), mat.nCol(), i, j, (set(mat, i, j, val)));
 }
 
-template <MatrixViewport vt>
-void setValue(Complex val, const MatrixMutView<Complex, vt> mat)
+template <typename DataT, MatrixViewport vt, MatrixStorage st>
+void setAll(DataT val, MatrixView<DataT, vt, st, Conj, Mutable> mat)
 {
-    FOR_EACH_NONZERO(mat, vt, i, j, (mat(i, j) = val));
+    auto cval = std::conj(val);
+    auto cmat = conjugate(mat);
+    setAll(cmat, cval);
 }
 
-constexpr MatrixViewport transViewport(MatrixViewport vt)
-{
-    switch (vt)
-    {
-        case Upper:
-            return Lower;
-        case Lower:
-            return Upper;
-        case StrictUpper:
-            return StrictLower;
-        case StrictLower:
-            return StrictUpper;
-        default:
-            return vt;
-    }
-}
-
-template <typename DataT, MatrixViewport vt>
-MatrixView<DataT, transViewport(vt)> transpose(MatrixView<DataT, vt> mat)
-{
-    return MatrixView<DataT, transViewport(vt)>(
-        mat.data(), mat.nCol(), mat.nRow(), mat.lDim(), !mat.colMajor(),
-        mat.conjugated());
-}
-
-template <typename DataT>
-MatrixView<DataT, General> transpose(const Matrix<DataT>& mat)
-{
-    return MatrixView<DataT, General>(mat.data(), mat.nCol(), mat.nRow(),
-                                      mat.nCol(), true, false);
-}
-
-template <typename DataT, MatrixViewport vt>
-DataT getWithDefault(MatrixView<DataT, vt> m, int i, int j, DataT def = DataT())
-{
-    return m.has(i, j) ? m(i, j) : def;
-}
-
-template <typename DataT, MatrixViewport vt>
-DataT getWithDefault(MatrixMutView<DataT, vt> m, int i, int j,
+template <typename DataT, MatrixViewport vt, MatrixStorage st, Conjugation ct,
+          Mutability mt>
+DataT getWithDefault(MatrixView<DataT, vt, st, ct, mt> m, int i, int j,
                      DataT def = DataT())
 {
-    return m.has(i, j) ? m(i, j) : def;
+    return has(m, i, j) ? get(m, i, j) : def;
 }
 
-template <typename DataT>
-std::ostream& operator<<(std::ostream& os, const Matrix<DataT>& mat)
+template <typename DataT, MatrixViewport vt, MatrixStorage st, Conjugation ct,
+          Mutability mt>
+std::ostream& operator<<(std::ostream& os,
+                         MatrixView<DataT, vt, st, ct, mt> mat)
 {
     for (int i = 0; i < mat.nRow(); i++)
     {
         for (int j = 0; j < mat.nCol(); j++)
         {
             os << std::fixed << std::setw(8) << std::setprecision(3)
-               << std::setfill(' ') << mat(i, j);
-        }
-        os << std::endl;
-    }
-    return os;
-}
-
-template <typename DataT, MatrixViewport vt>
-std::ostream& operator<<(std::ostream& os, MatrixView<DataT, vt> mat)
-{
-    for (int i = 0; i < mat.nRow(); i++)
-    {
-        for (int j = 0; j < mat.nCol(); j++)
-        {
-            os << std::fixed << std::setw(8) << std::setprecision(3)
-               << std::setfill(' ') << getWithDefault(mat, i, j);
-        }
-        os << std::endl;
-    }
-    return os;
-}
-
-template <typename DataT, MatrixViewport vt>
-std::ostream& operator<<(std::ostream& os, MatrixMutView<DataT, vt> mat)
-{
-    for (int i = 0; i < mat.nRow(); i++)
-    {
-        for (int j = 0; j < mat.nCol(); j++)
-        {
-            os << std::fixed << std::setw(8) << std::setprecision(3)
-               << std::setfill(' ') << getWithDefault(mat, i, j);
+               << std::setfill(' ') << get(mat, i, j);
         }
         os << std::endl;
     }

@@ -6,45 +6,6 @@
 #include "vector_view.hpp"
 namespace sanity::linear
 {
-template <typename DataT = Real>
-class Vector;
-
-template <typename DataT>
-DataT get(Vector<DataT>& v, int i)
-{
-    return *(v.data() + i);
-}
-
-template <typename DataT>
-const DataT& get(const Vector<DataT>& v, int i)
-{
-    return *(v.data() + i);
-}
-
-template <typename DataT>
-VectorView<DataT> constView(const Vector<DataT>& v)
-{
-    return VectorView<DataT>(v.data(), v.inc(), v.size(), false);
-}
-
-template <typename DataT>
-VectorMutView<DataT> mutView(Vector<DataT>& v)
-{
-    return VectorMutView<DataT>(v.data(), v.inc(), v.size());
-}
-
-template <typename DataT>
-VectorView<DataT> blockView(const Vector<DataT>& v, int st, int ed = -1)
-{
-    if (ed < 0)
-    {
-        ed += v.size() + 1;
-    }
-    assert(st <= ed);
-    assert(ed <= v.size());
-    return VectorView<DataT>(v.data() + st, 1, ed - st);
-}
-
 template <typename DataT>
 class Vector
 {
@@ -61,12 +22,21 @@ public:
     }
     const DataT* data() const { return &_data.front(); }
     DataT* data() { return &_data.front(); }
-    int inc() const { return 1; }
     int size() const { return _data.size(); }
-
-    operator VectorView<DataT>() const { return constView(*this); }
-
-    DataT operator()(int i) { return get(*this, i); }
-    const DataT& operator()(int i) const { return get(*this, i); }
 };
+
+
+template <typename DataT>
+VectorView<DataT, NoConj, Const> constView(const Vector<DataT>& v)
+{
+    return VectorView<DataT, NoConj, Const>(v.data(), v.inc(), v.size());
+}
+
+template <typename DataT>
+VectorView<DataT, NoConj, Mutable> mutView(Vector<DataT>& v)
+{
+    return VectorView<DataT, NoConj, Mutable>(v.data(), v.inc(), v.size());
+}
+
+
 }

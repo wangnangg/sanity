@@ -4,9 +4,13 @@
 
 namespace sanity::linear::lapack
 {
-int geqrf(MatrixMutView<Real, General> A, VectorMutView<Real> tau);
-int geqrf(MatrixMutView<Complex, General> A, VectorMutView<Complex> tau);
+int geqrf(MatrixView<Real, General, RowMajor, NoConj, Mutable> A,
+          VectorView<Real, NoConj, Mutable> tau);
+int geqrf(MatrixView<Real, General, ColMajor, NoConj, Mutable> A,
+          VectorView<Real, NoConj, Mutable> tau);
 
-int orgqr(MatrixMutView<Real, General> mA, VectorView<Real> tau);
-int orgqr(MatrixMutView<Complex, General> mA, VectorView<Complex> tau);
+int orgqr(MatrixView<Real, General, RowMajor, NoConj, Mutable> mA,
+          VectorView<Real, NoConj, Const> tau);
+int orgqr(MatrixView<Real, General, ColMajor, NoConj, Mutable> mA,
+          VectorView<Real, NoConj, Const> tau);
 }

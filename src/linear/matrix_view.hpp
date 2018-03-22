@@ -1,5 +1,6 @@
 #pragma once
-#include "matrix_view_base.hpp"
+#include <cassert>
+#include "type.hpp"
 namespace sanity::linear
 {
 enum MatrixViewport
@@ -10,6 +11,12 @@ enum MatrixViewport
     Upper,
     StrictLower,
     Lower
+};
+
+enum MatrixStorage
+{
+    RowMajor,
+    ColMajor
 };
 
 constexpr bool subViewOf(MatrixViewport v1, MatrixViewport v2)
@@ -32,68 +39,166 @@ constexpr bool subViewOf(MatrixViewport v1, MatrixViewport v2)
     }
 }
 
-template <typename DataT, MatrixViewport vt>
+template <typename DataT, MatrixViewport vt, MatrixStorage st, Conjugation ct,
+          Mutability mt>
+class MatrixViewBase;
+
+template <typename DataT, MatrixViewport vt, MatrixStorage st, Conjugation ct>
+class MatrixViewBase<DataT, vt, st, ct, Const>
+{
+public:
+    using DataType = DataT;
+    static const MatrixViewport viewport = vt;
+    static const MatrixStorage storage = st;
+    static const Conjugation conjugation = ct;
+    static const Mutability mutability = Const;
+
+protected:
+    const Real* _data;
+    int _nrow;
+    int _ncol;
+    int _ldim;
+
+public:
+    MatrixViewBase(const Real* data, int nrow, int ncol, int ldim)
+        : _data(data), _nrow(nrow), _ncol(ncol), _ldim(ldim)
+    {
+    }
+
+    const Real* data() const { return _data; }
+    int nRow() const { return _nrow; }
+    int nCol() const { return _ncol; }
+    int lDim() const { return _ldim; }
+};
+
+template <typename DataT, MatrixViewport vt, MatrixStorage st, Conjugation ct>
+class MatrixViewBase<DataT, vt, st, ct, Mutable>
+{
+public:
+    using DataType = DataT;
+    static const MatrixViewport viewport = vt;
+    static const MatrixStorage storage = st;
+    static const Conjugation conjugation = ct;
+    static const Mutability mutability = Mutable;
+
+protected:
+    Real* _data;
+    int _nrow;
+    int _ncol;
+    int _ldim;
+
+public:
+    MatrixViewBase(Real* data, int nrow, int ncol, int ldim)
+        : _data(data), _nrow(nrow), _ncol(ncol), _ldim(ldim)
+    {
+    }
+
+    Real* data() const { return _data; }
+    int nRow() const { return _nrow; }
+    int nCol() const { return _ncol; }
+    int lDim() const { return _ldim; }
+};
+
+template <typename DataT, MatrixViewport vt, MatrixStorage st, Conjugation ct,
+          Mutability mt>
 class MatrixView;
 
-template <typename DataT, MatrixViewport vt>
-class MatrixMutView;
-
-template <typename DataT, MatrixViewport vt>
-DataT& get(MatrixMutView<DataT, vt> mat, int i, int j)
+template <typename DataT, MatrixViewport vt, MatrixStorage st, Conjugation ct>
+class MatrixView<DataT, vt, st, ct, Const>
+    : public MatrixViewBase<DataT, vt, st, ct, Const>
 {
-    assert(mat.has(i, j));
-    return *(mat.data() + i * mat.lDim() + j);
+public:
+    using MatrixViewBase<DataT, vt, st, ct, Const>::MatrixViewBase;
+};
+
+template <typename DataT, MatrixViewport vt, MatrixStorage st, Conjugation ct>
+class MatrixView<DataT, vt, st, ct, Mutable>
+    : public MatrixViewBase<DataT, vt, st, ct, Mutable>
+{
+public:
+    using MatrixViewBase<DataT, vt, st, ct, Mutable>::MatrixViewBase;
+};
+
+template <typename DataT, MatrixViewport vt, MatrixStorage st, Conjugation ct,
+          Mutability mt>
+bool has(MatrixView<DataT, vt, st, ct, mt> mat, int i, int j);
+
+template <typename DataT, MatrixStorage st, Conjugation ct, Mutability mt>
+bool has(MatrixView<DataT, General, st, ct, mt> mat, int i, int j)
+{
+    return true;
 }
 
-template <typename DataT, MatrixViewport vt>
-DataT get(MatrixView<DataT, vt> mat, int i, int j);
+template <typename DataT, MatrixStorage st, Conjugation ct, Mutability mt>
+bool has(MatrixView<DataT, Diagonal, st, ct, mt> mat, int i, int j);
+template <typename DataT, MatrixStorage st, Conjugation ct, Mutability mt>
+bool has(MatrixView<DataT, StrictUpper, st, ct, mt> mat, int i, int j);
+template <typename DataT, MatrixStorage st, Conjugation ct, Mutability mt>
+bool has(MatrixView<DataT, Upper, st, ct, mt> mat, int i, int j);
+template <typename DataT, MatrixStorage st, Conjugation ct, Mutability mt>
+bool has(MatrixView<DataT, StrictLower, st, ct, mt> mat, int i, int j);
+template <typename DataT, MatrixStorage st, Conjugation ct, Mutability mt>
+bool has(MatrixView<DataT, Lower, st, ct, mt> mat, int i, int j);
 
-template <MatrixViewport vt>
-Real get(MatrixView<Real, vt> mat, int i, int j)
+template <typename DataT, MatrixViewport vt, MatrixStorage st, Conjugation ct,
+          Mutability mt>
+decltype(auto) addressOf(MatrixView<DataT, vt, st, ct, mt> mat, int i, int j);
+
+template <typename DataT, MatrixViewport vt, Conjugation ct, Mutability mt>
+decltype(auto) addressOf(MatrixView<DataT, vt, RowMajor, ct, mt> mat, int i,
+                         int j)
 {
-    assert(mat.has(i, j));
-    if (mat.colMajor())
-    {
-        return *(mat.data() + i + j * mat.lDim());
-    }
-    else
-    {
-        return *(mat.data() + i * mat.lDim() + j);
-    }
+    assert(has(mat, i, j));
+    return (mat.data() + i * mat.lDim() + j);
 }
 
-template <MatrixViewport vt>
-Complex get(MatrixView<Complex, vt> mat, int i, int j)
+template <typename DataT, MatrixViewport vt, Conjugation ct, Mutability mt>
+decltype(auto) addressOf(MatrixView<DataT, vt, ColMajor, ct, mt> mat, int i,
+                         int j)
 {
-    assert(mat.has(i, j));
-    if (mat.colMajor())
-    {
-        if (mat.conjugated())
-        {
-            return std::conj(*(mat.data() + i + j * mat.lDim()));
-        }
-        else
-        {
-            return *(mat.data() + i + j * mat.lDim());
-        }
-    }
-    else
-    {
-        if (mat.conjugated())
-        {
-            return std::conj(*(mat.data() + i * mat.lDim() + j));
-        }
-        else
-        {
-            return *(mat.data() + i * mat.lDim() + j);
-        }
-    }
+    assert(has(mat, i, j));
+    return (mat.data() + j * mat.lDim() + i);
 }
 
-template <typename DataT>
-MatrixView<DataT, General> blockView(MatrixView<DataT, General> mat, int st_row,
-                                     int st_col, int ed_row = -1,
-                                     int ed_col = -1)
+template <typename DataT, MatrixViewport vt, MatrixStorage st, Conjugation ct,
+          Mutability mt>
+DataT get(MatrixView<DataT, vt, st, ct, mt> mat, int i, int j);
+
+template <typename DataT, MatrixViewport vt, MatrixStorage st, Mutability mt>
+DataT get(MatrixView<DataT, vt, st, NoConj, mt> mat, int i, int j)
+{
+    assert(has(mat, i, j));
+    return *addressOf(mat, i, j);
+}
+template <typename DataT, MatrixViewport vt, MatrixStorage st, Mutability mt>
+DataT get(MatrixView<DataT, vt, st, Conj, mt> mat, int i, int j)
+{
+    assert(has(mat, i, j));
+    return std::conj(*addressOf(mat, i, j));
+}
+
+template <typename DataT, MatrixViewport vt, MatrixStorage st, Conjugation ct>
+void set(MatrixView<DataT, vt, st, ct, Mutable> mat, int i, int j, DataT val);
+
+template <typename DataT, MatrixViewport vt, MatrixStorage st>
+void set(MatrixView<DataT, vt, st, NoConj, Mutable> mat, int i, int j,
+         DataT val)
+{
+    assert(has(mat, i, j));
+    *addressOf(mat, i, j) = val;
+}
+
+template <typename DataT, MatrixViewport vt, MatrixStorage st>
+void set(MatrixView<DataT, vt, st, Conj, Mutable> mat, int i, int j, DataT val)
+{
+    assert(has(mat, i, j));
+    *addressOf(mat, i, j) = std::conj(val);
+}
+
+template <typename DataT, MatrixStorage st, Conjugation ct, Mutability mt>
+MatrixView<DataT, General, st, ct, mt> blockView(
+    MatrixView<DataT, General, st, ct, mt> mat, int st_row, int st_col,
+    int ed_row = -1, int ed_col = -1)
 {
     if (ed_row < 0)
     {
@@ -107,317 +212,86 @@ MatrixView<DataT, General> blockView(MatrixView<DataT, General> mat, int st_row,
     assert(ed_row <= mat.nRow());
     assert(st_col <= ed_col);
     assert(ed_col <= mat.nCol());
-    const DataT* start_p = mat.colMajor()
-                               ? (mat.data() + st_row + st_col * mat.lDim())
-                               : (mat.data() + st_row * mat.lDim() + st_col);
-    return MatrixView<DataT, General>(start_p, ed_row - st_row, ed_col - st_col,
-                                      mat.lDim(), mat.colMajor(),
-                                      mat.conjugated());
-}
-
-template <typename DataT>
-MatrixMutView<DataT, General> blockView(MatrixMutView<DataT, General> mat,
-                                        int st_row, int st_col, int ed_row = -1,
-                                        int ed_col = -1)
-{
-    if (ed_row < 0)
-    {
-        ed_row += mat.nRow() + 1;
-    }
-    if (ed_col < 0)
-    {
-        ed_col += mat.nCol() + 1;
-    }
-    assert(st_row <= ed_row);
-    assert(ed_row <= mat.nRow());
-    assert(st_col <= ed_col);
-    assert(ed_col <= mat.nCol());
-    const DataT* start_p = mat.data() + st_row * mat.lDim() + st_col;
-    return MatrixMutView<DataT, General>(start_p, ed_row - st_row,
-                                         ed_col - st_col, mat.lDim(),
-                                         mat.coMajor(), mat.conjugated());
+    const DataT* start_p = addressOf(mat, st_row, st_col);
+    return MatrixView<DataT, General, st, ct, mt>(start_p, ed_row - st_row,
+                                                  ed_col - st_col, mat.lDim());
 }
 
 template <
-    MatrixViewport target, MatrixViewport src, typename DataT,
+    MatrixViewport target, MatrixViewport src, typename DataT, MatrixStorage st,
+    Conjugation ct, Mutability mt,
     std::enable_if_t<
         (src == General) ||
             (src == Upper && (target == StrictUpper || target == Diagonal)) ||
             (src == Lower && (target == StrictLower || target == Diagonal)),
         int> = 0>
-MatrixMutView<DataT, target> viewportCast(MatrixMutView<DataT, src> m)
+MatrixView<DataT, target, st, ct, mt> viewportCast(
+    MatrixView<DataT, src, st, ct, mt> m)
 {
-    return MatrixMutView<DataT, target>(m.data(), m.nRow(), m.nCol(), m.lDim());
+    return MatrixView<DataT, target, st, ct, mt>(m.data(), m.nRow(), m.nCol(),
+                                                 m.lDim());
 }
 
-template <
-    MatrixViewport target, MatrixViewport src, typename DataT,
-    std::enable_if_t<
-        (src == General) ||
-            (src == Upper && (target == StrictUpper || target == Diagonal)) ||
-            (src == Lower && (target == StrictLower || target == Diagonal)),
-        int> = 0>
-MatrixView<DataT, target> viewportCast(MatrixView<DataT, src> m)
+template <typename DataT, MatrixViewport vt, Conjugation ct, MatrixStorage st>
+MatrixView<DataT, vt, st, ct, Const> constView(
+    MatrixView<DataT, vt, st, ct, Mutable> m)
 {
-    return MatrixView<DataT, target>(m.data(), m.nRow(), m.nCol(), m.lDim(),
-                                     false, false);
+    return MatrixView<DataT, vt, st, ct, Const>(m.data(), m.nRow(), m.nCol(),
+                                                m.lDim());
 }
 
-template <typename DataT, MatrixViewport vt>
-MatrixView<DataT, vt> constView(MatrixMutView<DataT, vt> m)
+constexpr MatrixViewport transViewport(MatrixViewport vt)
 {
-    return MatrixView<DataT, vt>(m.data(), m.nRow(), m.nCol(), m.lDim(), false,
-                                 false);
+    switch (vt)
+    {
+        case Upper:
+            return Lower;
+        case Lower:
+            return Upper;
+        case StrictUpper:
+            return StrictLower;
+        case StrictLower:
+            return StrictUpper;
+        default:
+            return vt;
+    }
 }
 
-template <typename DataT>
-class MatrixView<DataT, General> : public MatrixViewBase<DataT>
+constexpr MatrixStorage invertStorage(MatrixStorage st)
 {
-public:
-    const static MatrixViewport Viewport = General;
-    using MatrixViewBase<DataT>::MatrixViewBase;
-    bool has(int, int) const { return true; }
-    DataT operator()(int i, int j) const { return get(*this, i, j); }
-};
+    if (st == ColMajor)
+    {
+        return RowMajor;
+    }
+    else
+    {
+        return ColMajor;
+    }
+}
 
-template <typename DataT>
-class MatrixMutView<DataT, General> : public MatrixMutViewBase<DataT>
+template <typename DataT, MatrixViewport vt, MatrixStorage st, Conjugation ct,
+          Mutability mt>
+auto transpose(MatrixView<DataT, vt, st, ct, mt> mat)
 {
-public:
-    const static MatrixViewport Viewport = General;
-    using MatrixMutViewBase<DataT>::MatrixMutViewBase;
-    bool has(int, int) const { return true; }
-    DataT& operator()(int i, int j) const { return get(*this, i, j); }
+    return MatrixView<DataT, transViewport(vt), invertStorage(st), ct, mt>(
+        mat.data(), mat.nCol(), mat.nRow(), mat.lDim());
+}
 
-    operator MatrixView<DataT, General>() const
-    {
-        return sanity::linear::constView(*this);
-    }
-};
 
-template <typename DataT>
-class MatrixView<DataT, Upper> : public MatrixViewBase<DataT>
+template <typename DataT, MatrixViewport vt, MatrixStorage st, Conjugation ct,
+          Mutability mt>
+auto conjugate(MatrixView<DataT, vt, st, ct, mt> mat);
+
+template <MatrixViewport vt, MatrixStorage st, Conjugation ct, Mutability mt>
+auto conjugate(MatrixView<Real, vt, st, ct, mt> mat)
 {
-public:
-    const static MatrixViewport Viewport = Upper;
-    using MatrixViewBase<DataT>::MatrixViewBase;
-    bool has(int i, int j) const
-    {
-        if (i <= j)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    DataT operator()(int i, int j) const { return get(*this, i, j); }
-};
+    return mat;
+}
 
-template <typename DataT>
-class MatrixMutView<DataT, Upper> : public MatrixMutViewBase<DataT>
+template <MatrixViewport vt, MatrixStorage st, Conjugation ct, Mutability mt>
+auto conjugate(MatrixView<Complex, vt, st, ct, mt> mat)
 {
-public:
-    const static MatrixViewport Viewport = Upper;
-    using MatrixMutViewBase<DataT>::MatrixMutViewBase;
-    bool has(int i, int j) const
-    {
-        if (i <= j)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    DataT& operator()(int i, int j) const { return get(*this, i, j); }
-
-    operator MatrixView<DataT, Upper>() const
-    {
-        return sanity::linear::constView(*this);
-    }
-};
-
-template <typename DataT>
-class MatrixView<DataT, StrictUpper> : public MatrixViewBase<DataT>
-{
-public:
-    const static MatrixViewport Viewport = StrictUpper;
-    using MatrixViewBase<DataT>::MatrixViewBase;
-    bool has(int i, int j) const
-    {
-        if (i < j)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    DataT operator()(int i, int j) const { return get(*this, i, j); }
-};
-
-template <typename DataT>
-class MatrixMutView<DataT, StrictUpper> : public MatrixMutViewBase<DataT>
-{
-public:
-    const static MatrixViewport Viewport = StrictUpper;
-    using MatrixMutViewBase<DataT>::MatrixMutViewBase;
-    bool has(int i, int j) const
-    {
-        if (i < j)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    DataT& operator()(int i, int j) const { return get(*this, i, j); }
-    operator MatrixView<DataT, StrictUpper>() const
-    {
-        return sanity::linear::constView(*this);
-    }
-};
-
-template <typename DataT>
-class MatrixView<DataT, Lower> : public MatrixViewBase<DataT>
-{
-public:
-    const static MatrixViewport Viewport = Lower;
-    using MatrixViewBase<DataT>::MatrixViewBase;
-    bool has(int i, int j) const
-    {
-        if (i >= j)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    DataT operator()(int i, int j) const { return get(*this, i, j); }
-};
-
-template <typename DataT>
-class MatrixMutView<DataT, Lower> : public MatrixMutViewBase<DataT>
-{
-public:
-    const static MatrixViewport Viewport = Lower;
-    using MatrixMutViewBase<DataT>::MatrixMutViewBase;
-    bool has(int i, int j) const
-    {
-        if (i >= j)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    DataT& operator()(int i, int j) const { return get(*this, i, j); }
-    operator MatrixView<DataT, Lower>() const
-    {
-        return sanity::linear::constView(*this);
-    }
-};
-
-template <typename DataT>
-class MatrixView<DataT, StrictLower> : public MatrixViewBase<DataT>
-{
-public:
-    const static MatrixViewport Viewport = StrictLower;
-    using MatrixViewBase<DataT>::MatrixViewBase;
-    bool has(int i, int j) const
-    {
-        if (i > j)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    DataT operator()(int i, int j) const { return get(*this, i, j); }
-};
-
-template <typename DataT>
-class MatrixMutView<DataT, StrictLower> : public MatrixMutViewBase<DataT>
-{
-public:
-    const static MatrixViewport Viewport = StrictLower;
-    using MatrixMutViewBase<DataT>::MatrixMutViewBase;
-    bool has(int i, int j) const
-    {
-        if (i > j)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    DataT& operator()(int i, int j) const { return get(*this, i, j); }
-
-    operator MatrixView<DataT, StrictLower>() const
-    {
-        return sanity::linear::constView(*this);
-    }
-};
-
-template <typename DataT>
-class MatrixView<DataT, Diagonal> : public MatrixViewBase<DataT>
-{
-public:
-    const static MatrixViewport Viewport = Diagonal;
-    using MatrixViewBase<DataT>::MatrixViewBase;
-    bool has(int i, int j) const
-    {
-        if (i == j)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    DataT operator()(int i, int j) const { return get(*this, i, j); }
-};
-
-template <typename DataT>
-class MatrixMutView<DataT, Diagonal> : public MatrixMutViewBase<DataT>
-{
-public:
-    const static MatrixViewport Viewport = Diagonal;
-    using MatrixMutViewBase<DataT>::MatrixMutViewBase;
-    bool has(int i, int j) const
-    {
-        if (i == j)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    DataT& operator()(int i, int j) const { return get(*this, i, j); }
-    operator MatrixView<DataT, Diagonal>() const
-    {
-        return sanity::linear::constView(*this);
-    }
-};
+    return MatrixView<Complex, vt, st, invertConj(ct), mt>(
+        mat.data(), mat.nRow(), mat.nCol(), mat.lDim());
+}
 }

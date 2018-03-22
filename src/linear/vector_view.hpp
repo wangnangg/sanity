@@ -3,74 +3,39 @@
 #include "type.hpp"
 namespace sanity::linear
 {
-template <typename DataT>
+template <typename DataT, Conjugation ct, Mutability mt>
 class VectorView;
-template <typename DataT>
-class VectorMutView;
 
-template <typename DataT>
-DataT get(VectorView<DataT> v, int i);
-
-template <typename DataT>
-VectorView<DataT> constView(VectorMutView<DataT>& v)
-{
-    return VectorView<DataT>(v.data(), v.inc(), v.size(), false);
-}
-
-template <typename DataT>
-VectorView<DataT> blockView(VectorView<DataT> v, int st, int ed = -1)
-{
-    if (ed < 0)
-    {
-        ed += v.size() + 1;
-    }
-    assert(st <= ed);
-    assert(ed <= v.size());
-    return VectorView<DataT>(v.data() + st * v.inc(), v.inc(), ed - st);
-}
-
-template <typename DataT>
-VectorMutView<DataT> blockView(VectorMutView<DataT> v, int st, int ed = -1)
-{
-    if (ed < 0)
-    {
-        ed += v.size() + 1;
-    }
-    assert(st <= ed);
-    assert(ed <= v.size());
-    return VectorMutView<DataT>(v.data() + st * v.inc(), v.inc(), ed - st);
-}
-
-template <typename DataT>
-class VectorView
+template <typename DataT, Conjugation ct>
+class VectorView<DataT, ct, Const>
 {
 public:
-    static const bool Mutable = false;
+    using DataType = DataT;
+    static const Conjugation conjugation = ct;
+    static const Mutability mutability = Const;
 
 private:
     const DataT* _data;
     int _inc;
     int _size;
-    bool _conj;
 
 public:
-    VectorView(const DataT* data, int inc, int size, bool conj)
-        : _data(data), _inc(inc), _size(size), _conj(conj)
+    VectorView(const DataT* data, int inc, int size)
+        : _data(data), _inc(inc), _size(size)
     {
     }
     const DataT* data() const { return _data; }
     int inc() const { return _inc; };
     int size() const { return _size; }
-    bool conjugated() const { return _conj; }
-
-    DataT operator()(int i) { return get(*this, i); }
 };
 
-template <typename DataT>
-class VectorMutView
+template <typename DataT, Conjugation ct>
+class VectorView<DataT, ct, Mutable>
 {
 public:
-    static const bool Mutable = true;
+    using DataType = DataT;
+    static const Conjugation conjugation = ct;
+    static const Mutability mutability = Mutable;
 
 private:
     DataT* _data;
@@ -78,43 +43,67 @@ private:
     int _size;
 
 public:
-    VectorMutView(DataT* data, int inc, int size)
+    VectorView(DataT* data, int inc, int size)
         : _data(data), _inc(inc), _size(size)
     {
     }
     DataT* data() const { return _data; }
     int inc() const { return _inc; };
     int size() const { return _size; }
-
-    DataT& operator()(int i) const { return get(*this, i); }
-    operator VectorView<DataT>() const
-    {
-        return VectorView<DataT>(data(), inc(), size(), false);
-    }
 };
 
-template <>
-inline Real get<Real>(VectorView<Real> v, int i)
+template <typename DataT, Conjugation ct, Mutability mt>
+decltype(auto) addressOf(VectorView<DataT, ct, mt> v, int i)
 {
-    return *(v.data() + i * v.inc());
+    return v.data() + v.inc() * i;
 }
 
-template <>
-inline Complex get<Complex>(VectorView<Complex> v, int i)
+template <typename DataT, Conjugation ct, Mutability mt>
+DataT get(VectorView<DataT, ct, mt> v, int i);
+
+template <typename DataT, Mutability mt>
+DataT get(VectorView<DataT, NoConj, mt> v, int i)
 {
-    if (v.conjugated())
-    {
-        return std::conj(*(v.data() + i * v.inc()));
-    }
-    else
-    {
-        return *(v.data() + i * v.inc());
-    }
+    return *addressOf(v, i);
 }
 
-template <typename DataT>
-DataT& get(VectorMutView<DataT> v, int i)
+template <typename DataT, Mutability mt>
+DataT get(VectorView<DataT, Conj, mt> v, int i)
 {
-    return *(v.data() + i * v.inc());
+    return std::conj(*addressOf(v, i));
+}
+
+template <typename DataT, Conjugation ct>
+VectorView<DataT, ct, Const> constView(VectorView<DataT, ct, Mutable> v)
+{
+    return VectorView<DataT, ct, Const>(v.data(), v.inc(), v.size());
+}
+
+template <typename DataT, Conjugation ct, Mutability mt>
+VectorView<DataT, ct, mt> blockView(VectorView<DataT, ct, mt> v, int st,
+                                    int ed = -1)
+{
+    if (ed < 0)
+    {
+        ed += v.size() + 1;
+    }
+    assert(st <= ed);
+    assert(ed <= v.size());
+    return VectorView<DataT, ct, mt>(addressOf(v, st), v.inc(), ed - st);
+}
+
+template <typename DataT, Conjugation ct, Mutability mt>
+auto conjugate(VectorView<DataT, ct, mt> v);
+
+template <Conjugation ct, Mutability mt>
+auto conjugate(VectorView<Real, ct, mt> v)
+{
+    return v;
+}
+
+template <Conjugation ct, Mutability mt>
+auto conjugate(VectorView<Complex, ct, mt> v)
+{
+    return VectorView<Complex, invertConj(ct), mt>(v.data(), v.inc().v.size());
 }
 }

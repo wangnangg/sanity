@@ -3,29 +3,31 @@
 #define LAPACK_COMPLEX_CPP
 #include "lapack/lapacke.h"
 
-template <typename M>
-static int ml(const M& v)
-{
-    return LAPACK_ROW_MAJOR;
-}
-
 namespace sanity::linear::lapack
 {
-int geqrf(MatrixMutView<Real, General> A, VectorMutView<Real> tau)
+int geqrf(MatrixView<Real, General, RowMajor, NoConj, Mutable> A,
+          VectorView<Real, NoConj, Mutable> tau)
 {
-    return LAPACKE_dgeqrf(ml(A), A.nRow(), A.nCol(), A.data(), A.lDim(),
-                          tau.data());
+    return LAPACKE_dgeqrf(LAPACK_ROW_MAJOR, A.nRow(), A.nCol(), A.data(),
+                          A.lDim(), tau.data());
+}
+int geqrf(MatrixView<Real, General, ColMajor, NoConj, Mutable> A,
+          VectorView<Real, NoConj, Mutable> tau)
+{
+    return LAPACKE_dgeqrf(LAPACK_COL_MAJOR, A.nRow(), A.nCol(), A.data(),
+                          A.lDim(), tau.data());
 }
 
-int geqrf(MatrixMutView<Complex, General> A, VectorMutView<Complex> tau)
+int orgqr(MatrixView<Real, General, RowMajor, NoConj, Mutable> mA,
+          VectorView<Real, NoConj, Const> tau)
 {
-    return LAPACKE_zgeqrf(ml(A), A.nRow(), A.nCol(), A.data(), A.lDim(),
-                          tau.data());
+    return LAPACKE_dorgqr(LAPACK_ROW_MAJOR, mA.nRow(), tau.size(), tau.size(),
+                          mA.data(), mA.lDim(), tau.data());
 }
-
-int orgqr(MatrixMutView<Real, General> mA, VectorView<Real> tau)
+int orgqr(MatrixView<Real, General, ColMajor, NoConj, Mutable> mA,
+          VectorView<Real, NoConj, Const> tau)
 {
-    return LAPACKE_dorgqr(ml(mA), mA.nRow(), tau.size(), tau.size(), mA.data(),
-                          mA.lDim(), tau.data());
+    return LAPACKE_dorgqr(LAPACK_COL_MAJOR, mA.nRow(), tau.size(), tau.size(),
+                          mA.data(), mA.lDim(), tau.data());
 }
 }
