@@ -3,15 +3,56 @@
 #include "type.hpp"
 namespace sanity::linear
 {
-template <typename DataT, Conjugation ct, Mutability mt>
+template <typename DataT, Mutability mt>
 class VectorView;
 
-template <typename DataT, Conjugation ct>
-class VectorView<DataT, ct, Const>
+template <typename DataT, Mutability mt>
+decltype(auto) addressOf(VectorView<DataT, mt> v, int i)
+{
+    return v.data() + v.inc() * i;
+}
+
+template <typename DataT>
+const DataT& get(VectorView<DataT, Const> v, int i)
+{
+    return *addressOf(v, i);
+}
+
+template <typename DataT>
+DataT& get(VectorView<DataT, Mutable> v, int i)
+{
+    return *addressOf(v, i);
+}
+
+template <typename DataT, typename DataT2>
+void set(VectorView<DataT, Mutable>& v, int i, DataT2 val)
+{
+    *addressOf(v, i) = DataT(val);
+}
+
+template <typename DataT>
+auto constView(VectorView<DataT, Mutable> v)
+{
+    return VectorView<DataT, Const>(v.data(), v.inc(), v.size());
+}
+
+template <typename DataT, Mutability mt>
+auto blockView(VectorView<DataT, mt> v, int st, int ed = -1)
+{
+    if (ed < 0)
+    {
+        ed += v.size() + 1;
+    }
+    assert(st <= ed);
+    assert(ed <= v.size());
+    return VectorView<DataT, mt>(addressOf(v, st), v.inc(), ed - st);
+}
+
+template <typename DataT>
+class VectorView<DataT, Const>
 {
 public:
     using DataType = DataT;
-    static const Conjugation conjugation = ct;
     static const Mutability mutability = Const;
 
 private:
@@ -27,14 +68,14 @@ public:
     const DataT* data() const { return _data; }
     int inc() const { return _inc; };
     int size() const { return _size; }
+    const DataT& operator()(int i) const { return get(*this, i); }
 };
 
-template <typename DataT, Conjugation ct>
-class VectorView<DataT, ct, Mutable>
+template <typename DataT>
+class VectorView<DataT, Mutable>
 {
 public:
     using DataType = DataT;
-    static const Conjugation conjugation = ct;
     static const Mutability mutability = Mutable;
 
 private:
@@ -50,60 +91,7 @@ public:
     DataT* data() const { return _data; }
     int inc() const { return _inc; };
     int size() const { return _size; }
+    DataT& operator()(int i) const { return get(*this, i); }
+    operator VectorView<DataT, Const>() const { return constView(*this); }
 };
-
-template <typename DataT, Conjugation ct, Mutability mt>
-decltype(auto) addressOf(VectorView<DataT, ct, mt> v, int i)
-{
-    return v.data() + v.inc() * i;
-}
-
-template <typename DataT, Conjugation ct, Mutability mt>
-DataT get(VectorView<DataT, ct, mt> v, int i);
-
-template <typename DataT, Mutability mt>
-DataT get(VectorView<DataT, NoConj, mt> v, int i)
-{
-    return *addressOf(v, i);
-}
-
-template <typename DataT, Mutability mt>
-DataT get(VectorView<DataT, Conj, mt> v, int i)
-{
-    return std::conj(*addressOf(v, i));
-}
-
-template <typename DataT, Conjugation ct>
-VectorView<DataT, ct, Const> constView(VectorView<DataT, ct, Mutable> v)
-{
-    return VectorView<DataT, ct, Const>(v.data(), v.inc(), v.size());
-}
-
-template <typename DataT, Conjugation ct, Mutability mt>
-VectorView<DataT, ct, mt> blockView(VectorView<DataT, ct, mt> v, int st,
-                                    int ed = -1)
-{
-    if (ed < 0)
-    {
-        ed += v.size() + 1;
-    }
-    assert(st <= ed);
-    assert(ed <= v.size());
-    return VectorView<DataT, ct, mt>(addressOf(v, st), v.inc(), ed - st);
-}
-
-template <typename DataT, Conjugation ct, Mutability mt>
-auto conjugate(VectorView<DataT, ct, mt> v);
-
-template <Conjugation ct, Mutability mt>
-auto conjugate(VectorView<Real, ct, mt> v)
-{
-    return v;
-}
-
-template <Conjugation ct, Mutability mt>
-auto conjugate(VectorView<Complex, ct, mt> v)
-{
-    return VectorView<Complex, invertConj(ct), mt>(v.data(), v.inc().v.size());
-}
 }

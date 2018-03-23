@@ -6,15 +6,65 @@
 
 namespace sanity::linear
 {
+template <typename DataT>
+class Matrix;
 
-template <typename DataT, MatrixStorage st>
+template <typename DataT>
+bool has(const Matrix<DataT>& mat, int i, int j)
+{
+    return true;
+}
+
+template <typename DataT>
+DataT* addressOf(Matrix<DataT>& mat, int i, int j)
+{
+    return (mat.data() + i * mat.nCol() + j);
+}
+
+template <typename DataT>
+const DataT* addressOf(const Matrix<DataT>& mat, int i, int j)
+{
+    return (mat.data() + i * mat.nCol() + j);
+}
+
+template <typename DataT>
+const DataT& get(const Matrix<DataT>& mat, int i, int j)
+{
+    return *addressOf(mat, i, j);
+}
+
+template <typename DataT>
+DataT& get(Matrix<DataT>& mat, int i, int j)
+{
+    return *addressOf(mat, i, j);
+}
+
+template <typename DataT, typename DataT2>
+void set(Matrix<DataT>& mat, int i, int j, DataT2 val)
+{
+    *addressOf(mat, i, j) = DataT(val);
+}
+
+template <typename DataT>
+auto constView(const Matrix<DataT>& m)
+{
+    return MatrixView<DataT, General, Const>(m.data(), m.nRow(), m.nCol(),
+                                             m.nCol());
+}
+
+template <typename DataT>
+auto mutView(Matrix<DataT>& m)
+{
+    return MatrixView<DataT, General, Mutable>(m.data(), m.nRow(), m.nCol(),
+                                               m.nCol());
+}
+
+template <typename DataT>
 class Matrix
 {
 public:
     using DataType = DataT;
     static const MatrixViewport viewport = General;
-    static const MatrixStorage storage = st;
-    static const Conjugation conjuation = NoConj;
 
 private:
     std::vector<DataT> _data;
@@ -35,32 +85,16 @@ public:
     {
     }
 
-    template <MatrixViewport vt, MatrixStorage vst, Conjugation ct,
-              Mutability mt>
-    explicit Matrix(MatrixView<DataT, vt, vst, ct, mt> v)
-        : Matrix(v.nRow(), v.nCol(), DataT())
-    {
-        copy(v, viewportCast<vt>(mutView(*this)));
-    }
-
     const DataT* data() const { return &_data.front(); }
     DataT* data() { return &_data.front(); }
     int nRow() const { return _nrow; }
     int nCol() const { return _ncol; }
+    DataT& operator()(int i, int j) { return get(*this, i, j); }
+    const DataT& operator()(int i, int j) const { return get(*this, i, j); }
+
+    operator MatrixView<DataT, General, Const>() const
+    {
+        return constView(*this);
+    }
 };
-
-template <typename DataT, MatrixStorage st>
-MatrixView<DataT, General, st, NoConj, Const> constView(
-    const Matrix<DataT, st>& m)
-{
-    return MatrixView<DataT, General, st, NoConj, Const>(
-        m.data(), m.nRow(), m.nCol(), m.nCol());
-}
-
-template <typename DataT, MatrixStorage st>
-MatrixView<DataT, General, st, NoConj, Mutable> mutView(Matrix<DataT, st>& m)
-{
-    return MatrixView<DataT, General, st, NoConj, Mutable>(
-        m.data(), m.nRow(), m.nCol(), m.nCol());
-}
 }

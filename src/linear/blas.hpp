@@ -4,67 +4,39 @@
 #include "vector.hpp"
 namespace sanity::linear::blas
 {
-Real dot(VectorView<Real, NoConj, Const> x, VectorView<Real, NoConj, Const> y);
-Complex dot(VectorView<Complex, NoConj, Const> x,
-            VectorView<Complex, NoConj, Const> y);
-Complex dot(VectorView<Complex, Conj, Const> x,
-            VectorView<Complex, NoConj, Const> y);
+Real dot(VectorView<Real, Const> x, VectorView<Real, Const> y);
+Complex dotu(VectorView<Complex, Const> x, VectorView<Complex, Const> y);
+Complex dotc(VectorView<Complex, Const> x, VectorView<Complex, Const> y);
 
-Real nrm2(VectorView<Real, NoConj, Const> x);
-Real nrm2(VectorView<Complex, NoConj, Const> x);
-Real nrm2(VectorView<Complex, Conj, Const> x);
-Real asum(VectorView<Real, NoConj, Const> x);
-Real asum(VectorView<Complex, NoConj, Const> x);
-Real asum(VectorView<Complex, Conj, Const> x);
+Real nrm2(VectorView<Real, Const> x);
+Real nrm2(VectorView<Complex, Const> x);
+Real asum(VectorView<Real, Const> x);
+Real asum(VectorView<Complex, Const> x);
 
-int iamax(VectorView<Real, NoConj, Const> x);
-int iamax(VectorView<Complex, NoConj, Const> x);
-int iamax(VectorView<Complex, Conj, Const> x);
+int iamax(VectorView<Real, Const> x);
+int iamax(VectorView<Complex, Const> x);
 
-void swap(VectorView<Real, NoConj, Mutable> x,
-          VectorView<Real, NoConj, Mutable> y);
-void swap(VectorView<Complex, NoConj, Mutable> x,
-          VectorView<Complex, NoConj, Mutable> y);
-void swap(VectorView<Complex, Conj, Mutable> x,
-          VectorView<Complex, Conj, Mutable> y);
-void copy(VectorView<Real, NoConj, Const> x,
-          VectorView<Real, NoConj, Mutable> y);
-void copy(VectorView<Complex, NoConj, Const> x,
-          VectorView<Complex, NoConj, Mutable> y);
-void copy(VectorView<Complex, Conj, Const> x,
-          VectorView<Complex, Conj, Mutable> y);
-void axpy(Real a, VectorView<Real, NoConj, Const> x,
-          VectorView<Real, NoConj, Mutable> y);
-void axpy(Complex a, VectorView<Complex, NoConj, Const> x,
-          VectorView<Complex, NoConj, Mutable> y);
+void swap(VectorView<Real, Mutable> x, VectorView<Real, Mutable> y);
+void swap(VectorView<Complex, Mutable> x, VectorView<Complex, Mutable> y);
+void copy(VectorView<Real, Const> x, VectorView<Real, Mutable> y);
+void copy(VectorView<Complex, Const> x, VectorView<Complex, Mutable> y);
+void axpy(Real a, VectorView<Real, Const> x, VectorView<Real, Mutable> y);
+void axpy(Complex a, VectorView<Complex, Const> x,
+          VectorView<Complex, Mutable> y);
 
 // rotation omitted
 
-void scal(Real a, VectorView<Real, NoConj, Mutable> x);
-void scal(Real a, VectorView<Complex, NoConj, Mutable> x);
-void scal(Real a, VectorView<Complex, Conj, Mutable> x);
-void scal(Complex a, VectorView<Complex, NoConj, Mutable> x);
+void scal(Real a, VectorView<Real, Mutable> x);
+void scal(Real a, VectorView<Complex, Mutable> x);
+void scal(Complex a, VectorView<Complex, Mutable> x);
 
 // y:=alpha*A*x+beta*y
-void gemv(Real a, MatrixView<Real, General, RowMajor, NoConj, Const> A,
-          VectorView<Real, NoConj, Const> x, Real b,
-          VectorView<Real, NoConj, Mutable> y);
-void gemv(Real a, MatrixView<Real, General, ColMajor, NoConj, Const> A,
-          VectorView<Real, NoConj, Const> x, Real b,
-          VectorView<Real, NoConj, Mutable> y);
+void gemv(Real a, MatrixView<Real, General, Const> A, VectorView<Real, Const> x,
+          Real b, VectorView<Real, Mutable> y);
 
-void gemv(Complex a, MatrixView<Complex, General, RowMajor, NoConj, Const> A,
-          VectorView<Complex, NoConj, Const> x, Complex b,
-          VectorView<Complex, NoConj, Mutable> y);
-void gemv(Complex a, MatrixView<Complex, General, RowMajor, Conj, Const> A,
-          VectorView<Complex, NoConj, Const> x, Complex b,
-          VectorView<Complex, NoConj, Mutable> y);
-void gemv(Complex a, MatrixView<Complex, General, ColMajor, NoConj, Const> A,
-          VectorView<Complex, NoConj, Const> x, Complex b,
-          VectorView<Complex, NoConj, Mutable> y);
-void gemv(Complex a, MatrixView<Complex, General, ColMajor, Conj, Const> A,
-          VectorView<Complex, NoConj, Const> x, Complex b,
-          VectorView<Complex, NoConj, Mutable> y);
+void gemv(Complex a, MatrixView<Complex, General, Const> A,
+          VectorView<Complex, Const> x, Complex b,
+          VectorView<Complex, Mutable> y);
 
 // // x := A * x
 // void trmv(MatrixView<Real, Upper> A, VectorMutView<Real> x);

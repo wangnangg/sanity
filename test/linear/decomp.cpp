@@ -9,7 +9,8 @@ TEST(linear_decomp, QR1)
                               4, 5, 6,  //
                               7, 8, 9   //
                           });
-    auto[Q, R] = decompQR(A);
+    auto A_ = A;
+    auto[Q, R] = decompQR(mutView(A_));
 
     std::cout << Q << std::endl;
     std::cout << R << std::endl;

@@ -2,22 +2,20 @@
 #include "blas/cblas.h"
 namespace sanity::linear::blas
 {
-Real dot(VectorView<Real, NoConj, Const> x, VectorView<Real, NoConj, Const> y)
+Real dot(VectorView<Real, Const> x, VectorView<Real, Const> y)
 {
     assert(x.size() == y.size());
     return cblas_ddot(x.size(), x.data(), x.inc(), y.data(), y.inc());
 }
 
-Complex dot(VectorView<Complex, NoConj, Const> x,
-            VectorView<Complex, NoConj, Const> y)
+Complex dotu(VectorView<Complex, Const> x, VectorView<Complex, Const> y)
 {
     assert(x.size() == y.size());
     Complex res;
     cblas_zdotu_sub(x.size(), x.data(), x.inc(), y.data(), y.inc(), &res);
     return res;
 }
-Complex dot(VectorView<Complex, Conj, Const> x,
-            VectorView<Complex, NoConj, Const> y)
+Complex dotc(VectorView<Complex, Const> x, VectorView<Complex, Const> y)
 {
     assert(x.size() == y.size());
     Complex res;
@@ -25,223 +23,99 @@ Complex dot(VectorView<Complex, Conj, Const> x,
     return res;
 }
 
-Real nrm2(VectorView<Real, NoConj, Const> x)
+Real nrm2(VectorView<Real, Const> x)
 {
     return cblas_dnrm2(x.size(), x.data(), x.inc());
 }
-Real nrm2(VectorView<Complex, NoConj, Const> x)
-{
-    return cblas_dznrm2(x.size(), x.data(), x.inc());
-}
-Real nrm2(VectorView<Complex, Conj, Const> x)
+Real nrm2(VectorView<Complex, Const> x)
 {
     return cblas_dznrm2(x.size(), x.data(), x.inc());
 }
 
-Real asum(VectorView<Real, NoConj, Const> x)
+Real asum(VectorView<Real, Const> x)
 {
     return cblas_dasum(x.size(), x.data(), x.inc());
 }
-Real asum(VectorView<Complex, NoConj, Const> x)
-{
-    return cblas_dzasum(x.size(), x.data(), x.inc());
-}
-Real asum(VectorView<Complex, Conj, Const> x)
+Real asum(VectorView<Complex, Const> x)
 {
     return cblas_dzasum(x.size(), x.data(), x.inc());
 }
 
-int iamax(VectorView<Real, NoConj, Const> x)
+int iamax(VectorView<Real, Const> x)
 {
     return cblas_idamax(x.size(), x.data(), x.inc());
 }
-int iamax(VectorView<Complex, NoConj, Const> x)
-{
-    return cblas_izamax(x.size(), x.data(), x.inc());
-}
-int iamax(VectorView<Complex, Conj, Const> x)
+int iamax(VectorView<Complex, Const> x)
 {
     return cblas_izamax(x.size(), x.data(), x.inc());
 }
 
-void swap(VectorView<Real, NoConj, Mutable> x,
-          VectorView<Real, NoConj, Mutable> y)
+void swap(VectorView<Real, Mutable> x, VectorView<Real, Mutable> y)
 {
     assert(x.size() == y.size());
     cblas_dswap(x.size(), x.data(), x.inc(), y.data(), y.inc());
 }
-void swap(VectorView<Complex, NoConj, Mutable> x,
-          VectorView<Complex, NoConj, Mutable> y)
+void swap(VectorView<Complex, Mutable> x, VectorView<Complex, Mutable> y)
 {
     assert(x.size() == y.size());
     cblas_zswap(x.size(), x.data(), x.inc(), y.data(), y.inc());
 }
-void swap(VectorView<Complex, Conj, Mutable> x,
-          VectorView<Complex, Conj, Mutable> y)
-{
-    assert(x.size() == y.size());
-    cblas_zswap(x.size(), x.data(), x.inc(), y.data(), y.inc());
-}
-void copy(VectorView<Real, NoConj, Const> x,
-          VectorView<Real, NoConj, Mutable> y)
+
+void copy(VectorView<Real, Const> x, VectorView<Real, Mutable> y)
 {
     assert(x.size() == y.size());
     cblas_dcopy(x.size(), x.data(), x.inc(), y.data(), y.inc());
 }
-void copy(VectorView<Complex, NoConj, Const> x,
-          VectorView<Complex, NoConj, Mutable> y)
-{
-    assert(x.size() == y.size());
-    cblas_zcopy(x.size(), x.data(), x.inc(), y.data(), y.inc());
-}
-void copy(VectorView<Complex, Conj, Const> x,
-          VectorView<Complex, Conj, Mutable> y)
+void copy(VectorView<Complex, Const> x, VectorView<Complex, Mutable> y)
 {
     assert(x.size() == y.size());
     cblas_zcopy(x.size(), x.data(), x.inc(), y.data(), y.inc());
 }
 
-void axpy(Real a, VectorView<Real, NoConj, Const> x,
-          VectorView<Real, NoConj, Mutable> y)
+void axpy(Real a, VectorView<Real, Const> x, VectorView<Real, Mutable> y)
 {
     assert(x.size() == y.size());
     cblas_daxpy(x.size(), a, x.data(), x.inc(), y.data(), y.inc());
 }
-void axpy(Complex a, VectorView<Complex, NoConj, Const> x,
-          VectorView<Complex, NoConj, Mutable> y)
+void axpy(Complex a, VectorView<Complex, Const> x,
+          VectorView<Complex, Mutable> y)
 {
     assert(x.size() == y.size());
     cblas_zaxpy(x.size(), &a, x.data(), x.inc(), y.data(), y.inc());
 }
 
-void scal(Real a, VectorView<Real, NoConj, Mutable> x)
+void scal(Real a, VectorView<Real, Mutable> x)
 {
     cblas_dscal(x.size(), a, x.data(), x.inc());
 }
 
-void scal(Real a, VectorView<Complex, NoConj, Mutable> x)
+void scal(Real a, VectorView<Complex, Mutable> x)
 {
     cblas_zdscal(x.size(), a, x.data(), x.inc());
 }
-void scal(Real a, VectorView<Complex, Conj, Mutable> x)
-{
-    cblas_zdscal(x.size(), a, x.data(), x.inc());
-}
-void scal(Complex a, VectorView<Complex, NoConj, Mutable> x)
+
+void scal(Complex a, VectorView<Complex, Mutable> x)
 {
     cblas_zscal(x.size(), &a, x.data(), x.inc());
 }
+static CBLAS_ORDER order = CblasRowMajor;
+static CBLAS_TRANSPOSE trans = CblasNoTrans;
+void gemv(Real a, MatrixView<Real, General, Const> A, VectorView<Real, Const> x,
+          Real b, VectorView<Real, Mutable> y)
 
-template <typename M>
-static constexpr enum CBLAS_ORDER order(const M& A)
-{
-    if (M::storage == RowMajor)
-    {
-        return CblasRowMajor;
-    }
-    else
-    {
-        return CblasColMajor;
-    }
-}
-
-void gemv(Real a, MatrixView<Real, General, RowMajor, NoConj, Const> A,
-          VectorView<Real, NoConj, Const> x, Real b,
-          VectorView<Real, NoConj, Mutable> y)
 {
     assert(A.nCol() == x.size());
     assert(A.nRow() == y.size());
-    cblas_dgemv(order(A), CblasNoTrans, A.nRow(), A.nCol(), a, A.data(),
-                A.lDim(), x.data(), x.inc(), b, y.data(), y.inc());
+    cblas_dgemv(order, trans, A.nRow(), A.nCol(), a, A.data(), A.lDim(),
+                x.data(), x.inc(), b, y.data(), y.inc());
 }
 
-void gemv(Real a, MatrixView<Real, General, ColMajor, NoConj, Const> A,
-          VectorView<Real, NoConj, Const> x, Real b,
-          VectorView<Real, NoConj, Mutable> y)
+void gemv(Complex a, MatrixView<Complex, General, Const> A,
+          VectorView<Complex, Const> x, Complex b,
+          VectorView<Complex, Mutable> y)
 {
     assert(A.nCol() == x.size());
     assert(A.nRow() == y.size());
-    cblas_dgemv(order(A), CblasNoTrans, A.nRow(), A.nCol(), a, A.data(),
-                A.lDim(), x.data(), x.inc(), b, y.data(), y.inc());
-}
-
-struct ComplexOrderTrans
-{
-    CBLAS_ORDER order;
-    CBLAS_TRANSPOSE trans;
-};
-
-template <typename M>
-static ComplexOrderTrans co(const M& A)
-{
-    ComplexOrderTrans res;
-    if (M::storage == ColMajor)
-    {
-        if (M::conjugation == Conj)
-        {
-            res.order = CblasRowMajor;
-            res.trans = CblasConjTrans;
-        }
-        else
-        {
-            res.order = CblasColMajor;
-            res.trans = CblasNoTrans;
-        }
-    }
-    else
-    {
-        if (M::conjugation == Conj)
-        {
-            res.order = CblasColMajor;
-            res.trans = CblasConjTrans;
-        }
-        else
-        {
-            res.order = CblasRowMajor;
-            res.trans = CblasNoTrans;
-        }
-    }
-    return res;
-}
-
-void gemv(Complex a, MatrixView<Complex, General, RowMajor, NoConj, Const> A,
-          VectorView<Complex, NoConj, Const> x, Complex b,
-          VectorView<Complex, NoConj, Mutable> y)
-{
-    assert(A.nCol() == x.size());
-    assert(A.nRow() == y.size());
-    auto[order, trans] = co(A);
-    cblas_zgemv(order, trans, A.nRow(), A.nCol(), &a, A.data(), A.lDim(),
-                x.data(), x.inc(), &b, y.data(), y.inc());
-}
-
-void gemv(Complex a, MatrixView<Complex, General, RowMajor, Conj, Const> A,
-          VectorView<Complex, NoConj, Const> x, Complex b,
-          VectorView<Complex, NoConj, Mutable> y)
-{
-    assert(A.nCol() == x.size());
-    assert(A.nRow() == y.size());
-    auto[order, trans] = co(A);
-    cblas_zgemv(order, trans, A.nRow(), A.nCol(), &a, A.data(), A.lDim(),
-                x.data(), x.inc(), &b, y.data(), y.inc());
-}
-void gemv(Complex a, MatrixView<Complex, General, ColMajor, NoConj, Const> A,
-          VectorView<Complex, NoConj, Const> x, Complex b,
-          VectorView<Complex, NoConj, Mutable> y)
-{
-    assert(A.nCol() == x.size());
-    assert(A.nRow() == y.size());
-    auto[order, trans] = co(A);
-    cblas_zgemv(order, trans, A.nRow(), A.nCol(), &a, A.data(), A.lDim(),
-                x.data(), x.inc(), &b, y.data(), y.inc());
-}
-void gemv(Complex a, MatrixView<Complex, General, ColMajor, Conj, Const> A,
-          VectorView<Complex, NoConj, Const> x, Complex b,
-          VectorView<Complex, NoConj, Mutable> y)
-{
-    assert(A.nCol() == x.size());
-    assert(A.nRow() == y.size());
-    auto[order, trans] = co(A);
     cblas_zgemv(order, trans, A.nRow(), A.nCol(), &a, A.data(), A.lDim(),
                 x.data(), x.inc(), &b, y.data(), y.inc());
 }

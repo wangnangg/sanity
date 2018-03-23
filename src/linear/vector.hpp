@@ -7,6 +7,51 @@
 namespace sanity::linear
 {
 template <typename DataT>
+class Vector;
+
+template <typename DataT>
+const DataT* addressOf(const Vector<DataT>& v, int i)
+{
+    return v.data() + i;
+}
+
+template <typename DataT>
+DataT* addressOf(Vector<DataT>& v, int i)
+{
+    return v.data() + i;
+}
+
+template <typename DataT>
+const DataT& get(const Vector<DataT>& v, int i)
+{
+    return *addressOf(v, i);
+}
+
+template <typename DataT>
+DataT& get(Vector<DataT>& v, int i)
+{
+    return *addressOf(v, i);
+}
+
+template <typename DataT>
+VectorView<DataT, Const> constView(const Vector<DataT>& v)
+{
+    return VectorView<DataT, Const>(v.data(), 1, v.size());
+}
+
+template <typename DataT>
+VectorView<DataT, Mutable> mutView(Vector<DataT>& v)
+{
+    return VectorView<DataT, Mutable>(v.data(), 1, v.size());
+}
+
+template <typename DataT, typename DataT2>
+void set(Vector<DataT>& v, int i, DataT2 val)
+{
+    *addressOf(v, i) = DataT(val);
+}
+
+template <typename DataT>
 class Vector
 {
     std::vector<DataT> _data;
@@ -23,20 +68,9 @@ public:
     const DataT* data() const { return &_data.front(); }
     DataT* data() { return &_data.front(); }
     int size() const { return _data.size(); }
+    DataT& operator()(int i) { return get(*this, i); }
+    const DataT& operator()(int i) const { return get(*this, i); }
+
+    operator VectorView<DataT, Const>() const { return constView(*this); }
 };
-
-
-template <typename DataT>
-VectorView<DataT, NoConj, Const> constView(const Vector<DataT>& v)
-{
-    return VectorView<DataT, NoConj, Const>(v.data(), v.inc(), v.size());
-}
-
-template <typename DataT>
-VectorView<DataT, NoConj, Mutable> mutView(Vector<DataT>& v)
-{
-    return VectorView<DataT, NoConj, Mutable>(v.data(), v.inc(), v.size());
-}
-
-
 }

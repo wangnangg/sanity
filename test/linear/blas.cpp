@@ -13,7 +13,7 @@ TEST(linear_blas, complex_dotc)
 {
     auto x = Vector<Complex>(3, {Complex(1, 1), Complex(2, 2), Complex(3, 3)});
     auto y = Vector<Complex>(3, {Complex(1, 2), Complex(-1, 1), Complex(2, 0)});
-    auto res = blas::dot(conjugate(x), y);
+    auto res = blas::dotc(x, y);
     ASSERT_EQ(res, Complex(9, -1));
 }
 
@@ -21,35 +21,35 @@ TEST(linear_blas, complex_dotu)
 {
     auto x = Vector<Complex>(3, {Complex(1, 1), Complex(2, 2), Complex(3, 3)});
     auto y = Vector<Complex>(3, {Complex(1, 2), Complex(-1, 1), Complex(2, 0)});
-    auto res = blas::dot(x, y);
+    auto res = blas::dotu(x, y);
     ASSERT_EQ(res, Complex(1, 9));
 }
 
 TEST(linear_blas, nrm2)
 {
     auto x = Vector<Real>(2, {3, 4});
-    ASSERT_EQ(blas::nrm2(constView(x)), 5);
+    ASSERT_EQ(blas::nrm2(x), 5);
 
     auto y = Vector<Complex>(2, {Complex(3, 4), Complex(3, 4)});
-    ASSERT_DOUBLE_EQ(blas::nrm2(constView(y)), std::sqrt(50));
+    ASSERT_DOUBLE_EQ(blas::nrm2(y), std::sqrt(50));
 }
 
 TEST(linear_blas, asum)
 {
     auto x = Vector<Real>(2, {3, 4});
-    ASSERT_EQ(blas::asum(constView(x)), 7);
+    ASSERT_EQ(blas::asum(x), 7);
 
     auto y = Vector<Complex>(2, {Complex(3, 4), Complex(3, 4)});
-    ASSERT_DOUBLE_EQ(blas::asum(constView(y)), 14);
+    ASSERT_DOUBLE_EQ(blas::asum(y), 14);
 }
 
 TEST(linear_blas, iamax)
 {
     auto x = Vector<Real>(2, {3, 4});
-    ASSERT_EQ(blas::iamax(constView(x)), 1);
+    ASSERT_EQ(blas::iamax(x), 1);
 
     auto y = Vector<Complex>(2, {Complex(5, 4), Complex(3, 4)});
-    ASSERT_DOUBLE_EQ(blas::iamax(constView(y)), 0);
+    ASSERT_DOUBLE_EQ(blas::iamax(y), 0);
 }
 
 TEST(linear_blas, swap)
@@ -58,49 +58,43 @@ TEST(linear_blas, swap)
         auto x = Vector<Real>(3, {1, 2, 3});
         auto y = Vector<Real>(3, 0);
         blas::swap(mutView(x), mutView(y));
-        ASSERT_EQ(get(constView(x), 0), 0);
-        ASSERT_EQ(get(constView(x), 1), 0);
-        ASSERT_EQ(get(constView(x), 2), 0);
-        ASSERT_EQ(get(constView(y), 0), 1);
-        ASSERT_EQ(get(constView(y), 1), 2);
-        ASSERT_EQ(get(constView(y), 2), 3);
+        ASSERT_EQ(x(0), 0);
+        ASSERT_EQ(x(1), 0);
+        ASSERT_EQ(x(2), 0);
+        ASSERT_EQ(y(0), 1);
+        ASSERT_EQ(y(1), 2);
+        ASSERT_EQ(y(2), 3);
     }
     {
         auto x =
             Vector<Complex>(3, {Complex(1, 2), Complex(2, 3), Complex(3, 4)});
         auto y = Vector<Complex>(3);
         blas::swap(mutView(x), mutView(y));
-        ASSERT_LT(maxDiff(constView(x), constView(Vector<Complex>(3))), 1e-6);
-        ASSERT_LT(
-            maxDiff(constView(y),
-                    constView(Vector<Complex>(
-                        3, {Complex(1, 2), Complex(2, 3), Complex(3, 4)}))),
-            1e-6);
+        ASSERT_LT(maxDiff(x, Vector<Complex>(3)), 1e-6);
+        ASSERT_LT(maxDiff(y, Vector<Complex>(3, {Complex(1, 2), Complex(2, 3),
+                                                 Complex(3, 4)})),
+                  1e-6);
     }
 }
 
 TEST(linear_blas, copy)
 {
     {
-        auto _x = Vector<Real>(3, {1, 2, 3});
-        auto x = mutView(_x);
-        auto _y = Vector<Real>(3, 0);
-        auto y = mutView(_y);
-        blas::copy(constView(x), mutView(y));
-        ASSERT_EQ(get(x, 0), 1);
-        ASSERT_EQ(get(x, 1), 2);
-        ASSERT_EQ(get(x, 2), 3);
+        auto x = Vector<Real>(3, {1, 2, 3});
+        auto y = Vector<Real>(3, 0);
+        blas::copy(x, mutView(y));
+        ASSERT_EQ(x(0), 1);
+        ASSERT_EQ(x(1), 2);
+        ASSERT_EQ(x(2), 3);
 
-        ASSERT_EQ(get(y, 0), 1);
-        ASSERT_EQ(get(y, 1), 2);
-        ASSERT_EQ(get(y, 2), 3);
+        ASSERT_EQ(y(0), 1);
+        ASSERT_EQ(y(1), 2);
+        ASSERT_EQ(y(2), 3);
     }
     {
-        auto _x =
+        auto x =
             Vector<Complex>(3, {Complex(1, 2), Complex(2, 3), Complex(3, 4)});
-        auto x = mutView(_x);
-        auto _y = Vector<Complex>(3);
-        auto y = mutView(_y);
+        auto y = Vector<Complex>(3);
         blas::copy(x, mutView(y));
         ASSERT_LT(maxDiff(x, Vector<Complex>(3, {Complex(1, 2), Complex(2, 3),
                                                  Complex(3, 4)})),
@@ -116,22 +110,18 @@ TEST(linear_blas, axpy)
     {
         auto x = Vector<Real>(3, {1, 2, 3});
         auto y = Vector<Real>(3, {1, 1, 1});
-        blas::axpy(0.5, constView(x), mutView(y));
-        ASSERT_LT(
-            maxDiff(constView(y), constView(Vector<Real>(3, {1.5, 2, 2.5}))),
-            1e-6);
+        blas::axpy(0.5, x, mutView(y));
+        ASSERT_LT(maxDiff(y, Vector<Real>(3, {1.5, 2, 2.5})), 1e-6);
     }
     {
         auto x =
             Vector<Complex>(3, {Complex(1, 2), Complex(2, 3), Complex(3, 4)});
         auto y =
             Vector<Complex>(3, {Complex(1, 2), Complex(2, 3), Complex(3, 4)});
-        blas::axpy(1, constView(x), mutView(y));
-        ASSERT_LT(
-            maxDiff(constView(y),
-                    constView(Vector<Complex>(
-                        3, {Complex(2, 4), Complex(4, 6), Complex(6, 8)}))),
-            1e-6);
+        blas::axpy(1, x, mutView(y));
+        ASSERT_LT(maxDiff(y, Vector<Complex>(3, {Complex(2, 4), Complex(4, 6),
+                                                 Complex(6, 8)})),
+                  1e-6);
     }
 }
 
@@ -139,17 +129,14 @@ TEST(linear_blas, scal)
 {
     auto x = Vector<Real>(3, {1, 2, 3});
     blas::scal(2, mutView(x));
-    ASSERT_LT(maxDiff(constView(x), constView(Vector<Real>(3, {2, 4, 6}))),
-              1e-6);
+    ASSERT_LT(maxDiff(x, Vector<Real>(3, {2, 4, 6})), 1e-6);
     {
         auto y =
             Vector<Complex>(3, {Complex(1, 2), Complex(2, 3), Complex(3, 4)});
         blas::scal(2, mutView(y));
-        ASSERT_LT(
-            maxDiff(constView(y),
-                    constView(Vector<Complex>(
-                        3, {Complex(2, 4), Complex(4, 6), Complex(6, 8)}))),
-            1e-6);
+        ASSERT_LT(maxDiff(y, Vector<Complex>(3, {Complex(2, 4), Complex(4, 6),
+                                                 Complex(6, 8)})),
+                  1e-6);
     }
     {
         auto y =
@@ -197,12 +184,6 @@ TEST(linear_blas, gemv)
         blas::gemv(2, A, x, 1, mutView(y));
         ASSERT_LT(maxDiff(y, Vector<Real>(3, {7, 6, 7})), 1e-6);
     }
-    {
-        auto x = Vector<Real>(4, {1, 1, 1, 1});
-        auto y = Vector<Real>(3, {1, 2, 3});
-        blas::gemv(2, transpose(At), x, 1, mutView(y));
-        ASSERT_LT(maxDiff(y, Vector<Real>(3, {7, 6, 7})), 1e-6);
-    }
 }
 
 // TEST(linear_blas, trmv)
@@ -217,11 +198,11 @@ TEST(linear_blas, gemv)
 //     std::cout << "A:" << std::endl;
 //     std::cout << A << std::endl;
 //     auto Aup = A;
-//     setValue(0, viewportCast<StrictLower>(mutView(Aup)));
+//     setAll(viewportCast<StrictLower>(mutView(Aup)), 0);
 //     std::cout << "Aup:" << std::endl;
 //     std::cout << Aup << std::endl;
 //     auto Alo = A;
-//     setValue(0, viewportCast<StrictUpper>(mutView(Alo)));
+//     setAll(viewportCast<StrictUpper>(mutView(Alo)), 0);
 //     std::cout << "Alo:" << std::endl;
 //     std::cout << Alo << std::endl;
 //     {
