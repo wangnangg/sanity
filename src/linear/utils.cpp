@@ -174,4 +174,11 @@ Vector createVector(int size, const std::vector<Real>& v)
     }
     return vec;
 }
+
+Matrix createMatrix(MatrixConstView mat)
+{
+    auto newmat = Matrix(mat.nrow(), mat.ncol());
+    copy(mat, newmat.mut());
+    return newmat;
+}
 }

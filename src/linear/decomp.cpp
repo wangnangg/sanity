@@ -24,4 +24,10 @@ ResDecompQR decompQR(MatrixMutableView A)
 
     return res;
 }
+
+ResDecompQR decompQR(MatrixConstView A)
+{
+    auto work = createMatrix(A);
+    return decompQR(work.mut());
+}
 }
