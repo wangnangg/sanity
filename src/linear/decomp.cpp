@@ -5,22 +5,22 @@
 
 namespace sanity::linear
 {
-ResDecompQR<Real> decompQR(MatrixView<Real, General, Mutable> A)
+ResDecompQR decompQR(MatrixMutableView A)
 {
-    int m = A.nRow();
-    int k = std::min(A.nRow(), A.nCol());
-    int n = A.nCol();
-    auto tau = Vector<Real>(k);
-    int result = lapack::geqrf(A, mutView(tau));
+    int m = A.nrow();
+    int k = std::min(A.nrow(), A.ncol());
+    int n = A.ncol();
+    auto tau = Vector(k);
+    int result = lapack::geqrf(A, tau.mut());
     assert(result == 0);
 
-    ResDecompQR<Real> res;
-    res.R = Matrix<Real>(k, n, Real());
-    copy(viewportCast<Upper>(A), viewportCast<Upper>(mutView(res.R)));
+    ResDecompQR res;
+    res.R = Matrix(k, n, 0.0);
+    copy(Upper, A, res.R.mut());
 
     result = lapack::orgqr(A, tau);
-    res.Q = Matrix<Real>(m, k);
-    copy(blockView(A, 0, 0, m, k), mutView(res.Q));
+    res.Q = Matrix(m, k, 0.0);
+    copy(blockView(A, 0, 0, m, k), res.Q.mut());
 
     return res;
 }

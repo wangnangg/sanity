@@ -5,13 +5,12 @@
 #include "vector.hpp"
 namespace sanity::linear
 {
-template <typename DataT>
 struct ResDecompQR
 {
-    Matrix<DataT> Q;
-    Matrix<DataT> R;
+    Matrix Q;
+    Matrix R;
 };
 
 // A = QR
-ResDecompQR<Real> decompQR(MatrixView<Real, General, Mutable> A);
+ResDecompQR decompQR(MatrixMutableView A);
 }

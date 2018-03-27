@@ -35,10 +35,14 @@ ${build_dir}/src/linear/oper.o: src/linear/oper.cpp | ${build_dir}/src/linear
 	clang ${flags} -c src/linear/oper.cpp -o ${build_dir}/src/linear/oper.o
 ${build_dir}/src/linear:
 	mkdir -p $@
+${build_dir}/src/linear/matrix_view.o: src/linear/matrix_view.cpp | ${build_dir}/src/linear 
+	clang ${flags} -c src/linear/matrix_view.cpp -o ${build_dir}/src/linear/matrix_view.o
 ${build_dir}/src/linear/lapack.o: src/linear/lapack.cpp | ${build_dir}/src/linear 
 	clang ${flags} -c src/linear/lapack.cpp -o ${build_dir}/src/linear/lapack.o
 ${build_dir}/src/linear/utils.o: src/linear/utils.cpp | ${build_dir}/src/linear 
 	clang ${flags} -c src/linear/utils.cpp -o ${build_dir}/src/linear/utils.o
+${build_dir}/src/linear/vector_view.o: src/linear/vector_view.cpp | ${build_dir}/src/linear 
+	clang ${flags} -c src/linear/vector_view.cpp -o ${build_dir}/src/linear/vector_view.o
 ${build_dir}/src/linear/blas.o: src/linear/blas.cpp | ${build_dir}/src/linear 
 	clang ${flags} -c src/linear/blas.cpp -o ${build_dir}/src/linear/blas.o
 ${build_dir}/src/linear/decomp.o: src/linear/decomp.cpp | ${build_dir}/src/linear 
@@ -59,13 +63,13 @@ ${build_dir}/${gtest_dir}/src/gtest-all.o: ${gtest_dir}/src/gtest-all.cc | ${bui
 	clang ${gtest_flags} -c ${gtest_dir}/src/gtest-all.cc -o ${build_dir}/${gtest_dir}/src/gtest-all.o
 ${build_dir}/${gtest_dir}/src:
 	mkdir -p $@
-${build_dir}/utest: ${build_dir}/src/linear/oper.o ${build_dir}/src/linear/lapack.o ${build_dir}/src/linear/utils.o ${build_dir}/src/linear/blas.o ${build_dir}/src/linear/decomp.o ${build_dir}/test/main.o ${build_dir}/test/linear/matrix_view.o ${build_dir}/test/linear/blas.o ${build_dir}/test/linear/decomp.o ${build_dir}/${gtest_dir}/src/gtest-all.o  | ${build_dir}
-	clang ${build_dir}/src/linear/oper.o ${build_dir}/src/linear/lapack.o ${build_dir}/src/linear/utils.o ${build_dir}/src/linear/blas.o ${build_dir}/src/linear/decomp.o ${build_dir}/test/main.o ${build_dir}/test/linear/matrix_view.o ${build_dir}/test/linear/blas.o ${build_dir}/test/linear/decomp.o ${build_dir}/${gtest_dir}/src/gtest-all.o  ${link_flags} -o ${build_dir}/utest
+${build_dir}/utest: ${build_dir}/src/linear/oper.o ${build_dir}/src/linear/matrix_view.o ${build_dir}/src/linear/lapack.o ${build_dir}/src/linear/utils.o ${build_dir}/src/linear/vector_view.o ${build_dir}/src/linear/blas.o ${build_dir}/src/linear/decomp.o ${build_dir}/test/main.o ${build_dir}/test/linear/matrix_view.o ${build_dir}/test/linear/blas.o ${build_dir}/test/linear/decomp.o ${build_dir}/${gtest_dir}/src/gtest-all.o  | ${build_dir}
+	clang ${build_dir}/src/linear/oper.o ${build_dir}/src/linear/matrix_view.o ${build_dir}/src/linear/lapack.o ${build_dir}/src/linear/utils.o ${build_dir}/src/linear/vector_view.o ${build_dir}/src/linear/blas.o ${build_dir}/src/linear/decomp.o ${build_dir}/test/main.o ${build_dir}/test/linear/matrix_view.o ${build_dir}/test/linear/blas.o ${build_dir}/test/linear/decomp.o ${build_dir}/${gtest_dir}/src/gtest-all.o  ${link_flags} -o ${build_dir}/utest
 ${build_dir}:
 	mkdir -p $@
-${build_dir}/libsanity.a: ${build_dir}/src/linear/oper.o ${build_dir}/src/linear/lapack.o ${build_dir}/src/linear/utils.o ${build_dir}/src/linear/blas.o ${build_dir}/src/linear/decomp.o  | ${build_dir}
-	ar crf ${build_dir}/libsanity.a ${build_dir}/src/linear/oper.o ${build_dir}/src/linear/lapack.o ${build_dir}/src/linear/utils.o ${build_dir}/src/linear/blas.o ${build_dir}/src/linear/decomp.o 
-deps:=${build_dir}/src/linear/oper.d ${build_dir}/src/linear/lapack.d ${build_dir}/src/linear/utils.d ${build_dir}/src/linear/blas.d ${build_dir}/src/linear/decomp.d ${build_dir}/test/main.d ${build_dir}/test/linear/matrix_view.d ${build_dir}/test/linear/blas.d ${build_dir}/test/linear/decomp.d ${build_dir}/${gtest_dir}/src/gtest-all.d 
+${build_dir}/libsanity.a: ${build_dir}/src/linear/oper.o ${build_dir}/src/linear/matrix_view.o ${build_dir}/src/linear/lapack.o ${build_dir}/src/linear/utils.o ${build_dir}/src/linear/vector_view.o ${build_dir}/src/linear/blas.o ${build_dir}/src/linear/decomp.o  | ${build_dir}
+	ar crf ${build_dir}/libsanity.a ${build_dir}/src/linear/oper.o ${build_dir}/src/linear/matrix_view.o ${build_dir}/src/linear/lapack.o ${build_dir}/src/linear/utils.o ${build_dir}/src/linear/vector_view.o ${build_dir}/src/linear/blas.o ${build_dir}/src/linear/decomp.o 
+deps:=${build_dir}/src/linear/oper.d ${build_dir}/src/linear/matrix_view.d ${build_dir}/src/linear/lapack.d ${build_dir}/src/linear/utils.d ${build_dir}/src/linear/vector_view.d ${build_dir}/src/linear/blas.d ${build_dir}/src/linear/decomp.d ${build_dir}/test/main.d ${build_dir}/test/linear/matrix_view.d ${build_dir}/test/linear/blas.d ${build_dir}/test/linear/decomp.d ${build_dir}/${gtest_dir}/src/gtest-all.d 
 
 .PHONY: clean
 clean:

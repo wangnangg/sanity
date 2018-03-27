@@ -1,100 +1,47 @@
 #pragma once
-#include <cassert>
 #include <type.hpp>
 #include <vector>
 #include "matrix_view.hpp"
 
 namespace sanity::linear
 {
-template <typename DataT>
-class Matrix;
-
-template <typename DataT>
-bool has(const Matrix<DataT>& mat, int i, int j)
-{
-    return true;
-}
-
-template <typename DataT>
-DataT* addressOf(Matrix<DataT>& mat, int i, int j)
-{
-    return (mat.data() + i * mat.nCol() + j);
-}
-
-template <typename DataT>
-const DataT* addressOf(const Matrix<DataT>& mat, int i, int j)
-{
-    return (mat.data() + i * mat.nCol() + j);
-}
-
-template <typename DataT>
-const DataT& get(const Matrix<DataT>& mat, int i, int j)
-{
-    return *addressOf(mat, i, j);
-}
-
-template <typename DataT>
-DataT& get(Matrix<DataT>& mat, int i, int j)
-{
-    return *addressOf(mat, i, j);
-}
-
-template <typename DataT, typename DataT2>
-void set(Matrix<DataT>& mat, int i, int j, DataT2 val)
-{
-    *addressOf(mat, i, j) = DataT(val);
-}
-
-template <typename DataT>
-auto constView(const Matrix<DataT>& m)
-{
-    return MatrixView<DataT, General, Const>(m.data(), m.nRow(), m.nCol(),
-                                             m.nCol());
-}
-
-template <typename DataT>
-auto mutView(Matrix<DataT>& m)
-{
-    return MatrixView<DataT, General, Mutable>(m.data(), m.nRow(), m.nCol(),
-                                               m.nCol());
-}
-
-template <typename DataT>
 class Matrix
 {
-public:
-    using DataType = DataT;
-    static const MatrixViewport viewport = General;
-
-private:
-    std::vector<DataT> _data;
+    std::vector<Real> _data;
     int _nrow;
     int _ncol;
 
 public:
-    Matrix() = default;
-    Matrix(int nrow, int ncol, std::vector<DataT> data)
-        : _data(std::move(data)), _nrow(nrow), _ncol(ncol)
-    {
-        assert(_data.size() == static_cast<unsigned int>(nrow * ncol));
-    }
-    Matrix(int nrow, int ncol, DataT val = DataT())
+    Matrix() : _data(), _nrow(0), _ncol(0) {}
+    Matrix(int nrow, int ncol, Real val = 0.0)
         : _data(static_cast<unsigned int>(nrow * ncol), val),
           _nrow(nrow),
           _ncol(ncol)
     {
     }
-
-    const DataT* data() const { return &_data.front(); }
-    DataT* data() { return &_data.front(); }
-    int nRow() const { return _nrow; }
-    int nCol() const { return _ncol; }
-    DataT& operator()(int i, int j) { return get(*this, i, j); }
-    const DataT& operator()(int i, int j) const { return get(*this, i, j); }
-
-    operator MatrixView<DataT, General, Const>() const
+    Real& operator()(int i, int j)
     {
-        return constView(*this);
+        assert(i < nrow() && j < ncol());
+        assert(i >= 0 && j >= 0);
+        return _data[(unsigned int)rowMajorIndex(i, j, ncol())];
+    }
+    const Real& operator()(int i, int j) const
+    {
+        assert(i < nrow() && j < ncol());
+        assert(i >= 0 && j >= 0);
+        return _data[(unsigned int)rowMajorIndex(i, j, ncol())];
+    }
+    int nrow() const { return _nrow; }
+    int ncol() const { return _ncol; }
+
+    operator MatrixConstView() const
+    {
+        return MatrixConstView(&_data.front(), _nrow, _ncol, _ncol);
+    }
+
+    MatrixMutableView mut()
+    {
+        return MatrixMutableView(&_data.front(), _nrow, _ncol, _ncol);
     }
 };
 }

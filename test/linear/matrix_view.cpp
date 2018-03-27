@@ -3,9 +3,9 @@
 
 using namespace sanity::linear;
 
-TEST(linear_matrix_view, viewportCast)
+TEST(linear_matrix_view, print)
 {
-    auto A = Matrix<Real>(5, 6,
+    auto A = createMatrix(5, 6,
                           {
                               1, 2, 3, 4, 5, 6,  //
                               2, 3, 4, 5, 6, 1,  //
@@ -15,17 +15,11 @@ TEST(linear_matrix_view, viewportCast)
                           });
 
     std::cout << A << std::endl;
-    std::cout << viewportCast<General>(constView(A)) << std::endl;
-    std::cout << viewportCast<Upper>(constView(A)) << std::endl;
-    std::cout << viewportCast<StrictUpper>(constView(A)) << std::endl;
-    std::cout << viewportCast<Lower>(constView(A)) << std::endl;
-    std::cout << viewportCast<StrictLower>(constView(A)) << std::endl;
-    std::cout << viewportCast<Diagonal>(constView(A)) << std::endl;
 }
 
 TEST(linear_matrix_view, blockView)
 {
-    auto A = Matrix<Real>(5, 6,
+    auto A = createMatrix(5, 6,
                           {
                               1, 2, 3, 4, 5, 6,  //
                               2, 3, 4, 5, 6, 1,  //
@@ -34,8 +28,8 @@ TEST(linear_matrix_view, blockView)
                               5, 6, 1, 2, 3, 4   //
                           });
     {
-        auto mA = blockView(constView(A), 1, 3, -1, -1);
-        auto mA_ = Matrix<Real>(4, 3,
+        auto mA = blockView(A, 1, 3, -1, -1);
+        auto mA_ = createMatrix(4, 3,
                                 {
                                     5, 6, 1,  //
                                     6, 1, 2,  //
