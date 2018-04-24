@@ -14,4 +14,4 @@ struct ResDecompQR
 // A = QR
 ResDecompQR decompQR(MatrixMutableView A);
 ResDecompQR decompQR(MatrixConstView A);
-}
+}  // namespace sanity::linear

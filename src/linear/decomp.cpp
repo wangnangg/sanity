@@ -11,16 +11,16 @@ ResDecompQR decompQR(MatrixMutableView A)
     int k = std::min(A.nrow(), A.ncol());
     int n = A.ncol();
     auto tau = Vector(k);
-    int result = lapack::geqrf(A, tau.mut());
+    int result = lapack::geqrf(A, mutableView(tau));
     assert(result == 0);
 
     ResDecompQR res;
     res.R = Matrix(k, n, 0.0);
-    copy(Upper, A, res.R.mut());
+    copy(Upper, A, mutableView(res.R));
 
     result = lapack::orgqr(A, tau);
     res.Q = Matrix(m, k, 0.0);
-    copy(blockView(A, 0, 0, m, k), res.Q.mut());
+    copy(blockView(A, 0, 0, m, k), mutableView(res.Q));
 
     return res;
 }
@@ -28,6 +28,6 @@ ResDecompQR decompQR(MatrixMutableView A)
 ResDecompQR decompQR(MatrixConstView A)
 {
     auto work = createMatrix(A);
-    return decompQR(work.mut());
+    return decompQR(mutableView(work));
 }
-}
+}  // namespace sanity::linear

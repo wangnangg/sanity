@@ -9,7 +9,7 @@ TEST(linear_decomp, QR1)
                               4, 5, 6,  //
                               7, 8, 9   //
                           });
-    auto[Q, R] = decompQR(A);
+    auto [Q, R] = decompQR(A);
 
     std::cout << A << std::endl;
     std::cout << Q << std::endl;

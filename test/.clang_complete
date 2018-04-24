@@ -1,0 +1,5 @@
+-I../src
+-I../googletest/googletest/include
+-I../googletest/googletest
+-std=c++1z
+
