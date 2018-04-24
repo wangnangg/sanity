@@ -16,7 +16,7 @@ TEST(linear_solve, gesv)
     const auto b = createVector(3, {1, 2, 3});
     auto x = b;
     auto workA = A;
-    solve(mutableView(workA), mutableView(x));
+    solveLU(mutableView(workA), mutableView(x));
     auto b_ = dot(A, x);
     std::cout << "A:\n" << A << std::endl;
     std::cout << "x:\n" << x << std::endl;

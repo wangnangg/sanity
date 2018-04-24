@@ -15,7 +15,7 @@ struct BusState
 std::vector<BusState> flatStart(const PowerGrid& grid, int slackBusIdx);
 
 // sol is the init guess, which will be overwritten with the final solution.
-IterationResult newton(
+IterationResult solveNewton(
     const PowerGrid& grid, int slackBusIdx, std::vector<BusState>& sol,
     const std::function<void(linear::MatrixMutableView A,
                              linear::VectorMutableView xb)>& linear_solver,

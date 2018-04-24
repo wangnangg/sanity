@@ -6,7 +6,7 @@
 using namespace sanity::linear;
 namespace sanity::root
 {
-IterationResult newton(
+IterationResult solveNewton(
     VectorMutableView x0,
     const std::function<void(VectorConstView x, VectorMutableView y,
                              MatrixMutableView jacobian)>& target_func,

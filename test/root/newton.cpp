@@ -18,7 +18,7 @@ TEST(root, newton1)
 
     Vector x(1);
     x(0) = 10;
-    auto res = newton(mutableView(x), f, solver, 100, 1e-6);
+    auto res = solveNewton(mutableView(x), f, solver, 100, 1e-6);
     std::cout << x << std::endl;
     std::cout << "error: " << res.error << std::endl;
     std::cout << "iter: " << res.nIter << std::endl;

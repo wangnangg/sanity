@@ -456,7 +456,7 @@ static void output(const PowerGrid& grid, const BusMap& map,
     }
 }
 
-IterationResult newton(
+IterationResult solveNewton(
     const PowerGrid& grid, int slackBusIdx, std::vector<BusState>& sol,
     const std::function<void(MatrixMutableView A, VectorMutableView xb)>&
         linear_solver,
@@ -468,7 +468,6 @@ IterationResult newton(
 
     auto bus_map = remapBus(grid, slackBusIdx);
     auto Y = admittanceMatrix(grid, bus_map);
-    std::cout << "Y:\n" << Y << std::endl;
     auto VAngle = Vector(n);
     auto VAmp = Vector(n);
     auto P = Vector(n);
@@ -486,10 +485,6 @@ IterationResult newton(
     for (iter = 0; iter < max_iter; iter++)
     {
         powerFromVoltage(VAngle, VAmp, Y, mutableView(Px), mutableView(Qx));
-        std::cout << "Px: " << Px << std::endl;
-        std::cout << "P: " << P << std::endl;
-        std::cout << "Qx: " << Qx << std::endl;
-        std::cout << "Q: " << Q << std::endl;
         powerMismatch(P, Q, Px, Qx, mutableView(residual));
         error = maxAbs(residual);
         if (error < tol)
@@ -497,12 +492,9 @@ IterationResult newton(
             break;
         }
         fullJacobian(VAngle, VAmp, Px, Qx, Y, mutableView(jac));
-        std::cout << "J:\n" << jac << std::endl;
         // dx = - jac^(-1) res, i.e. jac (- dx) = res
-        std::cout << "residual:\n" << residual << std::endl;
         linear_solver(mutableView(jac), mutableView(residual));
         // now -dx = residual
-        std::cout << "-dx:\n" << residual << std::endl;
         update(residual, mutableView(VAngle), mutableView(VAmp));
     }
     output(grid, bus_map, VAngle, VAmp, Px, Qx, sol);

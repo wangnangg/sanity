@@ -5,7 +5,7 @@
 
 namespace sanity::root
 {
-IterationResult newton(
+IterationResult solveNewton(
     linear::VectorMutableView x0,
     const std::function<
         void(linear::VectorConstView x, linear::VectorMutableView y,

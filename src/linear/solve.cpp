@@ -2,7 +2,7 @@
 #include "lapack.hpp"
 namespace sanity::linear
 {
-void solve(MatrixMutableView A, VectorMutableView b)
+void solveLU(MatrixMutableView A, VectorMutableView b)
 {
     assert(A.nrow() == A.ncol());
     assert(A.nrow() == b.size());

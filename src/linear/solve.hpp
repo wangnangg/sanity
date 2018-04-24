@@ -5,6 +5,6 @@
 namespace sanity::linear
 {
 // b will be rewritten
-void solve(MatrixMutableView A, VectorMutableView x);
+void solveLU(MatrixMutableView A, VectorMutableView x);
 
 }  // namespace sanity::linear

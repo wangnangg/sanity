@@ -45,8 +45,9 @@ void printPfSol(const std::vector<BusState>& sol)
         std::cout << "bus " << i << ":"
                   << "P: " << sol[i].power.real()
                   << ", Q: " << sol[i].power.imag()
-                  << ", |V|: " << std::abs(sol[i].voltage)
-                  << ", arg(V): " << std::arg(sol[i].voltage) << std::endl;
+                  << ", |V|: " << std::abs(sol[i].voltage) << ", arg(V): "
+                  << std::arg(sol[i].voltage) / 3.1415926 * 180 << " degree"
+                  << std::endl;
     }
 }
 
@@ -54,7 +55,7 @@ TEST(powerflow, newton_ref)
 {
     auto grid = referenceSystem();
     auto sol = flatStart(grid, 0);
-    auto res = newton(grid, 0, sol, sanity::linear::solve, 100, 1e-6);
+    auto res = solveNewton(grid, 0, sol, sanity::linear::solveLU, 100, 1e-6);
     printPfSol(sol);
     std::cout << "error: " << res.error << ", iter:" << res.nIter
               << std::endl;
@@ -64,7 +65,20 @@ TEST(powerflow, newton_exampleT7_4)
 {
     auto grid = exampleT7_4();
     auto sol = flatStart(grid, 0);
-    auto res = newton(grid, 0, sol, sanity::linear::solve, 100, 1e-6);
+    auto res = solveNewton(grid, 0, sol, sanity::linear::solveLU, 100, 1e-6);
+    printPfSol(sol);
+    std::cout << "error: " << res.error << ", iter:" << res.nIter
+              << std::endl;
+}
+
+TEST(powerflow, newton_ieee14)
+{
+    auto ieee_model =
+        readIeeeCdfModel("./test/powerflow/ieee_cdf_models/ieee14cdf.txt");
+    auto model = ieeeCdf2Grid(ieee_model);
+    auto sol = flatStart(model.grid, model.slack);
+    auto res = solveNewton(model.grid, model.slack, sol,
+                           sanity::linear::solveLU, 100, 1e-6);
     printPfSol(sol);
     std::cout << "error: " << res.error << ", iter:" << res.nIter
               << std::endl;
