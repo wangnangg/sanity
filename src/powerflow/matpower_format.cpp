@@ -227,9 +227,10 @@ MatpowerConvertedGrid matpower2Grid(const MatpowerModel& model)
                 Real voltageAmp_PU = 0.0;
                 for (const auto& g : bus2gens[b.idx])
                 {
-                    genP_MW = g.genP_MW;
+                    genP_MW += g.genP_MW;
                     voltageAmp_PU = g.voltageAmp_PU;
                 }
+                assert(voltageAmp_PU == b.voltageAmp_PU);
                 gridId = grid.addGeneratorBus(
                     (genP_MW - b.loadP_MW) / model.base_MVA, voltageAmp_PU, 0,
                     0);
@@ -241,12 +242,13 @@ MatpowerConvertedGrid matpower2Grid(const MatpowerModel& model)
                 Real voltageAmp_PU = 0.0;
                 for (const auto& g : bus2gens[b.idx])
                 {
-                    genP_MW = g.genP_MW;
+                    genP_MW += g.genP_MW;
                     voltageAmp_PU = g.voltageAmp_PU;
                 }
                 gridId = grid.addGeneratorBus(
                     (genP_MW - b.loadP_MW) / model.base_MVA, voltageAmp_PU, 0,
                     0);
+                assert(voltageAmp_PU == b.voltageAmp_PU);
                 slackId = gridId;
             }
             break;

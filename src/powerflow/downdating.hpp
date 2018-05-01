@@ -10,4 +10,10 @@ namespace sanity::powerflow
 void downdatingOnDisconnectedLineSG(const PowerGrid& grid, int slackBusIdx,
                                     int lineIdx, std::vector<BusState>& sol);
 
+void downdatingOnDisconnectedLineLL(const PowerGrid& grid, int slackBusIdx,
+                                    int lineIdx, std::vector<BusState>& sol);
+
+void downdatingOnDisconnectedLineLG(const PowerGrid& grid, int slackBusIdx,
+                                    int lineIdx, std::vector<BusState>& sol);
+
 }  // namespace sanity::powerflow

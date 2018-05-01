@@ -463,6 +463,7 @@ IterationResult solveNewton(
         powerFromVoltage(VAngle, VAmp, Y, mutableView(Px), mutableView(Qx));
         powerMismatch(P, Q, Px, Qx, mutableView(residual));
         error = maxAbs(residual);
+        std::cout << "error: " << error << std::endl;
         if (error < tol)
         {
             break;

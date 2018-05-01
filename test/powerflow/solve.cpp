@@ -97,3 +97,16 @@ TEST(powerflow, newton_matpower1354)
     std::cout << "error: " << res.error << ", iter:" << res.nIter
               << std::endl;
 }
+
+TEST(powerflow, newton_matpowerGBreduced)
+{
+    auto ext_model =
+        readMatpowerModel(data_base + "matpower_models/GBreducednetwrok.txt");
+    auto model = matpower2Grid(ext_model);
+    auto sol = flatStart(model.grid, model.slack);
+    auto res = solveNewton(model.grid, model.slack, sol,
+                           sanity::linear::solveLU, 100, 1e-6);
+    printPfSol(sol);
+    std::cout << "error: " << res.error << ", iter:" << res.nIter
+              << std::endl;
+}
