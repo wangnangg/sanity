@@ -7,21 +7,6 @@ using namespace sanity::linear;
 
 namespace sanity::powerflow
 {
-class BusMap
-{
-    std::vector<int> _grid2mat;
-    std::vector<int> _mat2grid;
-
-public:
-    BusMap(std::vector<int> grid2mat, std::vector<int> mat2grid)
-        : _grid2mat(std::move(grid2mat)), _mat2grid(std::move(mat2grid))
-    {
-    }
-
-    int getGridIdx(int mat_idx) const { return _mat2grid[(uint)mat_idx]; }
-    int getMatrixIdx(int grid_idx) const { return _grid2mat[(uint)grid_idx]; }
-};
-
 // generators come first and then loads, index 0 is the slack bus.
 BusMap remapBus(const PowerGrid& grid, int slackBus)
 {
@@ -403,7 +388,7 @@ static void init(const PowerGrid& grid, const BusMap& map,
     }
 }
 
-void powerMismatch(
+static void powerMismatch(
     VectorConstView P, VectorConstView Q, VectorConstView Px,
     VectorConstView Qx,
     VectorMutableView residual  // n - 1 real power and  nl reactive power
@@ -434,24 +419,15 @@ static void update(VectorConstView _dx, VectorMutableView VAngle,
                blockView(VAmp, ng, nl));  // update nl amplitudes for loads
 }
 
-static void output(const PowerGrid& grid, const BusMap& map,
-                   VectorConstView VAngle, VectorConstView VAmp,
-                   VectorConstView P, VectorConstView Q,
+static void output(const BusMap& map, VectorConstView VAngle,
+                   VectorConstView VAmp, VectorConstView P, VectorConstView Q,
                    std::vector<BusState>& sol)
 {
     int n = sol.size();
     for (int i = 0; i < n; i++)
     {
         int bus_i = map.getGridIdx(i);
-        const auto& bus = grid.getBus(bus_i);
-        if (bus.type == GeneratorBus)
-        {
-            sol[(uint)bus_i].power = Complex(P(i), Q(i));
-        }
-        else
-        {  // load
-            sol[(uint)bus_i].power = Complex(P(i), Q(i));
-        }
+        sol[(uint)bus_i].power = Complex(P(i), Q(i));
         sol[(uint)bus_i].voltage = std::polar(VAmp(i), VAngle(i));
     }
 }
@@ -497,7 +473,7 @@ IterationResult solveNewton(
         // now -dx = residual
         update(residual, mutableView(VAngle), mutableView(VAmp));
     }
-    output(grid, bus_map, VAngle, VAmp, Px, Qx, sol);
+    output(bus_map, VAngle, VAmp, Px, Qx, sol);
     return IterationResult{.error = error, .nIter = iter};
 }
 

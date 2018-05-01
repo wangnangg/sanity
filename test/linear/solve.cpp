@@ -43,7 +43,7 @@ TEST(linear_solve, lapack_gesv)
     auto x = b;
     auto workA = A;
     std::vector<int> perm((uint)A.nrow());
-    lapack::gesv(mutableView(workA), mutableView(x), perm);
+    lapack::gesv(mutableView(workA), mutableView(x), nullptr);
     auto b_ = dot(A, x);
     std::cout << "A:\n" << A << std::endl;
     std::cout << "x:\n" << x << std::endl;

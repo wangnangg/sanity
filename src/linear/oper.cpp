@@ -4,6 +4,29 @@
 
 namespace sanity::linear
 {
+void scale(Real a, VectorMutableView v) { blas::scal(a, v); }
+void scale(Complex a, CVectorMutableView v) { blas::scal(a, v); }
+
+void scale(Real a, MatrixMutableView m)
+{
+    for (int i = 0; i < m.nrow(); i++)
+    {
+        for (int j = 0; j < m.ncol(); j++)
+        {
+            m(i, j) *= a;
+        }
+    }
+}
+void scale(Complex a, CMatrixMutableView m)
+{
+    for (int i = 0; i < m.nrow(); i++)
+    {
+        for (int j = 0; j < m.ncol(); j++)
+        {
+            m(i, j) *= a;
+        }
+    }
+}
 void dot(MatrixConstView A, VectorConstView v, VectorMutableView x)
 {
     blas::gemv(1.0, A, blas::NoTranspose, v, 0.0, x);

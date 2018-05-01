@@ -182,7 +182,7 @@ std::ostream& operator<<(std::ostream& os, MatrixConstView mat)
     {
         for (int j = 0; j < mat.ncol(); j++)
         {
-            os << std::fixed << std::setw(8) << std::setprecision(3)
+            os << std::fixed << std::setw(12) << std::setprecision(5)
                << std::setfill(' ') << mat(i, j);
         }
         os << std::endl;

@@ -40,6 +40,11 @@ void scal(Real a, VectorMutableView x)
     cblas_dscal(x.size(), a, &x(0), x.inc());
 }
 
+void scal(Complex a, CVectorMutableView x)
+{
+    cblas_zscal(x.size(), &a, &x(0), x.inc());
+}
+
 static CBLAS_ORDER order = CblasRowMajor;
 constexpr CBLAS_TRANSPOSE blasOper(Oper op)
 {

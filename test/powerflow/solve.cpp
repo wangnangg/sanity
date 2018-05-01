@@ -2,10 +2,11 @@
 #include "powerflow.hpp"
 using namespace sanity::powerflow;
 
+static const std::string data_base = "./test/powerflow/";
 /* The reference system from the book "Power System Load Flow Analysis" by
  * Lynn Powell
  */
-PowerGrid referenceSystem()
+static PowerGrid referenceSystem()
 {
     PowerGrid grid;
     auto bus1 = grid.addGeneratorBus(0, 1.0, 0, 0);
@@ -26,7 +27,7 @@ PowerGrid referenceSystem()
 /* example T7.4 from "The Power Flow Problem" by James D. McCalley,Iowa State
  * University
  */
-PowerGrid exampleT7_4()
+static PowerGrid exampleT7_4()
 {
     PowerGrid grid;
     auto bus1 = grid.addGeneratorBus(0, 1, 0, 0);
@@ -38,7 +39,7 @@ PowerGrid exampleT7_4()
     return grid;
 }
 
-void printPfSol(const std::vector<BusState>& sol)
+static void printPfSol(const std::vector<BusState>& sol)
 {
     for (uint i = 0; i < sol.size(); i++)
     {
@@ -74,8 +75,21 @@ TEST(powerflow, newton_exampleT7_4)
 TEST(powerflow, newton_ieee14)
 {
     auto ieee_model =
-        readIeeeCdfModel("./test/powerflow/ieee_cdf_models/ieee14cdf.txt");
+        readIeeeCdfModel(data_base + "ieee_cdf_models/ieee14cdf.txt");
     auto model = ieeeCdf2Grid(ieee_model);
+    auto sol = flatStart(model.grid, model.slack);
+    auto res = solveNewton(model.grid, model.slack, sol,
+                           sanity::linear::solveLU, 100, 1e-6);
+    printPfSol(sol);
+    std::cout << "error: " << res.error << ", iter:" << res.nIter
+              << std::endl;
+}
+
+TEST(powerflow, newton_matpower1354)
+{
+    auto ext_model =
+        readMatpowerModel(data_base + "matpower_models/case1354.txt");
+    auto model = matpower2Grid(ext_model);
     auto sol = flatStart(model.grid, model.slack);
     auto res = solveNewton(model.grid, model.slack, sol,
                            sanity::linear::solveLU, 100, 1e-6);

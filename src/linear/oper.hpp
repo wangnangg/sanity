@@ -8,6 +8,9 @@ namespace sanity::linear
 void scale(Real a, VectorMutableView v);
 void scale(Complex a, CVectorMutableView v);
 
+void scale(Real a, MatrixMutableView m);
+void scale(Complex a, CMatrixMutableView m);
+
 // x = Av
 void dot(MatrixConstView A, VectorConstView v, VectorMutableView x);
 void dot(CMatrixConstView A, CVectorConstView v, CVectorMutableView x);

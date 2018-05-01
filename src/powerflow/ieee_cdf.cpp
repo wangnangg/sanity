@@ -9,18 +9,26 @@ namespace sanity::powerflow
 static const char bus_data_head[] = "BUS DATA FOLLOWS";
 static const char branch_data_head[] = "BRANCH DATA FOLLOW";
 
-int parseInt(const char* buf)
+static int parseInt(const char* buf)
 {
     char* next;
     int val = std::strtol(buf, &next, 10);
+    if (next == buf)
+    {
+        std::cout << "error trying to parse int: " << buf << std::endl;
+    }
     assert(next > buf);
     return val;
 }
 
-Real parseReal(const char* buf)
+static Real parseReal(const char* buf)
 {
     char* next;
     Real val = std::strtod(buf, &next);
+    if (next == buf)
+    {
+        std::cout << "error trying to parse real: " << buf << std::endl;
+    }
     assert(next > buf);
     return val;
 }
@@ -48,7 +56,7 @@ Real parseReal(const char* buf)
   int remoteBusNumber;123        // 124-127
   };
 */
-void readBusData(std::ifstream& file, std::vector<IeeeCdfBus>& buses)
+static void readBusData(std::ifstream& file, std::vector<IeeeCdfBus>& buses)
 {
     const int buf_len = 200;
     char buf[buf_len];
@@ -107,7 +115,8 @@ struct IeeeCdfBranch
     Real maxVoltage;119 //120-126; or MVAR, MW
 };
 */
-void readBranchData(std::ifstream& file, std::vector<IeeeCdfBranch>& branches)
+static void readBranchData(std::ifstream& file,
+                           std::vector<IeeeCdfBranch>& branches)
 {
     const int buf_len = 200;
     char buf[buf_len];
@@ -181,58 +190,52 @@ IeeeCdfConvertedGrid ieeeCdf2Grid(const IeeeCdfModel& model)
 {
     PowerGrid grid;
     int slack = -1;
-    int max_idx = -1;
     for (const auto& bus : model.buses)
     {
-        if (bus.bus > max_idx)
-        {
-            max_idx = bus.bus;
-        }
-    }
-    assert(max_idx >= 0);
-    std::vector<int> bus_map((uint)max_idx + 1);
-    int gid;
-    for (const auto& bus : model.buses)
-    {
+        int bus_id = -1;
         switch (bus.type)
         {
             case IeeeCdfLoad:
-                gid = grid.addLoadBus(Complex(bus.loadP_MW, bus.loadQ_MVAR) /
-                                      model.MVABase);
+                bus_id = grid.addLoadBus(
+                    Complex(bus.loadP_MW, bus.loadQ_MVAR) / model.MVABase);
                 break;
             case IeeeCdfGenPV:
-                gid = grid.addGeneratorBus(
+                bus_id = grid.addGeneratorBus(
                     (bus.genP_MW - bus.loadP_MW) / model.MVABase,
                     bus.desiredVolts_PU,
                     (bus.minQ_MVAR - bus.loadQ_MVAR) / model.MVABase,
                     (bus.maxQ_MVAR - bus.loadQ_MVAR) / model.MVABase);
                 break;
             case IeeeCdfSlack:
-                gid = grid.addGeneratorBus(
+                bus_id = grid.addGeneratorBus(
                     (bus.genP_MW - bus.loadP_MW) / model.MVABase,
                     bus.desiredVolts_PU,
                     (bus.minQ_MVAR - bus.loadQ_MVAR) / model.MVABase,
                     (bus.maxQ_MVAR - bus.loadQ_MVAR) / model.MVABase);
-                slack = gid;
+                slack = bus_id;
                 break;
             case IeeeCdfGenPQ:
             default:  // unsupported
                 assert(false);
                 break;
         }
-        bus_map[(uint)bus.bus] = gid;
+        grid.addShuntElement(bus_id, 1.0 / Complex(bus.shuntConductanceG_PU,
+                                                   bus.shuntSusceptanceB_PU));
     }
     for (const auto& branch : model.branches)
     {
         switch (branch.type)
         {
             case IeeeCdfTransLine:
+            case IeeeCdfFixedTap:
                 grid.addTransmissionLine(
-                    bus_map[(uint)branch.tapBus], bus_map[(uint)branch.zBus],
+                    branch.tapBus - 1, branch.zBus - 1,
                     Complex(branch.resistanceR_PU, branch.reactanceX_PU),
                     branch.lineCharingB_PU / 2);
                 break;
             default:  // unsupported
+                std::cout << "unsupported line type: " << branch.type
+                          << std::endl;
                 assert(false);
                 break;
         }

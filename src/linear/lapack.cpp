@@ -18,13 +18,24 @@ int orgqr(MatrixMutableView mA, VectorConstView tau)
                           mA.ldim(), &tau(0));
 }
 
-int gesv(MatrixMutableView A, MatrixMutableView B, std::vector<int>& perm)
+int gesv(MatrixMutableView A, MatrixMutableView B, std::vector<int>* perm)
 {
     assert(A.nrow() == A.ncol());
     assert(A.nrow() == B.nrow());
-    assert(A.nrow() == (int)perm.size());
+    int* perm_ptr;
+    std::vector<int> perm_vec;
+    if (perm)
+    {
+        assert(A.nrow() == (int)perm->size());
+        perm_ptr = &perm->front();
+    }
+    else
+    {
+        perm_vec = std::vector<int>((uint)A.nrow());
+        perm_ptr = &perm_vec.front();
+    }
     int n = A.nrow();
-    return LAPACKE_dgesv(order, n, B.ncol(), &A(0, 0), A.ldim(), &perm[0],
+    return LAPACKE_dgesv(order, n, B.ncol(), &A(0, 0), A.ldim(), perm_ptr,
                          &B(0, 0), B.ldim());
 }
 }  // namespace sanity::linear::lapack
