@@ -2,7 +2,7 @@
 #include "powerflow.hpp"
 using namespace sanity::powerflow;
 
-static const std::string data_base = "./test/powerflow/";
+static const std::string data_base = "./data/powerflow/";
 TEST(powerflow, read_ieee17)
 {
     auto ieee_model =

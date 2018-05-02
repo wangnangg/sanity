@@ -128,9 +128,11 @@ lib: ${build_dir}/libsanity.a
 ]
 makefile_body = []
 makefile_tail = ["""
-.PHONY: clean
+.PHONY: clean cleandeps
 clean:
-	  rm build -rf
+	rm -rf build
+cleandeps:
+	find build -name "*.d" | xargs rm -rf
 -include ${deps}
 """]
 

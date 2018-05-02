@@ -2,7 +2,7 @@
 #include "powerflow.hpp"
 using namespace sanity::powerflow;
 
-static const std::string data_base = "./test/powerflow/";
+static const std::string data_base = "./data/powerflow/";
 /* The reference system from the book "Power System Load Flow Analysis" by
  * Lynn Powell
  */

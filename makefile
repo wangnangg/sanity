@@ -57,8 +57,6 @@ ${build_dir}/src/powerflow/matpower_format.o: src/powerflow/matpower_format.cpp 
 	clang ${flags} -c src/powerflow/matpower_format.cpp -o ${build_dir}/src/powerflow/matpower_format.o
 ${build_dir}/src/powerflow:
 	mkdir -p $@
-${build_dir}/src/powerflow/downdating.o: src/powerflow/downdating.cpp | ${build_dir}/src/powerflow 
-	clang ${flags} -c src/powerflow/downdating.cpp -o ${build_dir}/src/powerflow/downdating.o
 ${build_dir}/src/powerflow/model.o: src/powerflow/model.cpp | ${build_dir}/src/powerflow 
 	clang ${flags} -c src/powerflow/model.cpp -o ${build_dir}/src/powerflow/model.o
 ${build_dir}/src/powerflow/ieee_cdf.o: src/powerflow/ieee_cdf.cpp | ${build_dir}/src/powerflow 
@@ -83,27 +81,27 @@ ${build_dir}/test/linear/solve.o: test/linear/solve.cpp | ${build_dir}/test/line
 	clang ${gtest_flags} ${flags} -c test/linear/solve.cpp -o ${build_dir}/test/linear/solve.o
 ${build_dir}/test/linear/decomp.o: test/linear/decomp.cpp | ${build_dir}/test/linear 
 	clang ${gtest_flags} ${flags} -c test/linear/decomp.cpp -o ${build_dir}/test/linear/decomp.o
-${build_dir}/test/powerflow/downdating.o: test/powerflow/downdating.cpp | ${build_dir}/test/powerflow 
-	clang ${gtest_flags} ${flags} -c test/powerflow/downdating.cpp -o ${build_dir}/test/powerflow/downdating.o
-${build_dir}/test/powerflow:
-	mkdir -p $@
 ${build_dir}/test/powerflow/model.o: test/powerflow/model.cpp | ${build_dir}/test/powerflow 
 	clang ${gtest_flags} ${flags} -c test/powerflow/model.cpp -o ${build_dir}/test/powerflow/model.o
+${build_dir}/test/powerflow:
+	mkdir -p $@
 ${build_dir}/test/powerflow/solve.o: test/powerflow/solve.cpp | ${build_dir}/test/powerflow 
 	clang ${gtest_flags} ${flags} -c test/powerflow/solve.cpp -o ${build_dir}/test/powerflow/solve.o
 ${build_dir}/${gtest_dir}/src/gtest-all.o: ${gtest_dir}/src/gtest-all.cc | ${build_dir}/${gtest_dir}/src 
 	clang ${gtest_flags} -c ${gtest_dir}/src/gtest-all.cc -o ${build_dir}/${gtest_dir}/src/gtest-all.o
 ${build_dir}/${gtest_dir}/src:
 	mkdir -p $@
-${build_dir}/utest: ${build_dir}/src/root/newton.o ${build_dir}/src/linear/oper.o ${build_dir}/src/linear/matrix_view.o ${build_dir}/src/linear/lapack.o ${build_dir}/src/linear/utils.o ${build_dir}/src/linear/vector_view.o ${build_dir}/src/linear/blas.o ${build_dir}/src/linear/solve.o ${build_dir}/src/linear/decomp.o ${build_dir}/src/powerflow/matpower_format.o ${build_dir}/src/powerflow/downdating.o ${build_dir}/src/powerflow/model.o ${build_dir}/src/powerflow/ieee_cdf.o ${build_dir}/src/powerflow/solve.o ${build_dir}/test/main.o ${build_dir}/test/root/newton.o ${build_dir}/test/linear/matrix_view.o ${build_dir}/test/linear/blas.o ${build_dir}/test/linear/solve.o ${build_dir}/test/linear/decomp.o ${build_dir}/test/powerflow/downdating.o ${build_dir}/test/powerflow/model.o ${build_dir}/test/powerflow/solve.o ${build_dir}/${gtest_dir}/src/gtest-all.o  | ${build_dir}
-	clang ${build_dir}/src/root/newton.o ${build_dir}/src/linear/oper.o ${build_dir}/src/linear/matrix_view.o ${build_dir}/src/linear/lapack.o ${build_dir}/src/linear/utils.o ${build_dir}/src/linear/vector_view.o ${build_dir}/src/linear/blas.o ${build_dir}/src/linear/solve.o ${build_dir}/src/linear/decomp.o ${build_dir}/src/powerflow/matpower_format.o ${build_dir}/src/powerflow/downdating.o ${build_dir}/src/powerflow/model.o ${build_dir}/src/powerflow/ieee_cdf.o ${build_dir}/src/powerflow/solve.o ${build_dir}/test/main.o ${build_dir}/test/root/newton.o ${build_dir}/test/linear/matrix_view.o ${build_dir}/test/linear/blas.o ${build_dir}/test/linear/solve.o ${build_dir}/test/linear/decomp.o ${build_dir}/test/powerflow/downdating.o ${build_dir}/test/powerflow/model.o ${build_dir}/test/powerflow/solve.o ${build_dir}/${gtest_dir}/src/gtest-all.o  ${link_flags} -o ${build_dir}/utest
+${build_dir}/utest: ${build_dir}/src/root/newton.o ${build_dir}/src/linear/oper.o ${build_dir}/src/linear/matrix_view.o ${build_dir}/src/linear/lapack.o ${build_dir}/src/linear/utils.o ${build_dir}/src/linear/vector_view.o ${build_dir}/src/linear/blas.o ${build_dir}/src/linear/solve.o ${build_dir}/src/linear/decomp.o ${build_dir}/src/powerflow/matpower_format.o ${build_dir}/src/powerflow/model.o ${build_dir}/src/powerflow/ieee_cdf.o ${build_dir}/src/powerflow/solve.o ${build_dir}/test/main.o ${build_dir}/test/root/newton.o ${build_dir}/test/linear/matrix_view.o ${build_dir}/test/linear/blas.o ${build_dir}/test/linear/solve.o ${build_dir}/test/linear/decomp.o ${build_dir}/test/powerflow/model.o ${build_dir}/test/powerflow/solve.o ${build_dir}/${gtest_dir}/src/gtest-all.o  | ${build_dir}
+	clang ${build_dir}/src/root/newton.o ${build_dir}/src/linear/oper.o ${build_dir}/src/linear/matrix_view.o ${build_dir}/src/linear/lapack.o ${build_dir}/src/linear/utils.o ${build_dir}/src/linear/vector_view.o ${build_dir}/src/linear/blas.o ${build_dir}/src/linear/solve.o ${build_dir}/src/linear/decomp.o ${build_dir}/src/powerflow/matpower_format.o ${build_dir}/src/powerflow/model.o ${build_dir}/src/powerflow/ieee_cdf.o ${build_dir}/src/powerflow/solve.o ${build_dir}/test/main.o ${build_dir}/test/root/newton.o ${build_dir}/test/linear/matrix_view.o ${build_dir}/test/linear/blas.o ${build_dir}/test/linear/solve.o ${build_dir}/test/linear/decomp.o ${build_dir}/test/powerflow/model.o ${build_dir}/test/powerflow/solve.o ${build_dir}/${gtest_dir}/src/gtest-all.o  ${link_flags} -o ${build_dir}/utest
 ${build_dir}:
 	mkdir -p $@
-${build_dir}/libsanity.a: ${build_dir}/src/root/newton.o ${build_dir}/src/linear/oper.o ${build_dir}/src/linear/matrix_view.o ${build_dir}/src/linear/lapack.o ${build_dir}/src/linear/utils.o ${build_dir}/src/linear/vector_view.o ${build_dir}/src/linear/blas.o ${build_dir}/src/linear/solve.o ${build_dir}/src/linear/decomp.o ${build_dir}/src/powerflow/matpower_format.o ${build_dir}/src/powerflow/downdating.o ${build_dir}/src/powerflow/model.o ${build_dir}/src/powerflow/ieee_cdf.o ${build_dir}/src/powerflow/solve.o  | ${build_dir}
-	ar crf ${build_dir}/libsanity.a ${build_dir}/src/root/newton.o ${build_dir}/src/linear/oper.o ${build_dir}/src/linear/matrix_view.o ${build_dir}/src/linear/lapack.o ${build_dir}/src/linear/utils.o ${build_dir}/src/linear/vector_view.o ${build_dir}/src/linear/blas.o ${build_dir}/src/linear/solve.o ${build_dir}/src/linear/decomp.o ${build_dir}/src/powerflow/matpower_format.o ${build_dir}/src/powerflow/downdating.o ${build_dir}/src/powerflow/model.o ${build_dir}/src/powerflow/ieee_cdf.o ${build_dir}/src/powerflow/solve.o 
-deps:=${build_dir}/src/root/newton.d ${build_dir}/src/linear/oper.d ${build_dir}/src/linear/matrix_view.d ${build_dir}/src/linear/lapack.d ${build_dir}/src/linear/utils.d ${build_dir}/src/linear/vector_view.d ${build_dir}/src/linear/blas.d ${build_dir}/src/linear/solve.d ${build_dir}/src/linear/decomp.d ${build_dir}/src/powerflow/matpower_format.d ${build_dir}/src/powerflow/downdating.d ${build_dir}/src/powerflow/model.d ${build_dir}/src/powerflow/ieee_cdf.d ${build_dir}/src/powerflow/solve.d ${build_dir}/test/main.d ${build_dir}/test/root/newton.d ${build_dir}/test/linear/matrix_view.d ${build_dir}/test/linear/blas.d ${build_dir}/test/linear/solve.d ${build_dir}/test/linear/decomp.d ${build_dir}/test/powerflow/downdating.d ${build_dir}/test/powerflow/model.d ${build_dir}/test/powerflow/solve.d ${build_dir}/${gtest_dir}/src/gtest-all.d 
+${build_dir}/libsanity.a: ${build_dir}/src/root/newton.o ${build_dir}/src/linear/oper.o ${build_dir}/src/linear/matrix_view.o ${build_dir}/src/linear/lapack.o ${build_dir}/src/linear/utils.o ${build_dir}/src/linear/vector_view.o ${build_dir}/src/linear/blas.o ${build_dir}/src/linear/solve.o ${build_dir}/src/linear/decomp.o ${build_dir}/src/powerflow/matpower_format.o ${build_dir}/src/powerflow/model.o ${build_dir}/src/powerflow/ieee_cdf.o ${build_dir}/src/powerflow/solve.o  | ${build_dir}
+	ar crf ${build_dir}/libsanity.a ${build_dir}/src/root/newton.o ${build_dir}/src/linear/oper.o ${build_dir}/src/linear/matrix_view.o ${build_dir}/src/linear/lapack.o ${build_dir}/src/linear/utils.o ${build_dir}/src/linear/vector_view.o ${build_dir}/src/linear/blas.o ${build_dir}/src/linear/solve.o ${build_dir}/src/linear/decomp.o ${build_dir}/src/powerflow/matpower_format.o ${build_dir}/src/powerflow/model.o ${build_dir}/src/powerflow/ieee_cdf.o ${build_dir}/src/powerflow/solve.o 
+deps:=${build_dir}/src/root/newton.d ${build_dir}/src/linear/oper.d ${build_dir}/src/linear/matrix_view.d ${build_dir}/src/linear/lapack.d ${build_dir}/src/linear/utils.d ${build_dir}/src/linear/vector_view.d ${build_dir}/src/linear/blas.d ${build_dir}/src/linear/solve.d ${build_dir}/src/linear/decomp.d ${build_dir}/src/powerflow/matpower_format.d ${build_dir}/src/powerflow/model.d ${build_dir}/src/powerflow/ieee_cdf.d ${build_dir}/src/powerflow/solve.d ${build_dir}/test/main.d ${build_dir}/test/root/newton.d ${build_dir}/test/linear/matrix_view.d ${build_dir}/test/linear/blas.d ${build_dir}/test/linear/solve.d ${build_dir}/test/linear/decomp.d ${build_dir}/test/powerflow/model.d ${build_dir}/test/powerflow/solve.d ${build_dir}/${gtest_dir}/src/gtest-all.d 
 
-.PHONY: clean
+.PHONY: clean cleandeps
 clean:
-	  rm build -rf
+	rm -rf build
+cleandeps:
+	find build -name "*.d" | xargs rm -rf
 -include ${deps}

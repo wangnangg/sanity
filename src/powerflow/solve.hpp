@@ -45,18 +45,4 @@ IterationResult solveNewton(
                              linear::VectorMutableView xb)>& linear_solver,
     int max_iter, Real tol);
 
-IterationResult solveDisconnectedLineLG(
-    const PowerGrid& grid, int slackBusIdx, int lineIdx, Real stepSize,
-    std::vector<BusState>& sol,
-    const std::function<void(linear::MatrixMutableView A,
-                             linear::VectorMutableView xb)>& linear_solver,
-    int max_iter, Real tol);
-
-IterationResult solveDiscLineLGDowndate(
-    const PowerGrid& grid, int slackBusIdx, int lineIdx, Real stepSize,
-    std::vector<BusState>& sol,
-    const std::function<void(linear::MatrixMutableView A,
-                             linear::VectorMutableView xb)>& linear_solver,
-    int max_iter, Real tol);
-
 }  // namespace sanity::powerflow
