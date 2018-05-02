@@ -478,4 +478,315 @@ IterationResult solveNewton(
     return IterationResult{.error = error, .nIter = iter};
 }
 
+IterationResult solveDisconnectedLineLG(
+    const PowerGrid& grid, int slackBusIdx, int lineIdx, Real stepSize,
+    std::vector<BusState>& sol,
+    const std::function<void(MatrixMutableView A, VectorMutableView xb)>&
+        linear_solver,
+    int max_iter, Real tol)
+{
+    assert(grid.getBus(slackBusIdx).type == GeneratorBus);
+    int n = grid.busCount();
+    int nl = grid.loadCount();
+
+    auto bus_map = remapBus(grid, slackBusIdx);
+    auto Y = admittanceMatrix(grid, bus_map);
+    auto VAngle = Vector(n);
+    auto VAmp = Vector(n);
+    auto P = Vector(n);
+    auto Q = Vector(n);
+    auto Px = Vector(n);
+    auto Qx = Vector(n);
+    auto residual =
+        Vector(n - 1 + nl);  // n - 1 real power and nl reactive power
+    auto jac = Matrix(n - 1 + nl, n - 1 + nl);
+    auto dir = Vector(5);
+    init(grid, bus_map, sol, mutableView(VAngle), mutableView(VAmp),
+         mutableView(P), mutableView(Q));
+
+    Real error = 0;
+    int iter = 0;
+
+    const auto& line = grid.getLine(lineIdx);
+    int p, q;
+    if (grid.getBus(line.startBus).type == GeneratorBus)
+    {
+        assert(grid.getBus(line.endBus).type == LoadBus);
+        p = bus_map.getMatrixIdx(line.endBus);
+        q = bus_map.getMatrixIdx(line.startBus);
+    }
+    else
+    {
+        assert(grid.getBus(line.startBus).type == LoadBus);
+        assert(grid.getBus(line.endBus).type == GeneratorBus);
+        p = bus_map.getMatrixIdx(line.startBus);
+        q = bus_map.getMatrixIdx(line.endBus);
+    }
+
+    Complex y_pq = 1.0 / line.totalImped;
+    Real lineB = line.shuntSusceptance;
+    // G_pq
+    dir(0) = y_pq.real();
+    // B_pq
+    dir(1) = y_pq.imag();
+    // G_PP
+    dir(2) = -y_pq.real();
+    // B_pp
+    dir(3) = -y_pq.imag() - lineB;
+    // G_qq
+    dir(4) = -y_pq.real();
+
+    auto Y_pq = Y(p, q) + Complex(dir(0), dir(1));
+    auto Y_pp = Y(p, p) + Complex(dir(2), dir(3));
+    auto Y_qq = Y(q, q) + Complex(dir(4), 0);
+
+    Real distance = blas::nrm2(dir);
+    blas::scal(1.0 / distance, mutableView(dir));
+    int step_count = (int)(distance / stepSize);
+
+    for (int step = 0; step < step_count; step++)
+    {
+        std::cout << "step : " << step << " / " << step_count << std::endl;
+        // change Y towards the target value
+        Y(p, q) += Complex(dir(0), dir(1)) * stepSize;
+        Y(p, p) += Complex(dir(2), dir(3)) * stepSize;
+        Y(q, q) += Complex(dir(4), 0) * stepSize;
+        for (; iter < max_iter; iter++)
+        {
+            powerFromVoltage(VAngle, VAmp, Y, mutableView(Px),
+                             mutableView(Qx));
+            powerMismatch(P, Q, Px, Qx, mutableView(residual));
+            error = maxAbs(residual);
+            std::cout << "error: " << error << std::endl;
+            if (error < tol)
+            {
+                break;
+            }
+            fullJacobian(VAngle, VAmp, Px, Qx, Y, mutableView(jac));
+            // dx = - jac^(-1) res, i.e. jac (- dx) = res
+            linear_solver(mutableView(jac), mutableView(residual));
+            // now -dx = residual
+            update(residual, mutableView(VAngle), mutableView(VAmp));
+        }
+    }
+
+    std::cout << "final step : (" << (Y_pq - Y(p, q)).real() << ", "
+              << (Y_pq - Y(p, q)).imag() << ", " << (Y_pp - Y(p, p)).real()
+              << ", " << (Y_pp - Y(p, p)).imag() << ", "
+              << (Y_qq - Y(q, q)).real() << ", " << (Y_qq - Y(q, q)).imag()
+              << ")" << std::endl;
+    // finally
+    Y(p, q) = Y_pq;
+    Y(p, p) = Y_pp;
+    Y(q, q) = Y_qq;
+    for (; iter < max_iter; iter++)
+    {
+        powerFromVoltage(VAngle, VAmp, Y, mutableView(Px), mutableView(Qx));
+        powerMismatch(P, Q, Px, Qx, mutableView(residual));
+        error = maxAbs(residual);
+        std::cout << "error: " << error << std::endl;
+        if (error < tol)
+        {
+            break;
+        }
+        fullJacobian(VAngle, VAmp, Px, Qx, Y, mutableView(jac));
+        // dx = - jac^(-1) res, i.e. jac (- dx) = res
+        linear_solver(mutableView(jac), mutableView(residual));
+        // now -dx = residual
+        update(residual, mutableView(VAngle), mutableView(VAmp));
+    }
+
+    output(bus_map, VAngle, VAmp, Px, Qx, sol);
+    return IterationResult{.error = error, .nIter = iter};
+}
+
+IterationResult solveDiscLineLGDowndate(
+    const PowerGrid& grid, int slackBusIdx, int lineIdx, Real stepSize,
+    std::vector<BusState>& sol,
+    const std::function<void(MatrixMutableView A, VectorMutableView xb)>&
+        linear_solver,
+    int max_iter, Real tol)
+{
+    assert(grid.getBus(slackBusIdx).type == GeneratorBus);
+    int n = grid.busCount();
+    int nl = grid.loadCount();
+    int ng = n - nl;
+
+    auto bus_map = remapBus(grid, slackBusIdx);
+    auto Y = admittanceMatrix(grid, bus_map);
+    auto VAngle = Vector(n);
+    auto VAmp = Vector(n);
+    auto P = Vector(n);
+    auto Q = Vector(n);
+    auto Px = Vector(n);
+    auto Qx = Vector(n);
+    auto residual =
+        Vector(n - 1 + nl);  // n - 1 real power and nl reactive power
+    auto jac = Matrix(n - 1 + nl, n - 1 + nl);
+    auto _jac_f_a = Matrix(n - 1 + nl, 5, 0.0);  // - jac_f_a
+    auto dir = Vector(5);
+    auto da = Vector(5);
+    init(grid, bus_map, sol, mutableView(VAngle), mutableView(VAmp),
+         mutableView(P), mutableView(Q));
+
+    Real error = 0;
+    int iter = 0;
+
+    const auto& line = grid.getLine(lineIdx);
+    int p, q;
+    if (grid.getBus(line.startBus).type == GeneratorBus)
+    {
+        assert(grid.getBus(line.endBus).type == LoadBus);
+        p = bus_map.getMatrixIdx(line.endBus);
+        q = bus_map.getMatrixIdx(line.startBus);
+    }
+    else
+    {
+        assert(grid.getBus(line.startBus).type == LoadBus);
+        assert(grid.getBus(line.endBus).type == GeneratorBus);
+        p = bus_map.getMatrixIdx(line.startBus);
+        q = bus_map.getMatrixIdx(line.endBus);
+    }
+
+    Complex y_pq = 1.0 / line.totalImped;
+    Real lineB = line.shuntSusceptance;
+    // G_pq
+    dir(0) = y_pq.real();
+    // B_pq
+    dir(1) = y_pq.imag();
+    // G_PP
+    dir(2) = -y_pq.real();
+    // B_pp
+    dir(3) = -y_pq.imag() - lineB;
+    // G_qq
+    dir(4) = -y_pq.real();
+
+    auto Y_pq = Y(p, q) + Complex(dir(0), dir(1));
+    auto Y_pp = Y(p, p) + Complex(dir(2), dir(3));
+    auto Y_qq = Y(q, q) + Complex(dir(4), 0);
+
+    Real distance = blas::nrm2(dir);
+    blas::scal(1.0 / distance, mutableView(dir));
+    int step_count = (int)(distance / stepSize);
+
+    for (int step = 0; step < step_count; step++)
+    {
+        std::cout << "step : " << step << " / " << step_count << std::endl;
+        // change Y towards the target value
+        Y(p, q) += Complex(dir(0), dir(1)) * stepSize;
+        Y(p, p) += Complex(dir(2), dir(3)) * stepSize;
+        Y(q, q) += Complex(dir(4), 0) * stepSize;
+        for (; iter < max_iter; iter++)
+        {
+            powerFromVoltage(VAngle, VAmp, Y, mutableView(Px),
+                             mutableView(Qx));
+            powerMismatch(P, Q, Px, Qx, mutableView(residual));
+            error = maxAbs(residual);
+            std::cout << "error: " << error << std::endl;
+            if (error < tol)
+            {
+                break;
+            }
+            fullJacobian(VAngle, VAmp, Px, Qx, Y, mutableView(jac));
+            // dx = - jac^(-1) res, i.e. jac (- dx) = res
+            linear_solver(mutableView(jac), mutableView(residual));
+            // now -dx = residual
+            update(residual, mutableView(VAngle), mutableView(VAmp));
+        }
+        // f_p-1 over G_pq
+        _jac_f_a(p - 1, 0) =
+            VAmp(p) * VAmp(q) * std::cos(VAngle(p) - VAngle(q));
+        // f_{q - 1} over G_pq
+        _jac_f_a(q - 1, 0) =
+            VAmp(q) * VAmp(p) * std::cos(VAngle(q) - VAngle(p));
+        // f_{N - N_G - 1 + p} over G_pq
+        _jac_f_a(n - ng - 1 + p, 0) =
+            VAmp(p) * VAmp(q) * std::sin(VAngle(p) - VAngle(q));
+
+        // f_p - 1 over B_pq
+        _jac_f_a(p - 1, 1) =
+            VAmp(p) * VAmp(q) * std::sin(VAngle(p) - VAngle(q));
+        // f_q - 1 over B_pq
+        _jac_f_a(q - 1, 1) =
+            VAmp(p) * VAmp(q) * std::sin(VAngle(q) - VAngle(p));
+        // f_{N - N_G - 1 + p} over B_pq
+        _jac_f_a(n - ng - 1 + p, 1) =
+            -VAmp(p) * VAmp(q) * std::cos(VAngle(p) - VAngle(q));
+
+        // f_p - 1 over G_pp
+        _jac_f_a(p - 1, 2) = VAmp(p) * VAmp(p);
+
+        // f_{N - N_G -1 + p} over B_pp
+        _jac_f_a(n - ng - 1 + p, 3) = -VAmp(p) * VAmp(p);
+
+        // f_q - 1 over G_qq
+        _jac_f_a(q - 1, 4) = VAmp(q) * VAmp(q);
+
+        scale(-1.0, mutableView(_jac_f_a));
+
+        // solve jac_f_x . jac_x_a = _jac_f_a
+        lapack::gesv(mutableView(jac), mutableView(_jac_f_a));
+        auto jac_x_a = _jac_f_a;
+
+        // copy solution to x
+        for (int i = 0; i < n - 1; i++)
+        {
+            residual(i) = VAngle(i + 1);
+        }
+        for (int i = 0; i < nl; i++)
+        {
+            residual(i + n - 1) = VAmp(ng + i);
+        }
+
+        for (int i = 0; i < da.size(); i++)
+        {
+            da(i) = dir(i) * stepSize;
+        }
+        // x = jac_x_a * da + x
+        blas::gemv(1.0, jac_x_a, blas::NoTranspose, da, 1.0,
+                   mutableView(residual));
+
+        std::cout << "da: " << da << std::endl;
+
+        // copy it back
+        for (int i = 0; i < n - 1; i++)
+        {
+            VAngle(i + 1) = residual(i);
+        }
+        for (int i = 0; i < nl; i++)
+        {
+            VAmp(ng + i) = residual(i + n - 1);
+        }
+    }
+
+    std::cout << "final step : (" << (Y_pq - Y(p, q)).real() << ", "
+              << (Y_pq - Y(p, q)).imag() << ", " << (Y_pp - Y(p, p)).real()
+              << ", " << (Y_pp - Y(p, p)).imag() << ", "
+              << (Y_qq - Y(q, q)).real() << ", " << (Y_qq - Y(q, q)).imag()
+              << ")" << std::endl;
+    // finally
+    Y(p, q) = Y_pq;
+    Y(p, p) = Y_pp;
+    Y(q, q) = Y_qq;
+    for (; iter < max_iter; iter++)
+    {
+        powerFromVoltage(VAngle, VAmp, Y, mutableView(Px), mutableView(Qx));
+        powerMismatch(P, Q, Px, Qx, mutableView(residual));
+        error = maxAbs(residual);
+        std::cout << "error: " << error << std::endl;
+        if (error < tol)
+        {
+            break;
+        }
+        fullJacobian(VAngle, VAmp, Px, Qx, Y, mutableView(jac));
+        // dx = - jac^(-1) res, i.e. jac (- dx) = res
+        linear_solver(mutableView(jac), mutableView(residual));
+        // now -dx = residual
+        update(residual, mutableView(VAngle), mutableView(VAmp));
+    }
+
+    output(bus_map, VAngle, VAmp, Px, Qx, sol);
+    return IterationResult{.error = error, .nIter = iter};
+}
+
 }  // namespace sanity::powerflow

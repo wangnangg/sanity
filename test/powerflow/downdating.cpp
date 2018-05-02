@@ -111,9 +111,9 @@ void testDowndatingDisLineLL(const PowerGrid& old_grid, int slack_id,
                                sanity::linear::solveLU, max_iter, err);
         std::cout << "error: " << res.error << ", iter:" << res.nIter
                   << std::endl;
-        std::cout << "solution:" << std::endl;
         if (print_sol)
         {
+            std::cout << "solution:" << std::endl;
             printPfSol(sol);
         }
         std::cout << std::endl;
@@ -127,9 +127,9 @@ void testDowndatingDisLineLL(const PowerGrid& old_grid, int slack_id,
                                sanity::linear::solveLU, max_iter, err);
         std::cout << "error: " << res.error << ", iter:" << res.nIter
                   << std::endl;
-        std::cout << "solution:" << std::endl;
         if (print_sol)
         {
+            std::cout << "solution:" << std::endl;
             printPfSol(sol);
         }
         std::cout << std::endl;
@@ -150,9 +150,9 @@ void testDowndatingDisLineLL(const PowerGrid& old_grid, int slack_id,
                   << std::endl;
         auto sol = old_sol;
         downdatingOnDisconnectedLineLL(old_grid, slack_id, dis_line_idx, sol);
-        std::cout << "which is:" << std::endl;
         if (print_sol)
         {
+            std::cout << "which is:" << std::endl;
             printPfSol(sol);
         }
         auto res = solveNewton(new_grid, slack_id, sol,
@@ -168,7 +168,7 @@ void testDowndatingDisLineLG(const PowerGrid& old_grid, int slack_id,
                              bool print_sol = false)
 {
     Real err = 1e-6;
-    int max_iter = 40;
+    int max_iter = 10;
     std::vector<BusState> old_sol;
     std::vector<BusState> new_sol;
     {
@@ -178,9 +178,9 @@ void testDowndatingDisLineLG(const PowerGrid& old_grid, int slack_id,
                                sanity::linear::solveLU, max_iter, err);
         std::cout << "error: " << res.error << ", iter:" << res.nIter
                   << std::endl;
-        std::cout << "solution:" << std::endl;
         if (print_sol)
         {
+            std::cout << "solution:" << std::endl;
             printPfSol(sol);
         }
         std::cout << std::endl;
@@ -194,9 +194,9 @@ void testDowndatingDisLineLG(const PowerGrid& old_grid, int slack_id,
                                sanity::linear::solveLU, max_iter, err);
         std::cout << "error: " << res.error << ", iter:" << res.nIter
                   << std::endl;
-        std::cout << "solution:" << std::endl;
         if (print_sol)
         {
+            std::cout << "solution:" << std::endl;
             printPfSol(sol);
         }
         std::cout << std::endl;
@@ -217,9 +217,9 @@ void testDowndatingDisLineLG(const PowerGrid& old_grid, int slack_id,
                   << std::endl;
         auto sol = old_sol;
         downdatingOnDisconnectedLineLG(old_grid, slack_id, dis_line_idx, sol);
-        std::cout << "which is:" << std::endl;
         if (print_sol)
         {
+            std::cout << "which is:" << std::endl;
             printPfSol(sol);
         }
         auto res = solveNewton(new_grid, slack_id, sol,
@@ -700,7 +700,7 @@ TEST(powerflow, __downdating_dis_line_LL_case1354)
     auto old_grid = matpower2Grid(ext_model);
 
     // remove branch 75
-    int dis_line_idx = 75;
+    int dis_line_idx = 74;
     ext_model.branches.erase(ext_model.branches.begin() + dis_line_idx);
 
     auto new_grid = matpower2Grid(ext_model);
@@ -727,4 +727,42 @@ TEST(powerflow, __downdating_dis_line_LG_case1354)
 
     testDowndatingDisLineLG(old_grid.grid, old_grid.slack, dis_line_idx,
                             new_grid.grid);
+}
+
+TEST(powerflow, __solve_dis_line_LG_case1354)
+{
+    auto ext_model =
+        readMatpowerModel(data_base + "./matpower_models/case1354.txt");
+    auto old_grid = matpower2Grid(ext_model);
+
+    // remove branch 55
+    int dis_line_idx = 55;
+    ext_model.branches.erase(ext_model.branches.begin() + dis_line_idx);
+
+    auto new_grid = matpower2Grid(ext_model);
+
+    assert(new_grid.grid.lineCount() + 1 == old_grid.grid.lineCount());
+
+    auto sol = flatStart(old_grid.grid, old_grid.slack);
+    solveDisconnectedLineLG(old_grid.grid, old_grid.slack, dis_line_idx, 1,
+                            sol, sanity::linear::solveLU, 1000, 1e-6);
+}
+
+TEST(powerflow, __solve_dis_line_downdate_LG_case1354)
+{
+    auto ext_model =
+        readMatpowerModel(data_base + "./matpower_models/case1354.txt");
+    auto old_grid = matpower2Grid(ext_model);
+
+    // remove branch 55
+    int dis_line_idx = 55;
+    ext_model.branches.erase(ext_model.branches.begin() + dis_line_idx);
+
+    auto new_grid = matpower2Grid(ext_model);
+
+    assert(new_grid.grid.lineCount() + 1 == old_grid.grid.lineCount());
+
+    auto sol = flatStart(old_grid.grid, old_grid.slack);
+    solveDiscLineLGDowndate(old_grid.grid, old_grid.slack, dis_line_idx, 1,
+                            sol, sanity::linear::solveLU, 1000, 1e-6);
 }
