@@ -2,6 +2,7 @@
 #include <ostream>
 #include "matrix.hpp"
 #include "matrix_view.hpp"
+#include "spmatrix.hpp"
 #include "vector.hpp"
 #include "vector_view.hpp"
 
@@ -37,4 +38,7 @@ std::ostream& operator<<(std::ostream& os, MatrixConstView mat);
 std::ostream& operator<<(std::ostream& os, CMatrixConstView mat);
 std::ostream& operator<<(std::ostream& os, VectorConstView vec);
 std::ostream& operator<<(std::ostream& os, CVectorConstView vec);
+
+std::ostream& operator<<(std::ostream& os, const Spmatrix& spmat);
+
 }  // namespace sanity::linear

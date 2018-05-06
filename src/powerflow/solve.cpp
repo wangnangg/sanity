@@ -457,8 +457,8 @@ IterationResult solveNewton(
          mutableView(P), mutableView(Q));
 
     Real error = 0;
-    int iter;
-    for (iter = 0; iter < max_iter; iter++)
+    uint iter;
+    for (iter = 0; iter < (uint)max_iter; iter++)
     {
         powerFromVoltage(VAngle, VAmp, Y, mutableView(Px), mutableView(Qx));
         powerMismatch(P, Q, Px, Qx, mutableView(residual));

@@ -4,6 +4,8 @@
 
 namespace sanity::linear
 {
+Real norm2(VectorConstView v) { return blas::nrm2(v); }
+Real norm1(VectorConstView v) { return blas::asum(v); }
 void scale(Real a, VectorMutableView v) { blas::scal(a, v); }
 void scale(Complex a, CVectorMutableView v) { blas::scal(a, v); }
 
@@ -27,6 +29,8 @@ void scale(Complex a, CMatrixMutableView m)
         }
     }
 }
+
+Real dot(VectorConstView x, VectorConstView y) { return blas::dot(x, y); }
 void dot(MatrixConstView A, VectorConstView v, VectorMutableView x)
 {
     blas::gemv(1.0, A, blas::NoTranspose, v, 0.0, x);

@@ -17,10 +17,10 @@ IterationResult solveNewton(
     int n = x0.size();
     auto y = Vector(n);
     auto jac = Matrix(n, n);
-    int iter;
+    uint iter;
     Real error;
 
-    for (iter = 0; iter < max_iter; iter++)
+    for (iter = 0; iter < (uint)max_iter; iter++)
     {
         target_func(x0, mutableView(y), mutableView(jac));
         error = maxAbs(y);

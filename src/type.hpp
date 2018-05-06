@@ -10,5 +10,5 @@ using uint = unsigned int;
 struct IterationResult
 {
     Real error;
-    int nIter;
+    uint nIter;
 };

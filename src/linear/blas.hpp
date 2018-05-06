@@ -10,6 +10,7 @@ enum Oper
     Transpose,
     ConjTranspose
 };
+
 Real dot(VectorConstView x, VectorConstView y);
 Real nrm2(VectorConstView x);
 Real asum(VectorConstView x);
