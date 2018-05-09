@@ -35,12 +35,12 @@ IterationResult solveSor(const Spmatrix& A, linear::VectorMutableView x,
                 }
                 else
                 {  // non diag
-                    residual -= iter.val() * x((int)iter.col());
+                    residual -= iter.val() * x(iter.col());
                 }
                 iter.nextNonzero();
             }
             assert(std::abs(a_ii) > tol);
-            x((int)i) = w * residual / a_ii + (1 - w) * x((int)i);
+            x(i) = w * residual / a_ii + (1 - w) * x(i);
         }
         std::cout << x << std::endl;
         error = maxDiff(x, x_prev);

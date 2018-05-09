@@ -76,7 +76,7 @@ MatpowerModel readMatpowerModel(const std::string& filename);
 struct MatpowerConvertedGrid
 {
     PowerGrid grid;
-    int slack;
+    uint slack;
 };
 MatpowerConvertedGrid matpower2Grid(const MatpowerModel& model);
 

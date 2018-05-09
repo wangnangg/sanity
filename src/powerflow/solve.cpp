@@ -8,13 +8,13 @@ using namespace sanity::linear;
 namespace sanity::powerflow
 {
 // generators come first and then loads, index 0 is the slack bus.
-BusMap remapBus(const PowerGrid& grid, int slackBus)
+BusMap remapBus(const PowerGrid& grid, uint slackBus)
 {
-    auto mat2grid = std::vector<int>((uint)grid.busCount());
-    auto grid2mat = std::vector<int>((uint)grid.busCount());
-    int gen_idx = 1;
-    int load_idx = grid.generatorCount();
-    for (int i = 0; i < grid.busCount(); i++)
+    auto mat2grid = std::vector<uint>(grid.busCount());
+    auto grid2mat = std::vector<uint>(grid.busCount());
+    uint gen_idx = 1;
+    uint load_idx = grid.generatorCount();
+    for (uint i = 0; i < grid.busCount(); i++)
     {
         const auto& bus = grid.getBus(i);
         if (bus.type == GeneratorBus)
@@ -22,19 +22,19 @@ BusMap remapBus(const PowerGrid& grid, int slackBus)
             if (bus.idx == slackBus)
             {
                 mat2grid[0] = bus.idx;
-                grid2mat[(uint)bus.idx] = 0;
+                grid2mat[bus.idx] = 0;
             }
             else
             {
-                mat2grid[(uint)gen_idx] = bus.idx;
-                grid2mat[(uint)bus.idx] = gen_idx;
+                mat2grid[gen_idx] = bus.idx;
+                grid2mat[bus.idx] = gen_idx;
                 gen_idx += 1;
             }
         }
         else
         {  // load bus
-            mat2grid[(uint)load_idx] = bus.idx;
-            grid2mat[(uint)bus.idx] = load_idx;
+            mat2grid[load_idx] = bus.idx;
+            grid2mat[bus.idx] = load_idx;
             load_idx += 1;
         }
     }
@@ -43,13 +43,13 @@ BusMap remapBus(const PowerGrid& grid, int slackBus)
 
 CMatrix admittanceMatrix(const PowerGrid& grid, const BusMap& bus_map)
 {
-    int n = grid.busCount();
+    uint n = grid.busCount();
     CMatrix mat(n, n, Complex());
-    for (int i = 0; i < grid.lineCount(); i++)
+    for (uint i = 0; i < grid.lineCount(); i++)
     {
         const auto& line = grid.getLine(i);
-        int start = bus_map.getMatrixIdx(line.startBus);
-        int end = bus_map.getMatrixIdx(line.endBus);
+        uint start = (uint)bus_map.getMatrixIdx(line.startBus);
+        uint end = (uint)bus_map.getMatrixIdx(line.endBus);
         Complex y = Complex(1.0, 0.0) / line.totalImped;
 
         mat(start, end) -= y;
@@ -61,10 +61,10 @@ CMatrix admittanceMatrix(const PowerGrid& grid, const BusMap& bus_map)
         mat(end, end) += y;
         mat(end, end) += Complex(0.0, line.shuntSusceptance);
     }
-    for (int i = 0; i < grid.shuntCount(); i++)
+    for (uint i = 0; i < grid.shuntCount(); i++)
     {
         const auto& shunt = grid.getShunt(i);
-        int bus = bus_map.getMatrixIdx(shunt.busIdx);
+        uint bus = bus_map.getMatrixIdx(shunt.busIdx);
         mat(bus, bus) += Complex(1.0, 0.0) / shunt.impedance;
     }
     return mat;
@@ -79,17 +79,17 @@ void powerFromVoltage(VectorConstView VAngle, VectorConstView VAmp,
                       CMatrixConstView Y, VectorMutableView P,
                       VectorMutableView Q)
 {
-    int n = VAngle.size();
+    uint n = VAngle.size();
     assert(n == VAmp.size());
     assert(Y.nrow() == Y.ncol());
     assert(n == Y.nrow());
     assert(n == P.size());
     assert(n == Q.size());
     // real power
-    for (int k = 0; k < P.size(); k++)
+    for (uint k = 0; k < P.size(); k++)
     {
         P(k) = 0;
-        for (int j = 0; j < n; j++)
+        for (uint j = 0; j < n; j++)
         {
             Real G = Y(k, j).real();
             Real B = Y(k, j).imag();
@@ -103,10 +103,10 @@ void powerFromVoltage(VectorConstView VAngle, VectorConstView VAmp,
     }
 
     // reactive power
-    for (int k = 0; k < Q.size(); k++)
+    for (uint k = 0; k < Q.size(); k++)
     {
         Q(k) = 0;
-        for (int j = 0; j < n; j++)
+        for (uint j = 0; j < n; j++)
         {
             Real G = Y(k, j).real();
             Real B = Y(k, j).imag();
@@ -137,7 +137,7 @@ void jacPAngle(VectorConstView VAngle, VectorConstView VAmp,
                VectorConstView P, VectorConstView Q, CMatrixConstView Y,
                MatrixMutableView jac)
 {
-    int n = VAngle.size();
+    uint n = VAngle.size();
     assert(n == VAmp.size());
     assert(n == P.size());
     assert(n == Q.size());
@@ -145,12 +145,12 @@ void jacPAngle(VectorConstView VAngle, VectorConstView VAmp,
     assert(n == Y.ncol());
     assert(n - 1 == jac.nrow());
     assert(n - 1 == jac.ncol());
-    for (int j = 0; j < jac.nrow(); j++)  // bus index
+    for (uint j = 0; j < jac.nrow(); j++)  // bus index
     {
-        for (int k = 0; k < jac.ncol(); k++)  // bus index
+        for (uint k = 0; k < jac.ncol(); k++)  // bus index
         {
-            int bus_j = j + 1;
-            int bus_k = k + 1;
+            uint bus_j = j + 1;
+            uint bus_k = k + 1;
             Real G = Y(bus_j, bus_k).real();
             Real B = Y(bus_j, bus_k).imag();
             if (bus_j == bus_k)
@@ -183,21 +183,21 @@ void jacPAngle(VectorConstView VAngle, VectorConstView VAmp,
 void jacPAmp(VectorConstView VAngle, VectorConstView VAmp, VectorConstView P,
              VectorConstView Q, CMatrixConstView Y, MatrixMutableView jac)
 {
-    int n = VAngle.size();
+    uint n = VAngle.size();
     assert(n == VAmp.size());
     assert(n == P.size());
     assert(n == Q.size());
     assert(n == Y.nrow());
     assert(n == Y.ncol());
     assert(n - 1 == jac.nrow());
-    int nl = jac.ncol();
-    int ng = n - nl;
-    for (int j = 0; j < jac.nrow(); j++)
+    uint nl = jac.ncol();
+    uint ng = n - nl;
+    for (uint j = 0; j < jac.nrow(); j++)
     {
-        for (int k = 0; k < jac.ncol(); k++)
+        for (uint k = 0; k < jac.ncol(); k++)
         {
-            int bus_j = j + 1;
-            int bus_k = k + ng;  // first load
+            uint bus_j = j + 1;
+            uint bus_k = k + ng;  // first load
             Real G = Y(bus_j, bus_k).real();
             Real B = Y(bus_j, bus_k).imag();
             if (bus_j == bus_k)
@@ -231,22 +231,22 @@ void jacQAngle(VectorConstView VAngle, VectorConstView VAmp,
                VectorConstView P, VectorConstView Q, CMatrixConstView Y,
                MatrixMutableView jac)
 {
-    int n = VAngle.size();
+    uint n = VAngle.size();
     assert(n == VAmp.size());
     assert(n == P.size());
     assert(n == Q.size());
     assert(n == Y.nrow());
     assert(n == Y.ncol());
     assert(n - 1 == jac.ncol());
-    int nl = jac.nrow();
-    int ng = n - nl;
+    uint nl = jac.nrow();
+    uint ng = n - nl;
 
-    for (int j = 0; j < jac.nrow(); j++)
+    for (uint j = 0; j < jac.nrow(); j++)
     {
-        for (int k = 0; k < jac.ncol(); k++)
+        for (uint k = 0; k < jac.ncol(); k++)
         {
-            int bus_j = j + ng;  // first load
-            int bus_k = k + 1;
+            uint bus_j = j + ng;  // first load
+            uint bus_k = k + 1;
             Real G = Y(bus_j, bus_k).real();
             Real B = Y(bus_j, bus_k).imag();
             if (bus_j == bus_k)
@@ -279,22 +279,22 @@ void jacQAngle(VectorConstView VAngle, VectorConstView VAmp,
 void jacQAmp(VectorConstView VAngle, VectorConstView VAmp, VectorConstView P,
              VectorConstView Q, CMatrixConstView Y, MatrixMutableView jac)
 {
-    int n = VAngle.size();
+    uint n = VAngle.size();
     assert(n == VAmp.size());
     assert(n == P.size());
     assert(n == Q.size());
     assert(n == Y.nrow());
     assert(n == Y.ncol());
     assert(jac.nrow() == jac.ncol());
-    int nl = jac.nrow();
-    int ng = n - nl;
+    uint nl = jac.nrow();
+    uint ng = n - nl;
 
-    for (int j = 0; j < jac.nrow(); j++)
+    for (uint j = 0; j < jac.nrow(); j++)
     {
-        for (int k = 0; k < jac.ncol(); k++)
+        for (uint k = 0; k < jac.ncol(); k++)
         {
-            int bus_j = j + ng;  // first load
-            int bus_k = k + ng;  // first load
+            uint bus_j = j + ng;  // first load
+            uint bus_k = k + ng;  // first load
             Real G = Y(bus_j, bus_k).real();
             Real B = Y(bus_j, bus_k).imag();
             if (bus_j == bus_k)
@@ -315,38 +315,36 @@ void fullJacobian(VectorConstView VAngle, VectorConstView VAmp,
                   VectorConstView P, VectorConstView Q, CMatrixConstView Y,
                   MatrixMutableView jac)
 {
-    int n = VAngle.size();
+    uint n = VAngle.size();
     assert(n == VAmp.size());
     assert(n == P.size());
     assert(n == Q.size());
     assert(n == Y.nrow());
     assert(n == Y.ncol());
     assert(jac.nrow() == jac.ncol());
-    int nl = jac.nrow() + 1 - n;
+    uint nl = jac.nrow() + 1 - n;
     jacPAngle(VAngle, VAmp, P, Q, Y, blockView(jac, 0, 0, n - 1, n - 1));
     jacPAmp(VAngle, VAmp, P, Q, Y, blockView(jac, 0, n - 1, n - 1, nl));
     jacQAngle(VAngle, VAmp, P, Q, Y, blockView(jac, n - 1, 0, nl, n - 1));
     jacQAmp(VAngle, VAmp, P, Q, Y, blockView(jac, n - 1, n - 1, nl, nl));
 }
 
-std::vector<BusState> flatStart(const PowerGrid& grid, int slackBusIdx)
+std::vector<BusState> flatStart(const PowerGrid& grid, uint slackBusIdx)
 {
     std::vector<BusState> states((uint)grid.busCount());
     Real defVol = grid.getBus(slackBusIdx).attr.generator.voltageAmp;
-    for (int i = 0; i < (int)states.size(); i++)
+    for (uint i = 0; i < states.size(); i++)
     {
         const auto& bus = grid.getBus(i);
         switch (bus.type)
         {
             case GeneratorBus:  // PV
-                states[(uint)i].power =
-                    Complex(bus.attr.generator.realPower, 0);
-                states[(uint)i].voltage =
-                    Complex(bus.attr.generator.voltageAmp, 0);
+                states[i].power = Complex(bus.attr.generator.realPower, 0);
+                states[i].voltage = Complex(bus.attr.generator.voltageAmp, 0);
                 break;
             case LoadBus:
-                states[(uint)i].power = bus.attr.load.power;
-                states[(uint)i].voltage = Complex(defVol, 0);
+                states[i].power = bus.attr.load.power;
+                states[i].voltage = Complex(defVol, 0);
                 break;
         }
     }
@@ -364,12 +362,12 @@ static void init(const PowerGrid& grid, const BusMap& map,
     P(0) = guess[(uint)map.getGridIdx(0)].power.real();
     Q(0) = guess[(uint)map.getGridIdx(0)].power.imag();
 
-    int ng = grid.generatorCount();
-    int n = grid.busCount();
+    uint ng = grid.generatorCount();
+    uint n = grid.busCount();
     // for other generators, PV bus
-    for (int i = 1; i < ng; i++)
+    for (uint i = 1; i < ng; i++)
     {
-        int gridIdx = map.getGridIdx(i);
+        uint gridIdx = map.getGridIdx(i);
         const auto& bus = grid.getBus(gridIdx);
         P(i) = bus.attr.generator.realPower;
         VAmp(i) = bus.attr.generator.voltageAmp;
@@ -377,14 +375,14 @@ static void init(const PowerGrid& grid, const BusMap& map,
         VAngle(i) = std::arg(guess[(uint)gridIdx].voltage);
     }
     // for loads, PQ bus
-    for (int i = ng; i < n; i++)
+    for (uint i = ng; i < n; i++)
     {
-        int gridIdx = map.getGridIdx(i);
+        uint gridIdx = map.getGridIdx(i);
         const auto& bus = grid.getBus(gridIdx);
         P(i) = -bus.attr.load.power.real();  // injected power
         Q(i) = -bus.attr.load.power.imag();  // injected power
-        VAmp(i) = std::abs(guess[(uint)gridIdx].voltage);
-        VAngle(i) = std::arg(guess[(uint)gridIdx].voltage);
+        VAmp(i) = std::abs(guess[gridIdx].voltage);
+        VAngle(i) = std::arg(guess[gridIdx].voltage);
     }
 }
 
@@ -394,14 +392,14 @@ static void powerMismatch(
     VectorMutableView residual  // n - 1 real power and  nl reactive power
 )
 {
-    int n = P.size();
-    int nl = residual.size() - n + 1;
-    int ng = n - nl;
-    for (int i = 0; i < n - 1; i++)
+    uint n = P.size();
+    uint nl = residual.size() - n + 1;
+    uint ng = n - nl;
+    for (uint i = 0; i < n - 1; i++)
     {
         residual(i) = Px(i + 1) - P(i + 1);
     }
-    for (int i = 0; i < nl; i++)
+    for (uint i = 0; i < nl; i++)
     {
         residual(i + n - 1) = Qx(ng + i) - Q(ng + i);
     }
@@ -410,9 +408,9 @@ static void powerMismatch(
 static void update(VectorConstView _dx, VectorMutableView VAngle,
                    VectorMutableView VAmp)
 {
-    int n = VAngle.size();
-    int nl = _dx.size() - n + 1;
-    int ng = n - nl;
+    uint n = VAngle.size();
+    uint nl = _dx.size() - n + 1;
+    uint ng = n - nl;
     blas::axpy(-1.0, blockView(_dx, 0, n - 1),
                blockView(VAngle, 1, n - 1));  // update  n - 1 angles
     blas::axpy(-1.0, blockView(_dx, n - 1, nl),
@@ -423,24 +421,24 @@ static void output(const BusMap& map, VectorConstView VAngle,
                    VectorConstView VAmp, VectorConstView P, VectorConstView Q,
                    std::vector<BusState>& sol)
 {
-    int n = sol.size();
-    for (int i = 0; i < n; i++)
+    uint n = sol.size();
+    for (uint i = 0; i < n; i++)
     {
-        int bus_i = map.getGridIdx(i);
-        sol[(uint)bus_i].power = Complex(P(i), Q(i));
-        sol[(uint)bus_i].voltage = std::polar(VAmp(i), VAngle(i));
+        uint bus_i = map.getGridIdx(i);
+        sol[bus_i].power = Complex(P(i), Q(i));
+        sol[bus_i].voltage = std::polar(VAmp(i), VAngle(i));
     }
 }
 
 IterationResult solveNewton(
-    const PowerGrid& grid, int slackBusIdx, std::vector<BusState>& sol,
+    const PowerGrid& grid, uint slackBusIdx, std::vector<BusState>& sol,
     const std::function<void(MatrixMutableView A, VectorMutableView xb)>&
         linear_solver,
-    int max_iter, Real tol)
+    uint max_iter, Real tol)
 {
     assert(grid.getBus(slackBusIdx).type == GeneratorBus);
-    int n = grid.busCount();
-    int nl = grid.loadCount();
+    uint n = grid.busCount();
+    uint nl = grid.loadCount();
 
     auto bus_map = remapBus(grid, slackBusIdx);
     auto Y = admittanceMatrix(grid, bus_map);

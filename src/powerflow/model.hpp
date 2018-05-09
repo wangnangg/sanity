@@ -23,17 +23,17 @@ struct GeneratorAttr
 };
 struct Bus
 {
-    int idx;
+    uint idx;
     BusType type;
     union {
         LoadAttr load;
         GeneratorAttr generator;
     } attr;
-    Bus(int idx, LoadAttr load)
+    Bus(uint idx, LoadAttr load)
         : idx(idx), type(LoadBus), attr({.load = load})
     {
     }
-    Bus(int idx, GeneratorAttr gen)
+    Bus(uint idx, GeneratorAttr gen)
         : idx(idx), type(GeneratorBus), attr({.generator = gen})
     {
     }
@@ -41,17 +41,17 @@ struct Bus
 
 struct TransmissionLine
 {
-    int idx;
+    uint idx;
     Complex totalImped;
     Real shuntSusceptance;
-    int startBus;
-    int endBus;
+    uint startBus;
+    uint endBus;
 };
 
 struct ShuntElement
 {
-    int idx;
-    int busIdx;
+    uint idx;
+    uint busIdx;
     Complex impedance;
 };
 
@@ -60,31 +60,25 @@ class PowerGrid
     std::vector<Bus> _buses;  // 0, 1, 2, ...
     std::vector<TransmissionLine> _lines;
     std::vector<ShuntElement> _shunts;
-    int _gen_count = 0;
-    int _load_count = 0;
+    uint _gen_count = 0;
+    uint _load_count = 0;
 
 public:
-    int addLoadBus(Complex power);
-    int addGeneratorBus(Real real_power, Real voltage_amp, Real min_react,
-                        Real max_react);
-    int addTransmissionLine(int start, int end, Complex impedance,
-                            Real shunt_suscep);
-    int addShuntElement(int busIdx, Complex impedance);
-    Bus& getBus(int idx) { return _buses[(unsigned int)idx]; }
-    const Bus& getBus(int idx) const { return _buses[(unsigned int)idx]; }
-    const TransmissionLine& getLine(int idx) const
-    {
-        return _lines[(unsigned int)idx];
-    }
-    const ShuntElement& getShunt(int idx) const
-    {
-        return _shunts[(unsigned int)idx];
-    }
-    int busCount() const { return _buses.size(); }
-    int generatorCount() const { return _gen_count; }
-    int loadCount() const { return _load_count; }
-    int lineCount() const { return _lines.size(); }
-    int shuntCount() const { return _shunts.size(); }
+    uint addLoadBus(Complex power);
+    uint addGeneratorBus(Real real_power, Real voltage_amp, Real min_react,
+                         Real max_react);
+    uint addTransmissionLine(uint start, uint end, Complex impedance,
+                             Real shunt_suscep);
+    uint addShuntElement(uint busIdx, Complex impedance);
+    Bus& getBus(uint idx) { return _buses[idx]; }
+    const Bus& getBus(uint idx) const { return _buses[idx]; }
+    const TransmissionLine& getLine(uint idx) const { return _lines[idx]; }
+    const ShuntElement& getShunt(uint idx) const { return _shunts[idx]; }
+    uint busCount() const { return _buses.size(); }
+    uint generatorCount() const { return _gen_count; }
+    uint loadCount() const { return _load_count; }
+    uint lineCount() const { return _lines.size(); }
+    uint shuntCount() const { return _shunts.size(); }
 };
 
 }  // namespace sanity::powerflow

@@ -197,6 +197,6 @@ TEST(petrinet, srn_birthdeath_decomp)
         });
     std::cout << sol.solution << std::endl;
     std::cout << sol.matrix2node << std::endl;
-    ASSERT_NEAR(sol.solution(sol.matrix2node.backward(0)), 0.9, 1e-6);
-    ASSERT_NEAR(sol.solution(sol.matrix2node.backward(1)), 0.09, 1e-6);
+    ASSERT_NEAR(sol.solution((uint)sol.matrix2node.backward(0)), 0.9, 1e-6);
+    ASSERT_NEAR(sol.solution((uint)sol.matrix2node.backward(1)), 0.09, 1e-6);
 }

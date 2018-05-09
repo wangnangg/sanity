@@ -9,13 +9,14 @@ static int order = LAPACK_ROW_MAJOR;
 
 int geqrf(MatrixMutableView A, VectorMutableView tau)
 {
-    return LAPACKE_dgeqrf(order, A.nrow(), A.ncol(), &A(0, 0), A.ldim(),
-                          &tau(0));
+    return LAPACKE_dgeqrf(order, (int)A.nrow(), (int)A.ncol(), &A(0, 0),
+                          (int)A.ldim(), &tau(0));
 }
 int orgqr(MatrixMutableView mA, VectorConstView tau)
 {
-    return LAPACKE_dorgqr(order, mA.nrow(), tau.size(), tau.size(), &mA(0, 0),
-                          mA.ldim(), &tau(0));
+    return LAPACKE_dorgqr(order, (int)mA.nrow(), (int)tau.size(),
+                          (int)tau.size(), &mA(0, 0), (int)mA.ldim(),
+                          &tau(0));
 }
 
 int gesv(MatrixMutableView A, MatrixMutableView B, std::vector<int>* perm)
@@ -26,16 +27,16 @@ int gesv(MatrixMutableView A, MatrixMutableView B, std::vector<int>* perm)
     std::vector<int> perm_vec;
     if (perm)
     {
-        assert(A.nrow() == (int)perm->size());
+        assert(A.nrow() == perm->size());
         perm_ptr = &perm->front();
     }
     else
     {
-        perm_vec = std::vector<int>((uint)A.nrow());
+        perm_vec = std::vector<int>(A.nrow());
         perm_ptr = &perm_vec.front();
     }
-    int n = A.nrow();
-    return LAPACKE_dgesv(order, n, B.ncol(), &A(0, 0), A.ldim(), perm_ptr,
-                         &B(0, 0), B.ldim());
+    uint n = A.nrow();
+    return LAPACKE_dgesv(order, (int)n, (int)B.ncol(), &A(0, 0),
+                         (int)A.ldim(), perm_ptr, &B(0, 0), (int)B.ldim());
 }
 }  // namespace sanity::linear::lapack

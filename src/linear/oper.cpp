@@ -8,7 +8,7 @@ void fill(Real a, VectorMutableView v)
 {
     for (uint i = 0; i < (uint)v.size(); i++)
     {
-        v((int)i) = a;
+        v((uint)i) = a;
     }
 }
 Real norm2(VectorConstView v) { return blas::nrm2(v); }
@@ -18,9 +18,9 @@ void scale(Complex a, CVectorMutableView v) { blas::scal(a, v); }
 
 void scale(Real a, MatrixMutableView m)
 {
-    for (int i = 0; i < m.nrow(); i++)
+    for (uint i = 0; i < m.nrow(); i++)
     {
-        for (int j = 0; j < m.ncol(); j++)
+        for (uint j = 0; j < m.ncol(); j++)
         {
             m(i, j) *= a;
         }
@@ -28,9 +28,9 @@ void scale(Real a, MatrixMutableView m)
 }
 void scale(Complex a, CMatrixMutableView m)
 {
-    for (int i = 0; i < m.nrow(); i++)
+    for (uint i = 0; i < m.nrow(); i++)
     {
-        for (int j = 0; j < m.ncol(); j++)
+        for (uint j = 0; j < m.ncol(); j++)
         {
             m(i, j) *= a;
         }
@@ -68,8 +68,8 @@ void dot(MatrixConstView A, MatrixConstView B, MatrixMutableView C)
 }
 Matrix dot(MatrixConstView A, MatrixConstView B)
 {
-    int m = A.nrow();
-    int n = B.ncol();
+    uint m = A.nrow();
+    uint n = B.ncol();
     auto C = Matrix(m, n);
     dot(A, B, mutableView(C));
     return C;
@@ -78,8 +78,8 @@ void pointwiseProd(VectorConstView v, VectorConstView w, VectorMutableView x)
 {
     assert(v.size() == w.size());
     assert(v.size() == x.size());
-    int n = v.size();
-    for (int i = 0; i < n; i++)
+    uint n = v.size();
+    for (uint i = 0; i < n; i++)
     {
         x(i) = v(i) * w(i);
     }
@@ -89,8 +89,8 @@ void pointwiseProd(CVectorConstView v, CVectorConstView w,
 {
     assert(v.size() == w.size());
     assert(v.size() == x.size());
-    int n = v.size();
-    for (int i = 0; i < n; i++)
+    uint n = v.size();
+    for (uint i = 0; i < n; i++)
     {
         x(i) = v(i) * w(i);
     }
@@ -99,8 +99,8 @@ void pointwiseProd(CVectorConstView v, CVectorConstView w,
 void conjuage(CVectorConstView v, CVectorMutableView x)
 {
     assert(v.size() == x.size());
-    int n = v.size();
-    for (int i = 0; i < n; i++)
+    uint n = v.size();
+    for (uint i = 0; i < n; i++)
     {
         x(i) = std::conj(v(i));
     }

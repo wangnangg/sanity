@@ -62,11 +62,11 @@ IterationResult srnSteadyStateSor(const Spmatrix& Q, VectorMutableView prob,
                 }
                 else
                 {  // non diag
-                    residual -= iter.val() * prob((int)iter.col());
+                    residual -= iter.val() * prob(iter.col());
                 }
                 iter.nextNonzero();
             }
-            prob((int)i) = w * residual / a_ii + (1 - w) * prob((int)i);
+            prob(i) = w * residual / a_ii + (1 - w) * prob(i);
         }
         Real n1 = norm1(prob);
         scale(1.0 / n1, prob);
@@ -248,11 +248,11 @@ SrnSteadyStateSolution srnSteadyStateDecomp(
         assert(mat_idx > 0);
         if ((uint)mat_idx < reorder.ntan)
         {
-            solution(mat_idx) = -mkp.prob;
+            solution((uint)mat_idx) = -mkp.prob;
         }
         else
         {
-            solution(mat_idx) = mkp.prob;
+            solution((uint)mat_idx) = mkp.prob;
         }
     }
 

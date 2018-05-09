@@ -196,18 +196,18 @@ IeeeCdfConvertedGrid ieeeCdf2Grid(const IeeeCdfModel& model)
         switch (bus.type)
         {
             case IeeeCdfLoad:
-                bus_id = grid.addLoadBus(
+                bus_id = (int)grid.addLoadBus(
                     Complex(bus.loadP_MW, bus.loadQ_MVAR) / model.MVABase);
                 break;
             case IeeeCdfGenPV:
-                bus_id = grid.addGeneratorBus(
+                bus_id = (int)grid.addGeneratorBus(
                     (bus.genP_MW - bus.loadP_MW) / model.MVABase,
                     bus.desiredVolts_PU,
                     (bus.minQ_MVAR - bus.loadQ_MVAR) / model.MVABase,
                     (bus.maxQ_MVAR - bus.loadQ_MVAR) / model.MVABase);
                 break;
             case IeeeCdfSlack:
-                bus_id = grid.addGeneratorBus(
+                bus_id = (int)grid.addGeneratorBus(
                     (bus.genP_MW - bus.loadP_MW) / model.MVABase,
                     bus.desiredVolts_PU,
                     (bus.minQ_MVAR - bus.loadQ_MVAR) / model.MVABase,
@@ -219,8 +219,10 @@ IeeeCdfConvertedGrid ieeeCdf2Grid(const IeeeCdfModel& model)
                 assert(false);
                 break;
         }
-        grid.addShuntElement(bus_id, 1.0 / Complex(bus.shuntConductanceG_PU,
-                                                   bus.shuntSusceptanceB_PU));
+        assert(bus_id >= 0);
+        grid.addShuntElement((uint)bus_id,
+                             1.0 / Complex(bus.shuntConductanceG_PU,
+                                           bus.shuntSusceptanceB_PU));
     }
     for (const auto& branch : model.branches)
     {
@@ -229,7 +231,7 @@ IeeeCdfConvertedGrid ieeeCdf2Grid(const IeeeCdfModel& model)
             case IeeeCdfTransLine:
             case IeeeCdfFixedTap:
                 grid.addTransmissionLine(
-                    branch.tapBus - 1, branch.zBus - 1,
+                    (uint)(branch.tapBus - 1), (uint)(branch.zBus - 1),
                     Complex(branch.resistanceR_PU, branch.reactanceX_PU),
                     branch.lineCharingB_PU / 2);
                 break;
@@ -241,6 +243,6 @@ IeeeCdfConvertedGrid ieeeCdf2Grid(const IeeeCdfModel& model)
         }
     }
     assert(slack >= 0);
-    return IeeeCdfConvertedGrid{.grid = grid, .slack = slack};
+    return IeeeCdfConvertedGrid{.grid = grid, .slack = (uint)slack};
 }
 }  // namespace sanity::powerflow

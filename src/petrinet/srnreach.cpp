@@ -116,7 +116,7 @@ MarkingListProb eliminateVanMarking(const StochasticRewardNet& srn,
     }
 
     auto P = srnProbMatrix(graph, edge_probs);
-    auto reaching_probs = Vector((int)graph.nodeCount());
+    auto reaching_probs = Vector(graph.nodeCount());
     reaching_probs(0) = 1;
     auto iter_res =
         srnSteadyStatePower(P, mutableView(reaching_probs), tol, max_iter);
@@ -131,8 +131,8 @@ MarkingListProb eliminateVanMarking(const StochasticRewardNet& srn,
     for (uint tan_id : tan_mk_ids)
     {
         problist.markings.push_back(std::move(node_markings[tan_id]));
-        problist.prob.push_back(reaching_probs((int)tan_id));
-        prob_sum += reaching_probs((int)tan_id);
+        problist.prob.push_back(reaching_probs(tan_id));
+        prob_sum += reaching_probs(tan_id);
     }
     // prob_sum should be near 1
     assert(std::abs(prob_sum - 1.0) <= tol);

@@ -24,7 +24,7 @@ Matrix admittanceMatrixB(const DCPowerFlowModel& model,
     Permutation bus2matrix(bus_idx, false);
     std::vector<uint> lines;
     uint n = bus_idx.size();
-    Matrix B((int)n, (int)n, 0);
+    Matrix B(n, n, 0);
     for (uint line_i = 0; line_i < model.lineCount(); line_i++)
     {
         const auto& line = model.getLine(line_i);
@@ -36,10 +36,12 @@ Matrix admittanceMatrixB(const DCPowerFlowModel& model,
         int i = bus2matrix.forward(line.startBus);
         int j = bus2matrix.forward(line.endBus);
         Real b = -1.0 / line.reactance;
-        B(i, j) = b;
-        B(j, i) = b;
-        B(i, i) -= b;
-        B(j, j) -= b;
+        assert(i >= 0);
+        assert(j >= 0);
+        B((uint)i, (uint)j) = b;
+        B((uint)j, (uint)i) = b;
+        B((uint)i, (uint)i) -= b;
+        B((uint)j, (uint)j) -= b;
     }
     return B;
 }
@@ -85,18 +87,19 @@ DCPowerFlowResult solveDC(
         std::swap(comp.nodes[0], comp.nodes[(uint)slack_idx]);
         auto B = admittanceMatrixB(model, comp.nodes);
         std::cout << B << std::endl;
-        Vector angles((int)n);
+        Vector angles(n);
         for (uint i = 1; i < n; i++)
         {
-            angles((int)i) = model.getBus(comp.nodes[i]).injectedRealPower;
+            angles(i) = model.getBus(comp.nodes[i]).injectedRealPower;
         }
-        linear_solver(blockView(mutableView(B), 1, 1, -1, -1),
-                      blockView(mutableView(angles), 1, -1));
+        linear_solver(
+            blockView(mutableView(B), 1, 1, B.nrow() - 1, B.ncol() - 1),
+            blockView(mutableView(angles), 1, angles.size() - 1));
         angles(0) = 0;
         for (uint i = 0; i < n; i++)
         {
             auto bus_idx = comp.nodes[i];
-            bus_angles[bus_idx] = angles((int)i);
+            bus_angles[bus_idx] = angles(i);
         }
         slack_powers[comp_i] = dot(rowView(B, 0), angles);
     }

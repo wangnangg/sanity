@@ -6,20 +6,19 @@ namespace sanity::linear
 class VectorConstView
 {
     const Real* _data;
-    int _inc;
-    int _size;
+    uint _inc;
+    uint _size;
 
 public:
-    VectorConstView(const Real* data, int inc, int size)
+    VectorConstView(const Real* data, uint inc, uint size)
         : _data(data), _inc(inc), _size(size)
     {
     }
-    int inc() const { return _inc; };
-    int size() const { return _size; }
-    const Real& operator()(int i) const
+    uint inc() const { return _inc; };
+    uint size() const { return _size; }
+    const Real& operator()(uint i) const
     {
         assert(i < size());
-        assert(i >= 0);
         return _data[i * inc()];
     }
 };
@@ -27,20 +26,19 @@ public:
 class VectorMutableView
 {
     Real* _data;
-    int _inc;
-    int _size;
+    uint _inc;
+    uint _size;
 
 public:
-    VectorMutableView(Real* data, int inc, int size)
+    VectorMutableView(Real* data, uint inc, uint size)
         : _data(data), _inc(inc), _size(size)
     {
     }
-    int inc() const { return _inc; };
-    int size() const { return _size; }
-    Real& operator()(int i) const
+    uint inc() const { return _inc; };
+    uint size() const { return _size; }
+    Real& operator()(uint i) const
     {
         assert(i < size());
-        assert(i >= 0);
         return _data[i * inc()];
     }
     operator VectorConstView() const
@@ -54,26 +52,25 @@ inline VectorConstView constView(VectorMutableView v)
     return VectorConstView(&v(0), 1, v.size());
 }
 inline VectorMutableView mutableView(VectorMutableView v) { return v; }
-VectorConstView blockView(VectorConstView v, int i, int size);
-VectorMutableView blockView(VectorMutableView v, int i, int size);
+VectorConstView blockView(VectorConstView v, uint i, uint size);
+VectorMutableView blockView(VectorMutableView v, uint i, uint size);
 
 class CVectorConstView
 {
     const Complex* _data;
-    int _inc;
-    int _size;
+    uint _inc;
+    uint _size;
 
 public:
-    CVectorConstView(const Complex* data, int inc, int size)
+    CVectorConstView(const Complex* data, uint inc, uint size)
         : _data(data), _inc(inc), _size(size)
     {
     }
-    int inc() const { return _inc; };
-    int size() const { return _size; }
-    const Complex& operator()(int i) const
+    uint inc() const { return _inc; };
+    uint size() const { return _size; }
+    const Complex& operator()(uint i) const
     {
         assert(i < size());
-        assert(i >= 0);
         return _data[i * inc()];
     }
 };
@@ -81,20 +78,19 @@ public:
 class CVectorMutableView
 {
     Complex* _data;
-    int _inc;
-    int _size;
+    uint _inc;
+    uint _size;
 
 public:
-    CVectorMutableView(Complex* data, int inc, int size)
+    CVectorMutableView(Complex* data, uint inc, uint size)
         : _data(data), _inc(inc), _size(size)
     {
     }
-    int inc() const { return _inc; };
-    int size() const { return _size; }
-    Complex& operator()(int i) const
+    uint inc() const { return _inc; };
+    uint size() const { return _size; }
+    Complex& operator()(uint i) const
     {
         assert(i < size());
-        assert(i >= 0);
         return _data[i * inc()];
     }
     operator CVectorConstView() const
@@ -108,7 +104,7 @@ inline CVectorConstView constView(CVectorMutableView v)
     return CVectorConstView(&v(0), 1, v.size());
 }
 inline CVectorMutableView mutableView(CVectorMutableView v) { return v; }
-CVectorConstView blockView(CVectorConstView v, int i, int size);
-CVectorMutableView blockView(CVectorMutableView v, int i, int size);
+CVectorConstView blockView(CVectorConstView v, uint i, uint size);
+CVectorMutableView blockView(CVectorMutableView v, uint i, uint size);
 
 }  // namespace sanity::linear

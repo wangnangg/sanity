@@ -207,7 +207,7 @@ MatpowerConvertedGrid matpower2Grid(const MatpowerModel& model)
     {
         bus2gens[g.busIdx].push_back(g);
     }
-    std::map<int, int> matId2gridId;
+    std::map<uint, uint> matId2gridId;
     for (const auto& b : model.buses)
     {
         int gridId = -1;
@@ -216,8 +216,8 @@ MatpowerConvertedGrid matpower2Grid(const MatpowerModel& model)
             case MatpowerPQBus:  // load only
             {
                 assert(bus2gens[b.idx].size() == 0);
-                gridId = grid.addLoadBus(Complex(b.loadP_MW, b.loadQ_MVAR) /
-                                         model.base_MVA);
+                gridId = (int)grid.addLoadBus(
+                    Complex(b.loadP_MW, b.loadQ_MVAR) / model.base_MVA);
             }
             break;
             case MatpowerPVBus:  // generators and loads
@@ -231,7 +231,7 @@ MatpowerConvertedGrid matpower2Grid(const MatpowerModel& model)
                     voltageAmp_PU = g.voltageAmp_PU;
                 }
                 assert(voltageAmp_PU == b.voltageAmp_PU);
-                gridId = grid.addGeneratorBus(
+                gridId = (int)grid.addGeneratorBus(
                     (genP_MW - b.loadP_MW) / model.base_MVA, voltageAmp_PU, 0,
                     0);
             }
@@ -245,7 +245,7 @@ MatpowerConvertedGrid matpower2Grid(const MatpowerModel& model)
                     genP_MW += g.genP_MW;
                     voltageAmp_PU = g.voltageAmp_PU;
                 }
-                gridId = grid.addGeneratorBus(
+                gridId = (int)grid.addGeneratorBus(
                     (genP_MW - b.loadP_MW) / model.base_MVA, voltageAmp_PU, 0,
                     0);
                 assert(voltageAmp_PU == b.voltageAmp_PU);
@@ -258,20 +258,22 @@ MatpowerConvertedGrid matpower2Grid(const MatpowerModel& model)
                 assert(false);
                 break;
         }
-        grid.addShuntElement(gridId, 1.0 / (Complex(b.shuntConductance_MW,
-                                                    b.shuntSusceptance_MVAR) /
-                                            model.base_MVA));
-        matId2gridId[b.idx] = gridId;
+        assert(gridId >= 0);
+        grid.addShuntElement(
+            (uint)gridId,
+            1.0 / (Complex(b.shuntConductance_MW, b.shuntSusceptance_MVAR) /
+                   model.base_MVA));
+        matId2gridId[(uint)b.idx] = (uint)gridId;
     }
     for (const auto& br : model.branches)
     {
-        int fromBus = matId2gridId.at(br.fromBusIdx);
-        int toBus = matId2gridId.at(br.toBusIdx);
+        uint fromBus = matId2gridId.at((uint)br.fromBusIdx);
+        uint toBus = matId2gridId.at((uint)br.toBusIdx);
         grid.addTransmissionLine(fromBus, toBus,
                                  Complex(br.resistanceR_PU, br.reactanceX_PU),
                                  br.totalChargingSuscep_PU / 2.0);
     }
-    return {grid, slackId};
+    return {grid, (uint)slackId};
 }
 
 }  // namespace sanity::powerflow

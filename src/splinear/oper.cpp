@@ -8,11 +8,11 @@ void dot(const Spmatrix& A, linear::VectorConstView v,
     {
         for (uint row = 0; row < A.nrow; row++)
         {
-            x((int)row) = 0.0;
+            x(row) = 0.0;
             auto iter = initRowIter(A, row);
             while (!iter.end())
             {
-                x((int)row) += iter.val() * v((int)iter.col());
+                x(row) += iter.val() * v(iter.col());
                 iter.nextNonzero();
             };
         }
@@ -25,7 +25,7 @@ void dot(const Spmatrix& A, linear::VectorConstView v,
             auto iter = initColIter(A, col);
             while (!iter.end())
             {
-                x((int)iter.row()) += iter.val() * v((int)col);
+                x(iter.row()) += iter.val() * v(col);
                 iter.nextNonzero();
             };
         }
@@ -42,7 +42,7 @@ void dotpx(const Spmatrix& A, linear::VectorConstView v,
             auto iter = initRowIter(A, row);
             while (!iter.end())
             {
-                x((int)row) += iter.val() * v((int)iter.col());
+                x(row) += iter.val() * v(iter.col());
                 iter.nextNonzero();
             };
         }
@@ -54,7 +54,7 @@ void dotpx(const Spmatrix& A, linear::VectorConstView v,
             auto iter = initColIter(A, col);
             while (!iter.end())
             {
-                x((int)iter.row()) += iter.val() * v((int)col);
+                x(iter.row()) += iter.val() * v(col);
                 iter.nextNonzero();
             };
         }

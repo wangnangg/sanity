@@ -4,52 +4,50 @@
 #include "vector_view.hpp"
 namespace sanity::linear
 {
-inline int rowMajorIndex(int i, int j, int ldim) { return i * ldim + j; }
-inline int colMajorIndex(int i, int j, int ldim) { return i + j * ldim; }
+inline uint rowMajorIndex(uint i, uint j, uint ldim) { return i * ldim + j; }
+inline uint colMajorIndex(uint i, uint j, uint ldim) { return i + j * ldim; }
 class MatrixConstView
 {
     const Real* _data;
-    int _nrow;
-    int _ncol;
-    int _ldim;
+    uint _nrow;
+    uint _ncol;
+    uint _ldim;
 
 public:
-    MatrixConstView(const Real* data, int nrow, int ncol, int ldim)
+    MatrixConstView(const Real* data, uint nrow, uint ncol, uint ldim)
         : _data(data), _nrow(nrow), _ncol(ncol), _ldim(ldim)
     {
     }
-    const Real& operator()(int i, int j) const
+    const Real& operator()(uint i, uint j) const
     {
         assert(i < nrow() && j < ncol());
-        assert(i >= 0 && j >= 0);
         return _data[rowMajorIndex(i, j, ldim())];
     }
-    int nrow() const { return _nrow; }
-    int ncol() const { return _ncol; }
-    int ldim() const { return _ldim; }
+    uint nrow() const { return _nrow; }
+    uint ncol() const { return _ncol; }
+    uint ldim() const { return _ldim; }
 };
 
 class MatrixMutableView
 {
     Real* _data;
-    int _nrow;
-    int _ncol;
-    int _ldim;
+    uint _nrow;
+    uint _ncol;
+    uint _ldim;
 
 public:
-    MatrixMutableView(Real* data, int nrow, int ncol, int ldim)
+    MatrixMutableView(Real* data, uint nrow, uint ncol, uint ldim)
         : _data(data), _nrow(nrow), _ncol(ncol), _ldim(ldim)
     {
     }
-    Real& operator()(int i, int j) const
+    Real& operator()(uint i, uint j) const
     {
         assert(i < nrow() && j < ncol());
-        assert(i >= 0 && j >= 0);
         return _data[rowMajorIndex(i, j, ldim())];
     }
-    int nrow() const { return _nrow; }
-    int ncol() const { return _ncol; }
-    int ldim() const { return _ldim; }
+    uint nrow() const { return _nrow; }
+    uint ncol() const { return _ncol; }
+    uint ldim() const { return _ldim; }
     operator MatrixConstView() const
     {
         return MatrixConstView(_data, _nrow, _ncol, _ldim);
@@ -63,24 +61,24 @@ inline MatrixConstView constView(MatrixMutableView mat)
 
 inline MatrixMutableView mutableView(MatrixMutableView mat) { return mat; }
 
-MatrixConstView blockView(MatrixConstView v, int srow, int scol,
-                          int nrow = -1, int ncol = -1);
-MatrixMutableView blockView(MatrixMutableView v, int srow, int scol,
-                            int nrow = -1, int ncol = -1);
+MatrixConstView blockView(MatrixConstView v, uint srow, uint scol, uint nrow,
+                          uint ncol);
+MatrixMutableView blockView(MatrixMutableView v, uint srow, uint scol,
+                            uint nrow, uint ncol);
 
-inline VectorConstView rowView(MatrixConstView m, int rowIdx)
+inline VectorConstView rowView(MatrixConstView m, uint rowIdx)
 {
     return VectorConstView(&m(rowIdx, 0), 1, m.ncol());
 }
-inline VectorConstView colView(MatrixConstView m, int colIdx)
+inline VectorConstView colView(MatrixConstView m, uint colIdx)
 {
     return VectorConstView(&m(0, colIdx), m.ldim(), m.nrow());
 }
-inline VectorMutableView rowView(MatrixMutableView m, int rowIdx)
+inline VectorMutableView rowView(MatrixMutableView m, uint rowIdx)
 {
     return VectorMutableView(&m(rowIdx, 0), 1, m.ncol());
 }
-inline VectorMutableView colView(MatrixMutableView m, int colIdx)
+inline VectorMutableView colView(MatrixMutableView m, uint colIdx)
 {
     return VectorMutableView(&m(0, colIdx), m.ldim(), m.nrow());
 }
@@ -88,47 +86,45 @@ inline VectorMutableView colView(MatrixMutableView m, int colIdx)
 class CMatrixConstView
 {
     const Complex* _data;
-    int _nrow;
-    int _ncol;
-    int _ldim;
+    uint _nrow;
+    uint _ncol;
+    uint _ldim;
 
 public:
-    CMatrixConstView(const Complex* data, int nrow, int ncol, int ldim)
+    CMatrixConstView(const Complex* data, uint nrow, uint ncol, uint ldim)
         : _data(data), _nrow(nrow), _ncol(ncol), _ldim(ldim)
     {
     }
-    const Complex& operator()(int i, int j) const
+    const Complex& operator()(uint i, uint j) const
     {
         assert(i < nrow() && j < ncol());
-        assert(i >= 0 && j >= 0);
         return _data[rowMajorIndex(i, j, ldim())];
     }
-    int nrow() const { return _nrow; }
-    int ncol() const { return _ncol; }
-    int ldim() const { return _ldim; }
+    uint nrow() const { return _nrow; }
+    uint ncol() const { return _ncol; }
+    uint ldim() const { return _ldim; }
 };
 
 class CMatrixMutableView
 {
     Complex* _data;
-    int _nrow;
-    int _ncol;
-    int _ldim;
+    uint _nrow;
+    uint _ncol;
+    uint _ldim;
 
 public:
-    CMatrixMutableView(Complex* data, int nrow, int ncol, int ldim)
+    CMatrixMutableView(Complex* data, uint nrow, uint ncol, uint ldim)
         : _data(data), _nrow(nrow), _ncol(ncol), _ldim(ldim)
     {
     }
-    Complex& operator()(int i, int j) const
+    Complex& operator()(uint i, uint j) const
     {
         assert(i < nrow() && j < ncol());
-        assert(i >= 0 && j >= 0);
         return _data[rowMajorIndex(i, j, ldim())];
     }
-    int nrow() const { return _nrow; }
-    int ncol() const { return _ncol; }
-    int ldim() const { return _ldim; }
+    uint nrow() const { return _nrow; }
+    uint ncol() const { return _ncol; }
+    uint ldim() const { return _ldim; }
     operator CMatrixConstView() const
     {
         return CMatrixConstView(_data, _nrow, _ncol, _ldim);
@@ -142,24 +138,24 @@ inline CMatrixConstView constView(CMatrixMutableView mat)
 
 inline CMatrixMutableView mutableView(CMatrixMutableView mat) { return mat; }
 
-CMatrixConstView blockView(CMatrixConstView v, int srow, int scol,
-                           int nrow = -1, int ncol = -1);
-CMatrixMutableView blockView(CMatrixMutableView v, int srow, int scol,
-                             int nrow = -1, int ncol = -1);
+CMatrixConstView blockView(CMatrixConstView v, uint srow, uint scol,
+                           uint nrow, uint ncol);
+CMatrixMutableView blockView(CMatrixMutableView v, uint srow, uint scol,
+                             uint nrow, uint ncol);
 
-inline CVectorConstView rowView(CMatrixConstView m, int rowIdx)
+inline CVectorConstView rowView(CMatrixConstView m, uint rowIdx)
 {
     return CVectorConstView(&m(rowIdx, 0), 1, m.ncol());
 }
-inline CVectorConstView colView(CMatrixConstView m, int colIdx)
+inline CVectorConstView colView(CMatrixConstView m, uint colIdx)
 {
     return CVectorConstView(&m(0, colIdx), m.ldim(), m.nrow());
 }
-inline CVectorMutableView rowView(CMatrixMutableView m, int rowIdx)
+inline CVectorMutableView rowView(CMatrixMutableView m, uint rowIdx)
 {
     return CVectorMutableView(&m(rowIdx, 0), 1, m.ncol());
 }
-inline CVectorMutableView colView(CMatrixMutableView m, int colIdx)
+inline CVectorMutableView colView(CMatrixMutableView m, uint colIdx)
 {
     return CVectorMutableView(&m(0, colIdx), m.ldim(), m.nrow());
 }

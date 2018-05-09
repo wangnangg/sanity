@@ -28,7 +28,7 @@ TEST(linear_matrix_view, blockView)
                               5, 6, 1, 2, 3, 4   //
                           });
     {
-        auto mA = blockView(A, 1, 3, -1, -1);
+        auto mA = blockView(A, 1, 3, A.nrow() - 1, A.ncol() - 3);
         auto mA_ = createMatrix(4, 3,
                                 {
                                     5, 6, 1,  //

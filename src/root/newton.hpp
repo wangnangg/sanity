@@ -12,5 +12,5 @@ IterationResult solveNewton(
              linear::MatrixMutableView jacobian)>& target_func,
     const std::function<void(linear::MatrixMutableView A,
                              linear::VectorMutableView bx)>& linear_solver,
-    int max_iter, Real tol);
+    uint max_iter, Real tol);
 }

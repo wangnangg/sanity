@@ -12,15 +12,15 @@ IterationResult solveNewton(
                              MatrixMutableView jacobian)>& target_func,
     const std::function<void(linear::MatrixMutableView A,
                              linear::VectorMutableView bx)>& linear_solver,
-    int max_iter, Real tol)
+    uint max_iter, Real tol)
 {
-    int n = x0.size();
+    uint n = x0.size();
     auto y = Vector(n);
     auto jac = Matrix(n, n);
     uint iter;
     Real error;
 
-    for (iter = 0; iter < (uint)max_iter; iter++)
+    for (iter = 0; iter < max_iter; iter++)
     {
         target_func(x0, mutableView(y), mutableView(jac));
         error = maxAbs(y);

@@ -80,7 +80,7 @@ IeeeCdfModel readIeeeCdfModel(const std::string& file);
 struct IeeeCdfConvertedGrid
 {
     PowerGrid grid;
-    int slack;
+    uint slack;
 };
 IeeeCdfConvertedGrid ieeeCdf2Grid(const IeeeCdfModel& model);
 

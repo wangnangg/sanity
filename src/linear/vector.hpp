@@ -13,24 +13,22 @@ public:
     Vector() : _data() {}
     Vector(VectorConstView v) : _data(v.size())
     {
-        for (uint i = 0; i < (uint)v.size(); i++)
+        for (uint i = 0; i < v.size(); i++)
         {
-            _data[i] = v((int)i);
+            _data[i] = v(i);
         }
     }
-    Vector(int size, Real val = 0.0) : _data((unsigned int)size, val) {}
-    int size() const { return _data.size(); }
-    Real& operator()(int i)
+    Vector(uint size, Real val = 0.0) : _data(size, val) {}
+    uint size() const { return _data.size(); }
+    Real& operator()(uint i)
     {
         assert(i < size());
-        assert(i >= 0);
-        return _data[(unsigned int)i];
+        return _data[i];
     }
-    const Real& operator()(int i) const
+    const Real& operator()(uint i) const
     {
         assert(i < size());
-        assert(i >= 0);
-        return _data[(unsigned int)i];
+        return _data[i];
     }
     operator VectorConstView() const
     {
@@ -55,27 +53,22 @@ public:
     CVector() : _data() {}
     CVector(CVectorConstView v) : _data(v.size())
     {
-        for (uint i = 0; i < (uint)v.size(); i++)
+        for (uint i = 0; i < v.size(); i++)
         {
-            _data[i] = v((int)i);
+            _data[i] = v(i);
         }
     }
-    CVector(int size, Complex val = Complex())
-        : _data((unsigned int)size, val)
-    {
-    }
-    int size() const { return _data.size(); }
-    Complex& operator()(int i)
+    CVector(uint size, Complex val = Complex()) : _data(size, val) {}
+    uint size() const { return _data.size(); }
+    Complex& operator()(uint i)
     {
         assert(i < size());
-        assert(i >= 0);
         return _data[(unsigned int)i];
     }
-    const Complex& operator()(int i) const
+    const Complex& operator()(uint i) const
     {
         assert(i < size());
-        assert(i >= 0);
-        return _data[(unsigned int)i];
+        return _data[i];
     }
     operator CVectorConstView() const
     {

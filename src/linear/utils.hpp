@@ -25,9 +25,9 @@ Real maxDiff(CMatrixConstView mat1, CMatrixConstView mat2);
 Real maxAbs(VectorConstView v);
 Real maxAbs(CVectorConstView v);
 
-Matrix createMatrix(int nrow, int ncol, const std::vector<Real>& v);
+Matrix createMatrix(uint nrow, uint ncol, const std::vector<Real>& v);
 Matrix createMatrix(MatrixConstView mat);
-Vector createVector(int size, const std::vector<Real>& v);
+Vector createVector(uint size, const std::vector<Real>& v);
 
 void copy(VectorConstView src, VectorMutableView dst);
 void copy(CVectorConstView src, CVectorMutableView dst);

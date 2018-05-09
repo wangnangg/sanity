@@ -7,7 +7,7 @@ DCPowerFlowModel ACModel2DC(const PowerGrid& ac)
     DCPowerFlowModel dc;
     for (uint i = 0; i < (uint)ac.busCount(); i++)
     {
-        const auto& bus = ac.getBus((int)i);
+        const auto& bus = ac.getBus(i);
         if (bus.type == GeneratorBus)
         {
             dc.addBus(bus.attr.generator.realPower);
@@ -19,8 +19,8 @@ DCPowerFlowModel ACModel2DC(const PowerGrid& ac)
     }
     for (uint i = 0; i < (uint)ac.lineCount(); i++)
     {
-        const auto& line = ac.getLine((int)i);
-        dc.addTransmissionLine((uint)line.startBus, (uint)line.endBus,
+        const auto& line = ac.getLine(i);
+        dc.addTransmissionLine(line.startBus, line.endBus,
                                line.totalImped.imag());
     }
     return dc;

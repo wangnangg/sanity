@@ -8,31 +8,27 @@ namespace sanity::linear
 class Matrix
 {
     std::vector<Real> _data;
-    int _nrow;
-    int _ncol;
+    uint _nrow;
+    uint _ncol;
 
 public:
     Matrix() : _data(), _nrow(0), _ncol(0) {}
-    Matrix(int nrow, int ncol, Real val = 0.0)
-        : _data(static_cast<unsigned int>(nrow * ncol), val),
-          _nrow(nrow),
-          _ncol(ncol)
+    Matrix(uint nrow, uint ncol, Real val = 0.0)
+        : _data(nrow * ncol, val), _nrow(nrow), _ncol(ncol)
     {
     }
-    Real& operator()(int i, int j)
+    Real& operator()(uint i, uint j)
     {
         assert(i < nrow() && j < ncol());
-        assert(i >= 0 && j >= 0);
-        return _data[(unsigned int)rowMajorIndex(i, j, ncol())];
+        return _data[rowMajorIndex(i, j, ncol())];
     }
-    const Real& operator()(int i, int j) const
+    const Real& operator()(uint i, uint j) const
     {
         assert(i < nrow() && j < ncol());
-        assert(i >= 0 && j >= 0);
-        return _data[(unsigned int)rowMajorIndex(i, j, ncol())];
+        return _data[rowMajorIndex(i, j, ncol())];
     }
-    int nrow() const { return _nrow; }
-    int ncol() const { return _ncol; }
+    uint nrow() const { return _nrow; }
+    uint ncol() const { return _ncol; }
 
     operator MatrixConstView() const
     {
@@ -52,31 +48,27 @@ inline MatrixConstView constView(const Matrix& mat)
 class CMatrix
 {
     std::vector<Complex> _data;
-    int _nrow;
-    int _ncol;
+    uint _nrow;
+    uint _ncol;
 
 public:
     CMatrix() : _data(), _nrow(0), _ncol(0) {}
-    CMatrix(int nrow, int ncol, Complex val = Complex())
-        : _data(static_cast<unsigned int>(nrow * ncol), val),
-          _nrow(nrow),
-          _ncol(ncol)
+    CMatrix(uint nrow, uint ncol, Complex val = Complex())
+        : _data(nrow * ncol, val), _nrow(nrow), _ncol(ncol)
     {
     }
-    Complex& operator()(int i, int j)
+    Complex& operator()(uint i, uint j)
     {
         assert(i < nrow() && j < ncol());
-        assert(i >= 0 && j >= 0);
-        return _data[(unsigned int)rowMajorIndex(i, j, ncol())];
+        return _data[rowMajorIndex(i, j, ncol())];
     }
-    const Complex& operator()(int i, int j) const
+    const Complex& operator()(uint i, uint j) const
     {
         assert(i < nrow() && j < ncol());
-        assert(i >= 0 && j >= 0);
         return _data[(unsigned int)rowMajorIndex(i, j, ncol())];
     }
-    int nrow() const { return _nrow; }
-    int ncol() const { return _ncol; }
+    uint nrow() const { return _nrow; }
+    uint ncol() const { return _ncol; }
 
     operator CMatrixConstView() const
     {

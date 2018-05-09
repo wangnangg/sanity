@@ -7,9 +7,9 @@ namespace sanity::linear
 {
 ResDecompQR decompQR(MatrixMutableView A)
 {
-    int m = A.nrow();
-    int k = std::min(A.nrow(), A.ncol());
-    int n = A.ncol();
+    uint m = A.nrow();
+    uint k = std::min(A.nrow(), A.ncol());
+    uint n = A.ncol();
     auto tau = Vector(k);
     int result = lapack::geqrf(A, mutableView(tau));
     assert(result == 0);
