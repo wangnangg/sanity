@@ -176,7 +176,7 @@ static Spmatrix taRateMatrix(const DiGraph& rg,
     assert(abs_start >= ntan);
     assert(abs_end > abs_start);
     uint nabs = abs_end - abs_start;
-    auto spmat = SpmatrixCreator(ntan, nabs);
+    auto spmat = SpmatrixCreator(nabs, ntan);
     for (uint j = 0; j < ntan; j++)
     {
         int nid = mat2node.forward(j);
@@ -227,8 +227,9 @@ static Spmatrix aaRateMatrix(const DiGraph& rg,
         {
             spmat.addEntry(j - abs_start, j - abs_start, -total_rate);
         }
-        spmat.addEntry(abs_end - 1, j, 1.0);  // adding the last
-                                              // row
+        spmat.addEntry(abs_end - 1 - abs_start, j - abs_start,
+                       1.0);  // adding the last
+                              // row
     }
     return spmat.create(Spmatrix::RowCompressed);
 }
@@ -241,11 +242,10 @@ SrnSteadyStateSolution srnSteadyStateDecomp(
 {
     auto reorder = reorderState(rg);
     Vector solution(rg.nodeCount(), 0.0);
-
     for (const auto& mkp : init_probs)
     {
         int mat_idx = reorder.mat2node.backward(mkp.idx);
-        assert(mat_idx > 0);
+        assert(mat_idx >= 0);
         if ((uint)mat_idx < reorder.ntan)
         {
             solution((uint)mat_idx) = -mkp.prob;
@@ -277,8 +277,8 @@ SrnSteadyStateSolution srnSteadyStateDecomp(
         {
             auto QTA = taRateMatrix(rg, edge_rates, reorder.mat2node,
                                     reorder.ntan, abs_start, abs_end);
-            dotpx(QTA, blockView(solution, 0, reorder.ntan),
-                  blockView(mutableView(solution), abs_start, nabs));
+            auto sol = blockView(mutableView(solution), abs_start, nabs);
+            dotpx(QTA, blockView(solution, 0, reorder.ntan), sol);
         }
 
         // Q_AA * sol(abs_start, abs_end) = [0,0, ..., total_prob]^T
@@ -296,12 +296,12 @@ SrnSteadyStateSolution srnSteadyStateDecomp(
             b(nabs - 1) = 1.0;
 
             // guess (1/n, 1/n, ..., 1/n)
-            auto sol = blockView(mutableView(solution), abs_start, abs_end);
+            auto sol = blockView(mutableView(solution), abs_start, nabs);
             fill(1.0 / (Real)nabs, sol);
             spsolver(QAA, sol, b);
             scale(total_prob, sol);
         }
-        // scale total prob
+        abs_start = abs_end;
     }
 
     return SrnSteadyStateSolution{.matrix2node = std::move(reorder.mat2node),

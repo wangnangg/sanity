@@ -86,7 +86,6 @@ DCPowerFlowResult solveDC(
         assert(slack_idx >= 0);  // no generator?
         std::swap(comp.nodes[0], comp.nodes[(uint)slack_idx]);
         auto B = admittanceMatrixB(model, comp.nodes);
-        std::cout << B << std::endl;
         Vector angles(n);
         for (uint i = 1; i < n; i++)
         {

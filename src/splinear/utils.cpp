@@ -1,5 +1,6 @@
 #include "utils.hpp"
 #include <iomanip>
+#include <iostream>
 
 namespace sanity::splinear
 {
@@ -10,7 +11,7 @@ std::ostream& operator<<(std::ostream& os, const Spmatrix& spmat)
     {
         for (uint j = 0; j < spmat.ncol; j++)
         {
-            os << std::fixed << std::setw(12) << std::setprecision(5)
+            os << std::defaultfloat << std::setw(10) << std::setprecision(4)
                << std::setfill(' ') << SpmatrixGet(spmat, i, j);
         }
         os << std::endl;

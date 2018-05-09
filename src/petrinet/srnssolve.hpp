@@ -13,12 +13,12 @@ splinear::Spmatrix srnRateMatrix(const graph::DiGraph& reach_graph,
                                  const std::vector<Real>& edge_rates,
                                  const linear::Permutation& mat2rg_idx);
 
-// only good for irreducible Markov chains
+// SOR method, only good for irreducible Markov chains
 IterationResult srnSteadyStateSor(const splinear::Spmatrix& Q,
                                   linear::VectorMutableView prob, Real w,
                                   Real tol, uint max_iter);
 
-// P needs to be a unified prob matrix
+// Power method, P needs to be a unified prob matrix
 IterationResult srnSteadyStatePower(const splinear::Spmatrix& P,
                                     linear::VectorMutableView prob, Real tol,
                                     uint max_iter);

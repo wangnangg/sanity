@@ -1,9 +1,12 @@
 #include "oper.hpp"
+#include <cassert>
 namespace sanity::splinear
 {
 void dot(const Spmatrix& A, linear::VectorConstView v,
          linear::VectorMutableView x)
 {
+    assert(A.ncol == v.size());
+    assert(A.nrow == x.size());
     if (A.format == Spmatrix::RowCompressed)
     {
         for (uint row = 0; row < A.nrow; row++)
@@ -35,6 +38,8 @@ void dot(const Spmatrix& A, linear::VectorConstView v,
 void dotpx(const Spmatrix& A, linear::VectorConstView v,
            linear::VectorMutableView x)
 {
+    assert(A.ncol == v.size());
+    assert(A.nrow == x.size());
     if (A.format == Spmatrix::RowCompressed)
     {
         for (uint row = 0; row < A.nrow; row++)

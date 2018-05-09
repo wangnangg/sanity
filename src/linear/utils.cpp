@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <cassert>
 #include <iomanip>
+#include <iostream>
 #include "blas.hpp"
 namespace sanity::linear
 {
@@ -182,7 +183,7 @@ std::ostream& operator<<(std::ostream& os, MatrixConstView mat)
     {
         for (uint j = 0; j < mat.ncol(); j++)
         {
-            os << std::fixed << std::setw(12) << std::setprecision(5)
+            os << std::defaultfloat << std::setw(12) << std::setprecision(5)
                << std::setfill(' ') << mat(i, j);
         }
         os << std::endl;
@@ -205,7 +206,7 @@ std::ostream& operator<<(std::ostream& os, CMatrixConstView mat)
                 buf << "+";
             }
             buf << mat(i, j).imag() << "i";
-            os << std::fixed << std::setw(14) << buf.str();
+            os << std::defaultfloat << std::setw(14) << buf.str();
         }
         os << std::endl;
     }

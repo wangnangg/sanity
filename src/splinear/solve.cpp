@@ -13,9 +13,11 @@ IterationResult solveSor(const Spmatrix& A, linear::VectorMutableView x,
     assert(A.nrow == (uint)b.size());
     assert(x.size() > 0);
     assert(A.format == Spmatrix::RowCompressed);
+    /* debug info
     std::cout << "Sor trying to solve A = " << A << std::endl;
     std::cout << "b = " << b << std::endl;
     std::cout << "guess = " << x << std::endl;
+    */
     uint iter;
     Real error;
     auto x_prev = Vector(x.size());
@@ -42,7 +44,9 @@ IterationResult solveSor(const Spmatrix& A, linear::VectorMutableView x,
             assert(std::abs(a_ii) > tol);
             x(i) = w * residual / a_ii + (1 - w) * x(i);
         }
+        /* debug info
         std::cout << x << std::endl;
+        */
         error = maxDiff(x, x_prev);
         if (error < tol)
         {

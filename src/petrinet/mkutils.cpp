@@ -1,4 +1,5 @@
 #include "mkutils.hpp"
+#include <iostream>
 namespace sanity::petrinet
 {
 using namespace graph;
