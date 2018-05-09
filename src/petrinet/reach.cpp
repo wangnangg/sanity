@@ -1,68 +1,12 @@
 #include "reach.hpp"
 #include <cassert>
 #include <map>
+#include "mkutils.hpp"
 
 namespace sanity::petrinet
 {
 using namespace graph;
 using namespace linear;
-
-void printMarking(const Token* tokens, uint size)
-{
-    std::cout << "( ";
-    for (uint i = 0; i < size; i++)
-    {
-        std::cout << tokens[i] << " ";
-    }
-    std::cout << ")" << std::endl;
-}
-
-struct CompMarking
-{
-    uint nplace;
-    CompMarking(uint nplace) : nplace(nplace) {}
-    bool operator()(const Token* m1, const Token* m2)
-    {
-        assert(m1 != nullptr);
-        assert(m2 != nullptr);
-        for (size_t i = 0; i < nplace; i++)
-        {
-            if (m1[i] < m2[i])
-            {
-                return true;
-            }
-            else if (m1[i] > m2[i])
-            {
-                return false;
-            }
-        }
-        return false;
-    }
-};
-
-int findMarking(std::map<const Token*, uint, CompMarking>& mk_map,
-                const Marking& newmk)
-{
-    auto res = mk_map.find(&newmk.nToken(0));
-    if (res == mk_map.end())
-    {  // new token
-        return -1;
-    }
-    else
-    {
-        return (int)res->second;
-    }
-}
-
-uint addNewMarking(DiGraph& graph,
-                   std::map<const Token*, uint, CompMarking>& mk_map,
-                   std::vector<Marking>& markings, Marking&& newmk)
-{
-    uint idx = graph.addNode();
-    mk_map[&newmk.nToken(0)] = idx;
-    markings.push_back(std::move(newmk));
-    return idx;
-}
 
 ReachGraph genReachGraph(const PetriNet& net, const Marking& mk)
 {
@@ -93,9 +37,9 @@ ReachGraph genReachGraph(const PetriNet& net, const Marking& mk)
         }
         curr_nid += 1;
     }
-    return {.digraph = std::move(graph),
-            .markings = std::move(markings),
-            .edge2trans = std::move(edge2trans)};
+    return {.graph = std::move(graph),
+            .nodeMarkings = std::move(markings),
+            .edgeTrans = std::move(edge2trans)};
 }
 
 }  // namespace sanity::petrinet

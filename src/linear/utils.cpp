@@ -18,7 +18,7 @@ Real maxDiff(VectorConstView v1, VectorConstView v2)
     for (int i = 0; i < n; i++)
     {
         Real v = std::abs(v1(i) - v2(i));
-        if (max < v)
+        if (max < v || std::isnan(v))
         {
             max = v;
         }
@@ -38,7 +38,7 @@ Real maxDiff(MatrixConstView mat1, MatrixConstView mat2)
         for (int j = 0; j < n; j++)
         {
             Real v = std::abs(mat1(i, j) - mat2(i, j));
-            if (max < v)
+            if (max < v || std::isnan(v))
             {
                 max = v;
             }
@@ -55,7 +55,7 @@ Real maxDiff(CVectorConstView v1, CVectorConstView v2)
     for (int i = 0; i < n; i++)
     {
         Real v = std::abs(v1(i) - v2(i));
-        if (max < v)
+        if (max < v || std::isnan(v))
         {
             max = v;
         }
@@ -74,7 +74,7 @@ Real maxDiff(CMatrixConstView mat1, CMatrixConstView mat2)
         for (int j = 0; j < n; j++)
         {
             Real v = std::abs(mat1(i, j) - mat2(i, j));
-            if (max < v)
+            if (max < v || std::isnan(v))
             {
                 max = v;
             }
@@ -240,19 +240,18 @@ std::ostream& operator<<(std::ostream& os, CVectorConstView vec)
     return os;
 }
 
-std::ostream& operator<<(std::ostream& os, const Spmatrix& spmat)
+std::ostream& operator<<(std::ostream& os, const Permutation& p)
 {
-    os << "sparse [" << std::endl;
-    for (uint i = 0; i < spmat.nrow; i++)
+    std::cout << "forward:\n";
+    for (uint i = 0; i <= p.maxOrgIdx(); i++)
     {
-        for (uint j = 0; j < spmat.ncol; j++)
-        {
-            os << std::fixed << std::setw(12) << std::setprecision(5)
-               << std::setfill(' ') << SpmatrixGet(spmat, i, j);
-        }
-        os << std::endl;
+        std::cout << "(" << i << "-->" << p.forward(i) << ")" << std::endl;
     }
-    os << "]" << std::endl;
+    std::cout << "backward:\n";
+    for (uint i = 0; i <= p.maxPermutedIdx(); i++)
+    {
+        std::cout << "(" << i << "-->" << p.backward(i) << ")" << std::endl;
+    }
     return os;
 }
 

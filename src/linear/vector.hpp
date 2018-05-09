@@ -8,15 +8,18 @@ namespace sanity::linear
 class Vector
 {
     std::vector<Real> _data;
-    int _size;
 
 public:
-    Vector() : _data(), _size(0) {}
-    Vector(int size, Real val = 0.0)
-        : _data((unsigned int)size, val), _size(size)
+    Vector() : _data() {}
+    Vector(VectorConstView v) : _data(v.size())
     {
+        for (uint i = 0; i < (uint)v.size(); i++)
+        {
+            _data[i] = v((int)i);
+        }
     }
-    int size() const { return _size; }
+    Vector(int size, Real val = 0.0) : _data((unsigned int)size, val) {}
+    int size() const { return _data.size(); }
     Real& operator()(int i)
     {
         assert(i < size());
@@ -31,7 +34,7 @@ public:
     }
     operator VectorConstView() const
     {
-        return VectorConstView(&_data.front(), 1, _size);
+        return VectorConstView(&_data.front(), 1, size());
     }
 };
 
@@ -47,15 +50,21 @@ inline VectorMutableView mutableView(Vector& v)
 class CVector
 {
     std::vector<Complex> _data;
-    int _size;
 
 public:
-    CVector() : _data(), _size(0) {}
+    CVector() : _data() {}
+    CVector(CVectorConstView v) : _data(v.size())
+    {
+        for (uint i = 0; i < (uint)v.size(); i++)
+        {
+            _data[i] = v((int)i);
+        }
+    }
     CVector(int size, Complex val = Complex())
-        : _data((unsigned int)size, val), _size(size)
+        : _data((unsigned int)size, val)
     {
     }
-    int size() const { return _size; }
+    int size() const { return _data.size(); }
     Complex& operator()(int i)
     {
         assert(i < size());
@@ -70,11 +79,11 @@ public:
     }
     operator CVectorConstView() const
     {
-        return CVectorConstView(&_data.front(), 1, _size);
+        return CVectorConstView(&_data.front(), 1, size());
     }
     CVectorMutableView mut()
     {
-        return CVectorMutableView(&_data.front(), 1, _size);
+        return CVectorMutableView(&_data.front(), 1, size());
     }
 };
 

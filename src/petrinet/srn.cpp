@@ -5,10 +5,10 @@
 namespace sanity::petrinet
 {
 using namespace linear;
-StochasticRewardNet SRNCreator::create() const
+StochasticRewardNet SrnCreator::create() const
 {
     std::vector<Transition> trans;
-    std::vector<SRNTransProp> props;
+    std::vector<SrnTransProp> props;
     for (const auto& t : _trans)
     {
         trans.push_back(t._trans);

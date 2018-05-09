@@ -4,6 +4,13 @@
 
 namespace sanity::linear
 {
+void fill(Real a, VectorMutableView v)
+{
+    for (uint i = 0; i < (uint)v.size(); i++)
+    {
+        v((int)i) = a;
+    }
+}
 Real norm2(VectorConstView v) { return blas::nrm2(v); }
 Real norm1(VectorConstView v) { return blas::asum(v); }
 void scale(Real a, VectorMutableView v) { blas::scal(a, v); }
@@ -29,6 +36,8 @@ void scale(Complex a, CMatrixMutableView m)
         }
     }
 }
+
+void swap(VectorMutableView x, VectorMutableView y) { blas::swap(x, y); }
 
 Real dot(VectorConstView x, VectorConstView y) { return blas::dot(x, y); }
 void dot(MatrixConstView A, VectorConstView v, VectorMutableView x)

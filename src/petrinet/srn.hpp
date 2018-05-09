@@ -4,27 +4,27 @@
 
 namespace sanity::petrinet
 {
-enum class SRNTransType
+enum class SrnTransType
 {
     Exponetial,
     Immediate
 };
-struct SRNTransProp
+struct SrnTransProp
 {
-    SRNTransType type;
+    SrnTransType type;
     MarkingDepReal val;  // rate or weight
 };
-class SRNTransition
+class SrnTransition
 {
     Transition _trans;
-    SRNTransProp _prop;
+    SrnTransProp _prop;
 
 public:
-    SRNTransition(uint idx, SRNTransType type, MarkingDepReal val)
+    SrnTransition(uint idx, SrnTransType type, MarkingDepReal val)
         : _trans(), _prop{type, val}
     {
         _trans.tid = idx;
-        if (type == SRNTransType::Exponetial)
+        if (type == SrnTransType::Exponetial)
         {
             _trans.prio = 0;
         }
@@ -34,29 +34,29 @@ public:
         }
         _trans.enablingFunc = true;
     }
-    SRNTransition& iarc(uint place, MarkingDepInt multi = 1)
+    SrnTransition& iarc(uint place, MarkingDepInt multi = 1)
     {
         _trans.inputArcs.push_back({place, multi});
         return *this;
     }
-    SRNTransition& harc(uint place, MarkingDepInt multi = 1)
+    SrnTransition& harc(uint place, MarkingDepInt multi = 1)
     {
         _trans.inhibitorArcs.push_back({place, multi});
         return *this;
     }
-    SRNTransition& oarc(uint place, MarkingDepInt multi = 1)
+    SrnTransition& oarc(uint place, MarkingDepInt multi = 1)
     {
         _trans.outputArcs.push_back({place, multi});
         return *this;
     }
-    SRNTransition& enable(MarkingDepBool enabling)
+    SrnTransition& enable(MarkingDepBool enabling)
     {
         _trans.enablingFunc = enabling;
         return *this;
     }
-    SRNTransition& prio(uint prio)
+    SrnTransition& prio(uint prio)
     {
-        if (_prop.type == SRNTransType::Exponetial)
+        if (_prop.type == SrnTransType::Exponetial)
         {
             _trans.prio = prio * 2;
         }
@@ -66,35 +66,35 @@ public:
         }
         return *this;
     }
-    SRNTransition& rate(MarkingDepReal rate)
+    SrnTransition& rate(MarkingDepReal rate)
     {
         _prop.val = rate;
         return *this;
     }
-    SRNTransition& weight(MarkingDepReal w)
+    SrnTransition& weight(MarkingDepReal w)
     {
         _prop.val = w;
         return *this;
     }
     uint idx() const { return _trans.tid; }
-    friend class SRNCreator;
+    friend class SrnCreator;
 };
 
 struct StochasticRewardNet
 {
     PetriNet pnet;
-    std::vector<SRNTransProp> transProps;
+    std::vector<SrnTransProp> transProps;
 };
 
-class SRNCreator
+class SrnCreator
 {
-    std::vector<SRNTransition> _trans;
+    std::vector<SrnTransition> _trans;
     uint _place_count;
     MarkingDepBool _g_enable;
 
 public:
-    SRNCreator() : _place_count(0), _g_enable(true) {}
-    SRNCreator(uint place_count) : _place_count(place_count), _g_enable(true)
+    SrnCreator() : _place_count(0), _g_enable(true) {}
+    SrnCreator(uint place_count) : _place_count(place_count), _g_enable(true)
     {
     }
     uint place()
@@ -103,16 +103,16 @@ public:
         _place_count += 1;
         return idx;
     }
-    SRNTransition& expTrans(MarkingDepReal rate = 1.0)
+    SrnTransition& expTrans(MarkingDepReal rate = 1.0)
     {
         uint tid = _trans.size();
-        _trans.push_back(SRNTransition(tid, SRNTransType::Exponetial, rate));
+        _trans.push_back(SrnTransition(tid, SrnTransType::Exponetial, rate));
         return _trans.back();
     }
-    SRNTransition& immTrans(MarkingDepReal weight = 1.0)
+    SrnTransition& immTrans(MarkingDepReal weight = 1.0)
     {
         uint tid = _trans.size();
-        _trans.push_back(SRNTransition(tid, SRNTransType::Immediate, weight));
+        _trans.push_back(SrnTransition(tid, SrnTransType::Immediate, weight));
         return _trans.back();
     }
 

@@ -8,9 +8,9 @@ namespace sanity::petrinet
 {
 struct ReachGraph
 {
-    graph::DiGraph digraph;
-    std::vector<Marking> markings;
-    std::vector<uint> edge2trans;
+    graph::DiGraph graph;
+    std::vector<Marking> nodeMarkings;
+    std::vector<uint> edgeTrans;
 };
 
 ReachGraph genReachGraph(const PetriNet& net, const Marking& init);

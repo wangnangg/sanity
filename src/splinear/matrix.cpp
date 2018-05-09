@@ -1,10 +1,10 @@
-#include "spmatrix.hpp"
+#include "matrix.hpp"
 #include <algorithm>
 
-namespace sanity::linear
+namespace sanity::splinear
 {
-static bool compTriple(const SpmatrixTriple::Triple& e1,
-                       const SpmatrixTriple::Triple& e2)
+static bool compTripleRow(const SpmatrixTriple::Triple& e1,
+                          const SpmatrixTriple::Triple& e2)
 {
     if (e1.row < e2.row)
     {
@@ -24,14 +24,43 @@ static bool compTriple(const SpmatrixTriple::Triple& e1,
     }
 }
 
-void sortTriples(SpmatrixTriple& spmat)
+static bool compTripleCol(const SpmatrixTriple::Triple& e1,
+                          const SpmatrixTriple::Triple& e2)
 {
-    std::sort(spmat.triples.begin(), spmat.triples.end(), compTriple);
+    if (e1.col < e2.col)
+    {
+        return true;
+    }
+    else if (e1.col > e2.col)
+    {
+        return false;
+    }
+    else if (e1.row < e2.row)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
-Spmatrix triple2compressed(const SpmatrixTriple& trimat,
+void sortTriples(SpmatrixTriple& spmat, bool rowFirst)
+{
+    if (rowFirst)
+    {
+        std::sort(spmat.triples.begin(), spmat.triples.end(), compTripleRow);
+    }
+    else
+    {
+        std::sort(spmat.triples.begin(), spmat.triples.end(), compTripleCol);
+    }
+}
+
+Spmatrix triple2compressed(SpmatrixTriple& trimat,
                            Spmatrix::Format target_format)
 {
+    sortTriples(trimat, target_format == Spmatrix::RowCompressed);
     Spmatrix csmat(trimat.nrow, trimat.ncol, target_format);
     if (target_format == Spmatrix::RowCompressed)
     {
@@ -132,4 +161,4 @@ Real SpmatrixGet(const Spmatrix& spmat, size_t row, size_t col)
     }
 }
 
-}  // namespace sanity::linear
+}  // namespace sanity::splinear

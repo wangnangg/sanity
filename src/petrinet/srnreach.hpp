@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "reach.hpp"
+#include "splinear.hpp"
 #include "srn.hpp"
 #include "type.hpp"
 
@@ -14,15 +15,14 @@ struct MarkingInitProb
 
 struct ReducedReachGenResult
 {
-    ReachGraph reachGraph;
-    std::vector<MarkingInitProb> initProb;
+    graph::DiGraph graph;
+    std::vector<Marking> nodeMarkings;
+    std::vector<Real> edgeRates;
+    std::vector<MarkingInitProb> initProbs;
 };
 // not dealing with vanishing loops, yet
-ReducedReachGenResult srnGenReducedReach(const StochasticRewardNet& srn,
-                                         const Marking& init);
-
-linear::SpmatrixTriple srnRateMatrix(const StochasticRewardNet& srn,
-                                     const ReachGraph& g,
-                                     const linear::Permutation& mat2rg_idx);
+ReducedReachGenResult genReducedReachGraph(const StochasticRewardNet& srn,
+                                           const Marking& mk, Real tol,
+                                           uint max_iter);
 
 }  // namespace sanity::petrinet

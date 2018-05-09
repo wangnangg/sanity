@@ -11,16 +11,17 @@ class Graph
 public:
     struct Edge
     {
-        uint src;
+        uint eid;
         uint dst;
     };
 
     struct Node
     {
-        std::vector<uint> edgeIdxList;
+        std::vector<Edge> edges;
     };
 
-    Graph(uint node_count) : _nodes(node_count) {}
+    Graph() : _nodes(), _edge_count(0) {}
+    Graph(uint node_count) : _nodes(node_count), _edge_count(0) {}
     uint addNode()
     {
         uint idx = _nodes.size();
@@ -29,19 +30,19 @@ public:
     }
     uint addEdge(uint src, uint dst)
     {
-        auto eid = _edges.size();
-        _edges.push_back({src, dst});
-        _nodes[src].edgeIdxList.push_back(eid);
-        _nodes[dst].edgeIdxList.push_back(eid);
+        auto eid = edgeCount();
+        _edge_count++;
+        _nodes[src].edges.push_back({eid, dst});
+        _nodes[dst].edges.push_back({eid, src});
         return eid;
     }
     const Node& getNode(uint nid) const { return _nodes[nid]; }
-    const Edge& getEdge(uint eid) const { return _edges[eid]; }
     uint nodeCount() const { return _nodes.size(); }
+    uint edgeCount() const { return _edge_count; }
 
 private:
     std::vector<Node> _nodes;
-    std::vector<Edge> _edges;
+    uint _edge_count;
 };
 
 }  // namespace sanity::graph

@@ -24,7 +24,7 @@ PetriNet::PetriNet(uint place_count, MarkingDepBool g_enable,
 bool PetriNet::isolateEnableCheck(const Transition& tr,
                                   const Marking& mk) const
 {
-    auto state = State{this, &mk};
+    auto state = PetriNetState{this, &mk};
     if (!_global_enabling(state))
     {
         return false;
@@ -87,7 +87,7 @@ Marking PetriNet::fireTransition(uint tid, const Marking& mk) const
 {
     auto newmk = mk.clone();
     const auto& tr = getTransition(tid);
-    auto state = State{this, &mk};
+    auto state = PetriNetState{this, &mk};
     for (const auto& arc : tr.inputArcs)
     {
         auto multi = arc.multi(state);

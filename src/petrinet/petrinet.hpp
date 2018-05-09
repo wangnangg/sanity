@@ -51,9 +51,9 @@ public:
 
 class PetriNet;
 
-struct State
+struct PetriNetState
 {
-    const PetriNet* net;
+    const void* net;
     const Marking* marking;
 };
 
@@ -61,11 +61,11 @@ class MarkingDepBool
 {
 public:
     using ReturnType = bool;
-    using QueryFunc = std::function<ReturnType(State)>;
+    using QueryFunc = std::function<ReturnType(PetriNetState)>;
     MarkingDepBool() : _val(), _func(nullptr) {}
     MarkingDepBool(QueryFunc func) : _func(func) {}
     MarkingDepBool(ReturnType value) : _val(value), _func(nullptr) {}
-    ReturnType operator()(State st) const
+    ReturnType operator()(PetriNetState st) const
     {
         if (_func)
         {
@@ -86,11 +86,11 @@ class MarkingDepInt
 {
 public:
     using ReturnType = int;
-    using QueryFunc = std::function<ReturnType(State)>;
+    using QueryFunc = std::function<ReturnType(PetriNetState)>;
     MarkingDepInt() : _val(), _func(nullptr) {}
     MarkingDepInt(QueryFunc func) : _func(func) {}
     MarkingDepInt(ReturnType value) : _val(value), _func(nullptr) {}
-    ReturnType operator()(State st) const
+    ReturnType operator()(PetriNetState st) const
     {
         if (_func)
         {
@@ -111,11 +111,11 @@ class MarkingDepReal
 {
 public:
     using ReturnType = Real;
-    using QueryFunc = std::function<ReturnType(State)>;
+    using QueryFunc = std::function<ReturnType(PetriNetState)>;
     MarkingDepReal() : _val(), _func(nullptr) {}
     MarkingDepReal(QueryFunc func) : _func(func) {}
     MarkingDepReal(ReturnType value) : _val(value), _func(nullptr) {}
-    ReturnType operator()(State st) const
+    ReturnType operator()(PetriNetState st) const
     {
         if (_func)
         {

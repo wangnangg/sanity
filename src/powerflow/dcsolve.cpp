@@ -73,29 +73,29 @@ DCPowerFlowResult solveDC(
 
 {
     auto graph = pf2graph(model);
-    auto components = connectedComponents(graph);
+    auto components = decompCc(graph);
     auto bus_angles = std::vector<Real>(model.busCount());
     auto slack_powers = std::vector<Real>(components.size());
     for (uint comp_i = 0; comp_i < components.size(); comp_i++)
     {
         auto& comp = components[comp_i];
-        uint n = comp.size();
-        int slack_idx = electSlack(model, comp);
+        uint n = comp.nodes.size();
+        int slack_idx = electSlack(model, comp.nodes);
         assert(slack_idx >= 0);  // no generator?
-        std::swap(comp[0], comp[(uint)slack_idx]);
-        auto B = admittanceMatrixB(model, comp);
+        std::swap(comp.nodes[0], comp.nodes[(uint)slack_idx]);
+        auto B = admittanceMatrixB(model, comp.nodes);
         std::cout << B << std::endl;
         Vector angles((int)n);
         for (uint i = 1; i < n; i++)
         {
-            angles((int)i) = model.getBus(comp[i]).injectedRealPower;
+            angles((int)i) = model.getBus(comp.nodes[i]).injectedRealPower;
         }
         linear_solver(blockView(mutableView(B), 1, 1, -1, -1),
                       blockView(mutableView(angles), 1, -1));
         angles(0) = 0;
         for (uint i = 0; i < n; i++)
         {
-            auto bus_idx = comp[i];
+            auto bus_idx = comp.nodes[i];
             bus_angles[bus_idx] = angles((int)i);
         }
         slack_powers[comp_i] = dot(rowView(B, 0), angles);
@@ -110,10 +110,15 @@ DCPowerFlowResult solveDC(
         line_powers[i] = 1.0 / line.reactance * (angle_diff);
     }
 
+    std::vector<std::vector<uint>> islands;
+    for (const auto& comp : components)
+    {
+        islands.push_back(std::move(comp.nodes));
+    }
     return {.busVoltageAngles = std::move(bus_angles),
             .lineRealPowers = std::move(line_powers),
             .slackBusRealPower = std::move(slack_powers),
-            .islands = std::move(components)};
+            .islands = std::move(islands)};
 }
 
 }  // namespace sanity::powerflow
