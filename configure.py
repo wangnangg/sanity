@@ -84,57 +84,9 @@ def transform_src_files(source_files, obj_dir):
     return objs
 
 
-cpp_compiler = 'clang'
-linker = 'clang'
-
-makefile_head = [
-    """
-config?=debug
-build_dir:=build/${config}
-flags:= -Isrc -std=c++1z -Wall -Wno-error=unused-variable -Wfloat-conversion -Wsign-conversion -Wimplicit-fallthrough -Wno-return-type-c-linkage  -Werror -MMD
-gtest_dir:= googletest/googletest
-gtest_flags:=-isystem ${gtest_dir}/include -I${gtest_dir}
-link_flags:=-lstdc++ -lm -pthread -lblas -llapack
-ifeq ($(config), release)
-  flags += -O3 -DNDEBUG
-  link_flags += -O3 -DNDEBUG
-else
-  ifeq ($(config), profile)
-    flags += -g -O3 -pg -no-pie
-    link_flags += -g -O3 -no-pie
-  else
-    ifeq ($(config), coverage)
-      flags += -g -ftest-coverage -fprofile-arcs
-      link_flags += -g -fprofile-arcs
-    else
-      ifeq ($(config), debug)
-        flags += -g
-        link_flags += -g
-      else
-$(error Unknown config: $(config))
-      endif
-    endif
-  endif
-endif
-"""
-]
-makefile_major_targets = [
-    """
-.PHONY: all lib utest
-utest: ${build_dir}/utest
-all: lib utest
-lib: ${build_dir}/libsanity.a
-"""
-]
+cpp_compiler = '${cpp_compiler}'
+linker = '${linker}'
 makefile_body = []
-makefile_tail = ["""
-.PHONY: clean cleandeps
-clean:
-	rm -rf build
-cleandeps:
-	find build -name "*.d" | xargs rm -rf
--include ${deps}
-"""]
 
 src_files = find_files('src', '.cpp')
 obj_files = transform_src_files(src_files, "${build_dir}")
@@ -149,6 +101,13 @@ for i in range(0, len(test_src_files)):
         compile_rule(cpp_compiler, "${gtest_flags} ${flags}",
                      test_src_files[i], test_obj_files[i]))
 
+exp_src_files = find_files('experiment', 'cpp')
+exp_obj_files = transform_src_files(exp_src_files, "${build_dir}")
+for i in range(0, len(exp_src_files)):
+    makefile_body.append(
+        compile_rule(cpp_compiler, "${gtest_flags} ${flags}",
+                     exp_src_files[i], exp_obj_files[i]))
+
 gtest_src_files = ["${gtest_dir}/src/gtest-all.cc"]
 gtest_obj_files = transform_src_files(gtest_src_files, "${build_dir}")
 for i in range(0, len(gtest_src_files)):
@@ -162,6 +121,11 @@ makefile_body.append(
               '${build_dir}/utest'))
 
 makefile_body.append(
+    link_rule(linker, "${link_flags}",
+              obj_files + exp_obj_files + gtest_obj_files,
+              '${build_dir}/exp'))
+
+makefile_body.append(
     ar_rule('ar', 'crf', obj_files, "${build_dir}/libsanity.a"))
 
 deps = list2makestr(
@@ -170,8 +134,10 @@ deps = list2makestr(
 
 makefile_body.append('deps:=' + deps + '\n')
 
-f = open('makefile', 'w')
-f.write(''.join(
-    makefile_head + makefile_major_targets + makefile_body + makefile_tail))
-f.close()
+
+with open('makefile.in', 'r') as fin:
+    makefilein_content = fin.read()
+    with open('makefile', 'w') as fmake:
+        fmake.write(makefilein_content)
+        fmake.write(''.join(makefile_body))
 print('build with: make config=debug|release|profile|coverage')

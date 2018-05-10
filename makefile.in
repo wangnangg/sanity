@@ -1,0 +1,42 @@
+cpp_compiler?=clang
+linker?=clang
+config?=debug
+build_dir:=build/${config}
+flags:= -Isrc -std=c++1z -Wall -Wno-error=unused-variable -Wfloat-conversion -Wsign-conversion -Wimplicit-fallthrough -Wno-return-type-c-linkage  -Werror -MMD
+gtest_dir:= googletest/googletest
+gtest_flags:=-isystem ${gtest_dir}/include -I${gtest_dir}
+link_flags:=-lstdc++ -lm -pthread -lblas -llapack
+ifeq ($(config), release)
+  flags += -O3 -DNDEBUG
+  link_flags += -O3 -DNDEBUG
+else
+  ifeq ($(config), profile)
+    flags += -g -O3 -pg -no-pie
+    link_flags += -g -O3 -no-pie
+  else
+    ifeq ($(config), coverage)
+      flags += -g -ftest-coverage -fprofile-arcs
+      link_flags += -g -fprofile-arcs
+    else
+      ifeq ($(config), debug)
+        flags += -g
+        link_flags += -g
+      else
+$(error Unknown config: $(config))
+      endif
+    endif
+  endif
+endif
+
+.PHONY: all lib utest exp
+utest: ${build_dir}/utest
+exp: ${build_dir}/exp
+lib: ${build_dir}/libsanity.a
+all: lib utest exp
+
+.PHONY: clean
+clean:
+	rm -rf build
+-include ${deps}
+
+
