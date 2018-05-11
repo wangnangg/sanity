@@ -21,8 +21,22 @@ public:
             _backward[i] = (int)i;
         }
     }
-    int forward(uint org_idx) const { return _forward[org_idx]; }
-    int backward(uint permuted_idx) const { return _backward[permuted_idx]; }
+    int forward(uint org_idx) const
+    {
+        if (org_idx > maxOrgIdx())
+        {
+            return -1;
+        }
+        return _forward[org_idx];
+    }
+    int backward(uint permuted_idx) const
+    {
+        if (permuted_idx > maxPermutedIdx())
+        {
+            return -1;
+        }
+        return _backward[permuted_idx];
+    }
     uint maxPermutedIdx() const { return _backward.size() - 1; }
     uint maxOrgIdx() const { return _forward.size() - 1; }
 };

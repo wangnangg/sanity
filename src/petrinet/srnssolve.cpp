@@ -305,7 +305,7 @@ SrnSteadyStateSolution srnSteadyStateDecomp(
     }
 
     return SrnSteadyStateSolution{.matrix2node = std::move(reorder.mat2node),
-                                  .nTangibles = reorder.ntan,
+                                  .nTransient = reorder.ntan,
                                   .solution = std::move(solution)};
 }
 }  // namespace sanity::petrinet

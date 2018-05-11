@@ -10,11 +10,11 @@ DCPowerFlowModel ACModel2DC(const PowerGrid& ac)
         const auto& bus = ac.getBus(i);
         if (bus.type == GeneratorBus)
         {
-            dc.addBus(bus.attr.generator.realPower);
+            dc.addBus(DCBusType::PV, bus.attr.generator.realPower);
         }
         else
         {  // Load
-            dc.addBus(-bus.attr.load.power.real());
+            dc.addBus(DCBusType::PQ, -bus.attr.load.power.real());
         }
     }
     for (uint i = 0; i < (uint)ac.lineCount(); i++)

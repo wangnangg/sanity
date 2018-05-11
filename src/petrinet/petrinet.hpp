@@ -13,6 +13,7 @@ class Marking
     uint _nplace;
 
 public:
+    Marking() : _tokens(nullptr), _nplace(0) {}
     Marking(uint nplace, int ntoken = 0) : _nplace(nplace)
     {
         _tokens = new Token[nplace];
@@ -21,10 +22,20 @@ public:
             _tokens[i] = ntoken;
         }
     }
-    Marking() : _tokens(nullptr), _nplace(0) {}
     Marking(const Marking&) = delete;
-    Marking(Marking&& mk) : _tokens(mk._tokens), _nplace(mk._nplace)
+    Marking& operator=(const Marking&) = delete;
+    Marking& operator=(Marking&& mk)
     {
+        this->_tokens = mk._tokens;
+        this->_nplace = mk._nplace;
+        mk._nplace = 0;
+        mk._tokens = nullptr;
+        return *this;
+    }
+    Marking(Marking&& mk)
+    {
+        this->_tokens = mk._tokens;
+        this->_nplace = mk._nplace;
         mk._nplace = 0;
         mk._tokens = nullptr;
     }
@@ -61,10 +72,15 @@ class MarkingDepBool
 {
 public:
     using ReturnType = bool;
-    using QueryFunc = std::function<ReturnType(PetriNetState)>;
+    using QueryFunc = std::function<ReturnType(PetriNetState state)>;
     MarkingDepBool() : _val(), _func(nullptr) {}
-    MarkingDepBool(QueryFunc func) : _func(func) {}
+    template <typename QueryFunc,
+              std::enable_if_t<!std::is_integral<QueryFunc>::value, int> = 0>
+    MarkingDepBool(QueryFunc func) : _func(func)
+    {
+    }
     MarkingDepBool(ReturnType value) : _val(value), _func(nullptr) {}
+
     ReturnType operator()(PetriNetState st) const
     {
         if (_func)
@@ -88,7 +104,11 @@ public:
     using ReturnType = int;
     using QueryFunc = std::function<ReturnType(PetriNetState)>;
     MarkingDepInt() : _val(), _func(nullptr) {}
-    MarkingDepInt(QueryFunc func) : _func(func) {}
+    template <typename QueryFunc,
+              std::enable_if_t<!std::is_integral<QueryFunc>::value, int> = 0>
+    MarkingDepInt(QueryFunc func) : _func(func)
+    {
+    }
     MarkingDepInt(ReturnType value) : _val(value), _func(nullptr) {}
     ReturnType operator()(PetriNetState st) const
     {
@@ -113,7 +133,11 @@ public:
     using ReturnType = Real;
     using QueryFunc = std::function<ReturnType(PetriNetState)>;
     MarkingDepReal() : _val(), _func(nullptr) {}
-    MarkingDepReal(QueryFunc func) : _func(func) {}
+    template <typename QueryFunc,
+              std::enable_if_t<!std::is_integral<QueryFunc>::value, int> = 0>
+    MarkingDepReal(QueryFunc func) : _func(func)
+    {
+    }
     MarkingDepReal(ReturnType value) : _val(value), _func(nullptr) {}
     ReturnType operator()(PetriNetState st) const
     {

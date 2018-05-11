@@ -46,9 +46,9 @@ static void printPfSol(const DCPowerFlowModel& model,
 static DCPowerFlowModel threebus_example_dc()
 {
     DCPowerFlowModel grid;
-    auto bus1 = grid.addBus(1.0);
-    auto bus2 = grid.addBus((63.0 - 10.0) / 100.0);
-    auto bus3 = grid.addBus(-90.0 / 100.0);
+    auto bus1 = grid.addBus(DCBusType::PV, 1.0);
+    auto bus2 = grid.addBus(DCBusType::PV, (63.0 - 10.0) / 100.0);
+    auto bus3 = grid.addBus(DCBusType::PQ, -90.0 / 100.0);
     grid.addTransmissionLine(bus1, bus2, 0.0576);
     grid.addTransmissionLine(bus2, bus3, 0.092);
     grid.addTransmissionLine(bus1, bus3, 0.17);

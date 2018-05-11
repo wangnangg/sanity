@@ -2,6 +2,7 @@
 config=${1:-debug}
 filter=${2:-*}
 
+python configure.py
 echo make utest config=${config}
 make utest config=${config}
 RESULT=$?

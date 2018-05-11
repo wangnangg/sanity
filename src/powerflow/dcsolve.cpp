@@ -55,7 +55,7 @@ int electSlack(const DCPowerFlowModel& model, const std::vector<uint>& buses)
     {
         uint bus_idx = buses[i];
         const auto& bus = model.getBus(bus_idx);
-        if (model.getBus(bus_idx).type == DCBus::Generator)
+        if (model.getBus(bus_idx).type == DCBusType::PV)
         {
             if (first || bus.injectedRealPower > max_inj_power)
             {
@@ -78,12 +78,35 @@ DCPowerFlowResult solveDC(
     auto components = decompCc(graph);
     auto bus_angles = std::vector<Real>(model.busCount());
     auto slack_powers = std::vector<Real>(components.size());
+    std::vector<bool> solved(components.size(), true);
     for (uint comp_i = 0; comp_i < components.size(); comp_i++)
     {
         auto& comp = components[comp_i];
         uint n = comp.nodes.size();
         int slack_idx = electSlack(model, comp.nodes);
-        assert(slack_idx >= 0);  // no generator?
+        if (slack_idx < 0)  // no generator bus is found
+        {
+            for (uint i = 0; i < n; i++)
+            {
+                auto bus_idx = comp.nodes[i];
+                if (model.getBus(bus_idx).injectedRealPower !=
+                    0)  // impossible
+                {
+                    solved[comp_i] = false;
+                }
+                bus_angles[bus_idx] = 0.0;
+            }
+            slack_powers[comp_i] = 0.0;
+            continue;
+        }
+        if (comp.nodes.size() == 1)
+        {
+            // nothing to solve here
+            auto bus_idx = comp.nodes[0];
+            bus_angles[bus_idx] = 0;
+            slack_powers[comp_i] = -model.getBus(bus_idx).injectedRealPower;
+            continue;
+        }
         std::swap(comp.nodes[0], comp.nodes[(uint)slack_idx]);
         auto B = admittanceMatrixB(model, comp.nodes);
         Vector angles(n);
@@ -91,6 +114,7 @@ DCPowerFlowResult solveDC(
         {
             angles(i) = model.getBus(comp.nodes[i]).injectedRealPower;
         }
+        std::cout << B << std::endl;
         linear_solver(
             blockView(mutableView(B), 1, 1, B.nrow() - 1, B.ncol() - 1),
             blockView(mutableView(angles), 1, angles.size() - 1));

@@ -28,7 +28,7 @@ struct SrnSteadyStateSolution
     linear::Permutation
         matrix2node;  // the first n in the matrix are tangibles and the
                       // rest are absorbing components.
-    uint nTangibles;
+    uint nTransient;
     linear::Vector solution;  // the solution is in matrix order. for
                               // tangibles, the values are cumulative times.
                               // for absorbings, the values are probabilities.

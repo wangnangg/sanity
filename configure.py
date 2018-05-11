@@ -136,8 +136,11 @@ makefile_body.append('deps:=' + deps + '\n')
 
 
 with open('makefile.in', 'r') as fin:
-    makefilein_content = fin.read()
+    makefilein_content = fin.readlines()
     with open('makefile', 'w') as fmake:
-        fmake.write(makefilein_content)
-        fmake.write(''.join(makefile_body))
+        for line in makefilein_content:
+            if line.startswith('#body'):
+                fmake.write(''.join(makefile_body))
+            else:
+                fmake.write(line)
 print('build with: make config=debug|release|profile|coverage')

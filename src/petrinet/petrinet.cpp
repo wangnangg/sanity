@@ -29,6 +29,10 @@ bool PetriNet::isolateEnableCheck(const Transition& tr,
     {
         return false;
     }
+    if (!tr.enablingFunc(state))
+    {
+        return false;
+    }
     for (const auto& arc : tr.inputArcs)
     {
         if (mk.nToken(arc.pid) < arc.multi(state))
@@ -42,10 +46,6 @@ bool PetriNet::isolateEnableCheck(const Transition& tr,
         {
             return false;
         }
-    }
-    if (!tr.enablingFunc(state))
-    {
-        return false;
     }
     return true;
 }

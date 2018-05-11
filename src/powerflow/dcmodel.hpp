@@ -5,15 +5,16 @@
 
 namespace sanity::powerflow
 {
+enum class DCBusType
+{
+    PQ,
+    PV
+};
 struct DCBus
 {
     uint idx;
     Real injectedRealPower;
-    enum
-    {
-        Generator,
-        Load
-    } type;
+    DCBusType type;
 };
 
 struct DCTransmissionLine
@@ -30,11 +31,12 @@ class DCPowerFlowModel
     std::vector<DCTransmissionLine> _lines;
 
 public:
-    uint addBus(Real injectedRealPower)
+    uint addBus(DCBusType type, Real injectedRealPower)
     {
         uint idx = _buses.size();
-        _buses.push_back(
-            {.idx = idx, .injectedRealPower = injectedRealPower});
+        _buses.push_back(DCBus{.idx = idx,
+                               .type = type,
+                               .injectedRealPower = injectedRealPower});
         return idx;
     }
     uint addTransmissionLine(uint start, uint end, Real reactance)
