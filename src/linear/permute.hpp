@@ -9,6 +9,7 @@ class Permutation
     std::vector<int> _backward;
 
 public:
+    Permutation() = default;
     Permutation(std::vector<uint> perm, bool is_forward);
     Permutation(uint size) : _forward(size), _backward(size)
     {

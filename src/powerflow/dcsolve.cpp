@@ -114,7 +114,6 @@ DCPowerFlowResult solveDC(
         {
             angles(i) = model.getBus(comp.nodes[i]).injectedRealPower;
         }
-        std::cout << B << std::endl;
         linear_solver(
             blockView(mutableView(B), 1, 1, B.nrow() - 1, B.ncol() - 1),
             blockView(mutableView(angles), 1, angles.size() - 1));

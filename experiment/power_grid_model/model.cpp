@@ -73,7 +73,7 @@ ExpPowerFlowModel ieeeCdfModel2ExpModel(const IeeeCdfModel& model)
             case IeeeCdfSlack:
                 if (gen <= 0.0)
                 {
-                    gen = 1000.0;
+                    gen = 1.0;
                 }
                 exp_model.addBus(ExpBusType::PV, load, gen);
                 break;
@@ -82,7 +82,7 @@ ExpPowerFlowModel ieeeCdfModel2ExpModel(const IeeeCdfModel& model)
     for (const auto& branch : model.branches)
     {
         exp_model.addLine((uint)(branch.tapBus - 1), (uint)(branch.zBus - 1),
-                          branch.reactanceX_PU, 0);
+                          branch.reactanceX_PU, 1.0);
     }
     return exp_model;
 }
