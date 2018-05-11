@@ -345,8 +345,7 @@ void createTwoStates(SrnCreator& ct, Real failure_rate, Real repair_rate,
     ct.expTrans(repair_rate).iarc(down).oarc(up);
 }
 
-static void printPfSol(const DCPowerFlowModel& model,
-                       const DCPowerFlowResult sol)
+void printPfSol(const DCPowerFlowModel& model, const DCPowerFlowResult sol)
 {
     for (uint is = 0; is < sol.islands.size(); is++)
     {
@@ -457,6 +456,108 @@ StochasticRewardNet exp2srn_flat(const ExpPowerFlowModel& model,
         createTwoStates(ct, line_fail, line_repair, [=](auto state) {
             powerflowUpdate(state.marking);
             if (totalFailure() < nTrunc)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        });
+        nline += 1;
+        marking_map.push_back(i);
+        marking_map.push_back(i);
+    }
+
+    return ct.create();
+}
+
+StochasticRewardNet exp2srn_diff(const ExpPowerFlowModel& model,
+                                 Real bus_fail, Real bus_repair,
+                                 Real load_fail, Real load_repair,
+                                 Real gen_fail, Real gen_repair,
+                                 Real line_fail, Real line_repair,
+                                 uint busTrunc, uint loadTrunc, uint genTrunc,
+                                 uint lineTrunc)
+{
+    SrnCreator ct;
+
+    marking_map = std::vector<uint>();
+    // create bus
+    nbus = 0;
+    for (uint i = 0; i < model.buses.size(); i++)
+    {
+        createTwoStates(ct, bus_fail, bus_repair, [=](auto state) {
+            powerflowUpdate(state.marking);
+            if (nBusFailure < busTrunc)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        });
+        nbus += 1;
+        marking_map.push_back(i);
+        marking_map.push_back(i);
+    }
+
+    // create load
+    nload = 0;
+    for (uint i = 0; i < model.buses.size(); i++)
+    {
+        if (model.buses[i].load > 0)
+        {
+            createLoad(ct, load_fail, load_repair, nload, [=](auto state) {
+                powerflowUpdate(state.marking);
+                if (nLoadFailure < loadTrunc)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            });
+            nload += 1;
+            marking_map.push_back(i);
+            marking_map.push_back(i);
+            marking_map.push_back(i);
+        }
+    }
+    load_connected = std::vector<bool>(nload, true);
+
+    // create gen
+    ngen = 0;
+    for (uint i = 0; i < model.buses.size(); i++)
+    {
+        if (model.buses[i].generation > 0)
+        {
+            createTwoStates(ct, gen_fail, gen_repair, [=](auto state) {
+                powerflowUpdate(state.marking);
+                if (nGenFailure < genTrunc)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            });
+            ngen += 1;
+            marking_map.push_back(i);
+            marking_map.push_back(i);
+        }
+    }
+
+    // create line
+    nline = 0;
+    for (uint i = 0; i < model.lines.size(); i++)
+    {
+        createTwoStates(ct, line_fail, line_repair, [=](auto state) {
+            powerflowUpdate(state.marking);
+            if (nLineFailure < lineTrunc)
             {
                 return true;
             }
@@ -631,7 +732,7 @@ TEST(power_grid_model, three_nodes)
 }
 
 static const std::string data_base = "./data/powerflow/";
-TEST(power_grid_model, ieee14)
+TEST(power_grid_model, ieee14_flat)
 {
     Real bus_fail = 0.0001;
     Real bus_repair = 0.01;
@@ -660,6 +761,7 @@ TEST(power_grid_model, ieee14)
     }
     for (uint f = 0; f <= 10; f++)
     {
+        std::cout << std::endl;
         timed_scope t1("total");
         std::cout << "failures allowed: " << f << std::endl;
         auto srn = exp2srn_flat(exp_model, bus_fail, bus_repair, load_fail,
@@ -694,7 +796,94 @@ TEST(power_grid_model, ieee14)
                     }
                 });
         }
-        std::cout << "...done." << std::endl;
+        auto reward_load = srnProbReward(
+            srn, sol, rg.nodeMarkings,
+            [](auto state) { return servedLoad(exp_model, *state.marking); });
+
+        std::cout << "load severed in average: " << reward_load << std::endl;
+    }
+}
+
+struct DiffTrunc
+{
+    uint bus;
+    uint load;
+    uint gen;
+    uint line;
+};
+
+TEST(power_grid_model, ieee14_diff)
+{
+    Real bus_fail = 0.0001;
+    Real bus_repair = 0.01;
+
+    Real load_fail = 0.001;
+    Real load_repair = 1;
+
+    Real gen_fail = 0.001;
+    Real gen_repair = 0.1;
+
+    Real line_fail = 0.005;
+    Real line_repair = 0.5;
+
+    auto cdf = readIeeeCdfModel(data_base + "ieee_cdf_models/ieee14cdf.txt");
+
+    exp_model = ieeeCdfModel2ExpModel(cdf);
+
+    {
+        auto srn = exp2srn_diff(exp_model, bus_fail, bus_repair, load_fail,
+                                load_repair, gen_fail, gen_repair, line_fail,
+                                line_repair, 0, 0, 0, 0);
+        std::cout << "# bus: " << nbus;
+        std::cout << ", # load: " << nload;
+        std::cout << ", # gen: " << ngen;
+        std::cout << ", # line: " << nline << std::endl;
+    }
+    std::vector<DiffTrunc> trunc = {{0, 0, 0, 0}, {1, 0, 0, 0}, {1, 0, 1, 0},
+                                    {1, 0, 1, 1}, {2, 0, 1, 1}, {2, 0, 2, 1},
+
+                                    {3, 0, 2, 1}, {2, 0, 2, 2}};
+    for (uint i = 7; i < trunc.size(); i++)
+    {
+        const auto& tr = trunc[i];
+        std::cout << std::endl;
+        timed_scope t1("total");
+        std::cout << "failures allowed: bus  " << tr.bus << ", load "
+                  << tr.load << ", gen" << tr.gen << ", line " << tr.line
+                  << std::endl;
+        auto srn =
+            exp2srn_diff(exp_model, bus_fail, bus_repair, load_fail,
+                         load_repair, gen_fail, gen_repair, line_fail,
+                         line_repair, tr.bus, tr.load, tr.gen, tr.line);
+        auto init_mk = createInitMarking(srn);
+
+        ReducedReachGenResult rg;
+        {
+            timed_scope t2("generation");
+            rg = genReducedReachGraph(srn, init_mk, 1e-6, 100);
+        }
+        std::cout << "# markings: " << rg.nodeMarkings.size() << std::endl;
+
+        uint max_iter = 1000;
+        Real tol = 1e-6;
+        Real w = 0.8;
+        SrnSteadyStateSolution sol;
+        {
+            timed_scope t2("solution");
+            sol = srnSteadyStateDecomp(
+                rg.graph, rg.edgeRates, rg.initProbs,
+                [=](const Spmatrix& A, VectorMutableView x,
+                    VectorConstView b) {
+                    auto res = solveSor(A, x, b, w, tol, max_iter);
+                    if (res.error > tol || std::isnan(res.error))
+                    {
+                        std::cout << "Sor. nIter: " << res.nIter;
+                        std::cout << ", error: " << res.error << std::endl;
+                        throw std::invalid_argument(
+                            "Sor failed to converge.");
+                    }
+                });
+        }
         auto reward_load = srnProbReward(
             srn, sol, rg.nodeMarkings,
             [](auto state) { return servedLoad(exp_model, *state.marking); });
