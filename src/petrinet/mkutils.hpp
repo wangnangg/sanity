@@ -11,7 +11,7 @@ struct CompMarking
 {
     uint nplace;
     CompMarking(uint nplace) : nplace(nplace) {}
-    bool operator()(const Token* m1, const Token* m2)
+    bool operator()(const Token* m1, const Token* m2) const
     {
         assert(m1 != nullptr);
         assert(m2 != nullptr);
