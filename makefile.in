@@ -7,8 +7,8 @@ gtest_dir:= googletest/googletest
 gtest_flags:=-isystem ${gtest_dir}/include -I${gtest_dir}
 link_flags:=-lstdc++ -lm -pthread -lblas -llapack
 ifeq ($(config), release)
-  flags += -O3 -DNDEBUG
-  link_flags += -O3 -DNDEBUG
+  flags += -g -O3 -DNDEBUG
+  link_flags += -g -O3 -DNDEBUG
 else
   ifeq ($(config), profile)
     flags += -g -O3 -pg -no-pie

@@ -1,4 +1,5 @@
 #pragma once
+#include <cassert>
 #include <functional>
 #include <vector>
 #include "type.hpp"
@@ -9,55 +10,29 @@ using Token = int;
 class Marking
 {
     // make sure the address of this buffer doesn't change
-    Token* _tokens;
-    uint _nplace;
+    std::vector<Token> _tokens;
+
+    Marking(const Marking&) = default;
+    Marking& operator=(const Marking&) = default;
 
 public:
-    Marking() : _tokens(nullptr), _nplace(0) {}
-    Marking(uint nplace, int ntoken = 0) : _nplace(nplace)
-    {
-        _tokens = new Token[nplace];
-        for (uint i = 0; i < nplace; i++)
-        {
-            _tokens[i] = ntoken;
-        }
-    }
-    Marking(const Marking&) = delete;
-    Marking& operator=(const Marking&) = delete;
-    Marking& operator=(Marking&& mk)
-    {
-        this->_tokens = mk._tokens;
-        this->_nplace = mk._nplace;
-        mk._nplace = 0;
-        mk._tokens = nullptr;
-        return *this;
-    }
-    Marking(Marking&& mk)
-    {
-        this->_tokens = mk._tokens;
-        this->_nplace = mk._nplace;
-        mk._nplace = 0;
-        mk._tokens = nullptr;
-    }
-    ~Marking() { delete _tokens; }
-    uint size() const { return _nplace; }
+    Marking() = default;
+    Marking(uint nplace, int ntoken = 0) : _tokens(nplace, ntoken) {}
+    Marking& operator=(Marking&& mk) = default;
+    Marking(Marking&& mk) = default;
+    ~Marking() = default;
+    uint size() const { return _tokens.size(); }
     const Token& nToken(uint pid) const { return _tokens[pid]; }
     void setToken(uint pid, Token num) { _tokens[pid] = num; }
     void deposit(uint pid, Token num) { _tokens[pid] += num; }
-    void remove(uint pid, Token num) { _tokens[pid] -= num; }
+    void remove(uint pid, Token num)
+    {
+        assert(_tokens[pid] >= num);
+        _tokens[pid] -= num;
+    }
 
     // make it explicit
-    Marking clone() const
-    {
-        auto mk = Marking();
-        mk._tokens = new Token[_nplace];
-        mk._nplace = _nplace;
-        for (uint i = 0; i < _nplace; i++)
-        {
-            mk.setToken(i, nToken(i));
-        }
-        return mk;
-    }
+    Marking clone() const { return *this; }
 };
 
 class PetriNet;

@@ -1,5 +1,6 @@
 #include "srnreach.hpp"
 #include <cassert>
+#include <iostream>
 #include <map>
 #include <stdexcept>
 #include "graph.hpp"
@@ -175,7 +176,8 @@ ReducedReachGenResult genReducedReachGraph(const StochasticRewardNet& srn,
         addNewMarking(graph, mk_map, node_markings, std::move(init_mk));
     }
 
-    size_t curr_nid = 0;
+    uint curr_nid = 0;
+    uint nc = 1;
     while (curr_nid < node_markings.size())
     {
         for (uint tid : srn.pnet.enabledTransitions(node_markings[curr_nid]))
@@ -216,6 +218,12 @@ ReducedReachGenResult genReducedReachGraph(const StochasticRewardNet& srn,
             }
         }
         curr_nid += 1;
+        if (node_markings.size() > nc * 10000)
+        {
+            std::cout << node_markings.size() / 10000.0 << "w markings"
+                      << std::endl;
+            nc += 1;
+        }
     }
 
     return {.graph = std::move(graph),

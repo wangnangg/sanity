@@ -597,9 +597,9 @@ Marking createInitMarking(const StochasticRewardNet& srn)
     return mk;
 }
 
-static void printSrnSol1(const std::vector<Marking>& markings,
-                         const Permutation& mat2node, uint ntan,
-                         VectorConstView solution)
+void printSrnSol1(const std::vector<Marking>& markings,
+                  const Permutation& mat2node, uint ntan,
+                  VectorConstView solution)
 {
     std::cout << "tangibles (" << ntan << "):" << std::endl;
     for (uint i = 0; i < ntan; i++)
@@ -628,9 +628,9 @@ static void printSrnSol1(const std::vector<Marking>& markings,
     }
 }
 
-static void printSrnSol2(const std::vector<Marking>& markings,
-                         const Permutation& mat2node, uint ntan,
-                         VectorConstView solution)
+void printSrnSol2(const std::vector<Marking>& markings,
+                  const Permutation& mat2node, uint ntan,
+                  VectorConstView solution)
 {
     std::cout << "# markings: " << markings.size()
               << ", # tangibles: " << ntan << std::endl;
@@ -759,7 +759,7 @@ TEST(power_grid_model, ieee14_flat)
         std::cout << ", # gen: " << ngen;
         std::cout << ", # line: " << nline << std::endl;
     }
-    for (uint f = 0; f <= 10; f++)
+    for (uint f = 10; f <= 13; f++)
     {
         std::cout << std::endl;
         timed_scope t1("total");
@@ -839,10 +839,15 @@ TEST(power_grid_model, ieee14_diff)
         std::cout << ", # gen: " << ngen;
         std::cout << ", # line: " << nline << std::endl;
     }
-    std::vector<DiffTrunc> trunc = {{0, 0, 0, 0}, {1, 0, 0, 0}, {1, 0, 1, 0},
-                                    {1, 0, 1, 1}, {2, 0, 1, 1}, {2, 0, 2, 1},
-
-                                    {3, 0, 2, 1}, {2, 0, 2, 2}};
+    std::vector<DiffTrunc> trunc = {
+        {0, 0, 0, 0},  //
+        {1, 0, 0, 0},  //
+        {1, 0, 1, 0},  //
+        {1, 0, 1, 1},  //
+        {2, 0, 1, 1},  //
+        {2, 0, 2, 1},  // 3
+        {2, 0, 2, 2}   // 2
+    };
     for (uint i = 7; i < trunc.size(); i++)
     {
         const auto& tr = trunc[i];
@@ -890,4 +895,144 @@ TEST(power_grid_model, ieee14_diff)
 
         std::cout << "load severed in average: " << reward_load << std::endl;
     }
+}
+
+struct DiffRes
+{
+    Real reward;
+    uint nMarkings;
+};
+DiffRes solveDiff(DiffTrunc tr)
+{
+    Real bus_fail = 0.0001;
+    Real bus_repair = 0.01;
+
+    Real load_fail = 0.001;
+    Real load_repair = 1;
+
+    Real gen_fail = 0.001;
+    Real gen_repair = 0.1;
+
+    Real line_fail = 0.005;
+    Real line_repair = 0.5;
+
+    std::cout << std::endl;
+    timed_scope t1("total");
+    std::cout << "failures allowed: bus  " << tr.bus << ", load " << tr.load
+              << ", gen" << tr.gen << ", line " << tr.line << std::endl;
+
+    auto srn = exp2srn_diff(exp_model, bus_fail, bus_repair, load_fail,
+                            load_repair, gen_fail, gen_repair, line_fail,
+                            line_repair, tr.bus, tr.load, tr.gen, tr.line);
+    auto init_mk = createInitMarking(srn);
+
+    ReducedReachGenResult rg;
+    {
+        timed_scope t2("generation");
+        rg = genReducedReachGraph(srn, init_mk, 1e-6, 100);
+    }
+    std::cout << "# markings: " << rg.nodeMarkings.size() << std::endl;
+
+    uint max_iter = 1000;
+    Real tol = 1e-6;
+    Real w = 0.8;
+    SrnSteadyStateSolution sol;
+    {
+        timed_scope t2("solution");
+        sol = srnSteadyStateDecomp(
+            rg.graph, rg.edgeRates, rg.initProbs,
+            [=](const Spmatrix& A, VectorMutableView x, VectorConstView b) {
+                auto res = solveSor(A, x, b, w, tol, max_iter);
+                if (res.error > tol || std::isnan(res.error))
+                {
+                    std::cout << "Sor. nIter: " << res.nIter;
+                    std::cout << ", error: " << res.error << std::endl;
+                    throw std::invalid_argument("Sor failed to converge.");
+                }
+            });
+    }
+    auto reward_load = srnProbReward(
+        srn, sol, rg.nodeMarkings,
+        [](auto state) { return servedLoad(exp_model, *state.marking); });
+
+    std::cout << "load severed in average: " << reward_load << std::endl;
+
+    return {.reward = reward_load, .nMarkings = (uint)rg.nodeMarkings.size()};
+}
+
+TEST(power_grid_model, ieee14_heru)
+{
+    Real bus_fail = 0.0001;
+    Real bus_repair = 0.01;
+
+    Real load_fail = 0.001;
+    Real load_repair = 1;
+
+    Real gen_fail = 0.001;
+    Real gen_repair = 0.1;
+
+    Real line_fail = 0.005;
+    Real line_repair = 0.5;
+
+    auto cdf = readIeeeCdfModel(data_base + "ieee_cdf_models/ieee14cdf.txt");
+
+    exp_model = ieeeCdfModel2ExpModel(cdf);
+
+    {
+        auto srn = exp2srn_diff(exp_model, bus_fail, bus_repair, load_fail,
+                                load_repair, gen_fail, gen_repair, line_fail,
+                                line_repair, 0, 0, 0, 0);
+        std::cout << "# bus: " << nbus;
+        std::cout << ", # load: " << nload;
+        std::cout << ", # gen: " << ngen;
+        std::cout << ", # line: " << nline << std::endl;
+    }
+    std::vector<DiffTrunc> trunc = {
+        {0, 0, 0, 0},  //
+        {0, 0, 1, 0},  //
+        {1, 0, 1, 0},  //
+        {1, 0, 2, 0},  //
+        {2, 0, 2, 0},  //
+        {2, 0, 2, 1},  //
+        {2, 0, 2, 2},  //
+        {3, 0, 2, 2}   //
+    };
+    trunc = {
+        {0, 0, 0, 0},  //
+        {0, 0, 1, 0},  //
+        {1, 0, 1, 0},  //
+        {1, 0, 2, 0},  //
+    };
+    uint base = trunc.size() - 1;
+    std::vector<DiffTrunc> candi(3, trunc[base]);
+    candi[0].bus += 1;
+    candi[1].load += 1;
+    candi[2].line += 1;
+    auto org_res = solveDiff(trunc[base]);
+    Real max = 0;
+    int max_i = -1;
+    for (uint i = 0; i < candi.size(); i++)
+    {
+        auto new_res = solveDiff(candi[i]);
+        Real gain = (org_res.reward - new_res.reward) /
+                    ((Real)new_res.nMarkings - (Real)org_res.nMarkings);
+        if (gain > max)
+        {
+            max = gain;
+            max_i = (int)i;
+        }
+        std::cout << "gain: " << gain << std::endl;
+    }
+    std::cout << "max_i : " << max_i << std::endl;
+    std::cout << "{ " << candi[(uint)max_i].bus << ", "
+              << candi[(uint)max_i].load << ", " << candi[(uint)max_i].gen
+              << ", " << candi[(uint)max_i].line << " }" << std::endl;
+}
+
+TEST(power_grid_model, ieee14_mem)
+{
+    auto cdf = readIeeeCdfModel(data_base + "ieee_cdf_models/ieee14cdf.txt");
+
+    exp_model = ieeeCdfModel2ExpModel(cdf);
+    solveDiff({2, 0, 2, 2});
 }
