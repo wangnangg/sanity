@@ -20,8 +20,7 @@ TEST(petrinet, srn_birthdeath_sor)
     auto rg = genReducedReachGraph(srn, mk, 1e-6, 100);
     ASSERT_EQ(rg.graph.nodeCount(), 11);
     ASSERT_EQ(rg.graph.edgeCount(), 20);
-    auto Q = srnRateMatrix(rg.graph, rg.edgeRates,
-                           Permutation(rg.graph.nodeCount()));
+    auto Q = srnRateMatrix(rg.graph, rg.edgeRates);
     auto prob = Vector(rg.nodeMarkings.size(), 1.0);
     auto iter = srnSteadyStateSor(Q, mutableView(prob), 1.0, 1e-6, 1000);
     std::cout << Q << std::endl;

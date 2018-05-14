@@ -218,9 +218,9 @@ ReducedReachGenResult genReducedReachGraph(const StochasticRewardNet& srn,
             }
         }
         curr_nid += 1;
-        if (node_markings.size() > nc * 10000)
+        if (node_markings.size() > nc * 1000000)
         {
-            std::cout << node_markings.size() / 10000.0 << "w markings"
+            std::cout << node_markings.size() / 1000000.0 << "M markings"
                       << std::endl;
             nc += 1;
         }

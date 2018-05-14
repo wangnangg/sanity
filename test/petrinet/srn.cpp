@@ -50,8 +50,7 @@ TEST(petrinet, srn_ratemat)
     initmk.setToken(p1, 2);
     auto rg = genReducedReachGraph(srn, initmk, 1e-6, 1000);
 
-    auto spmat = srnRateMatrix(rg.graph, rg.edgeRates,
-                               Permutation(rg.graph.nodeCount()));
+    auto spmat = srnRateMatrix(rg.graph, rg.edgeRates);
     std::cout << spmat << std::endl;
 }
 
@@ -68,8 +67,7 @@ TEST(petrinet, srn_sor)
     initmk.setToken(p1, 2);
     auto rg = genReducedReachGraph(srn, initmk, 1e-6, 1000);
 
-    auto Q = srnRateMatrix(rg.graph, rg.edgeRates,
-                           Permutation(rg.graph.nodeCount()));
+    auto Q = srnRateMatrix(rg.graph, rg.edgeRates);
     auto prob = Vector(rg.nodeMarkings.size(), 1.0);
     auto iter = srnSteadyStateSor(Q, mutableView(prob), 1.0, 1e-6, 1000);
     std::cout << "sor nIter: " << iter.nIter << ", error: " << iter.error

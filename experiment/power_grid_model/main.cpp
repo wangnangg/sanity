@@ -759,7 +759,7 @@ TEST(power_grid_model, ieee14_flat)
         std::cout << ", # gen: " << ngen;
         std::cout << ", # line: " << nline << std::endl;
     }
-    for (uint f = 10; f <= 13; f++)
+    for (uint f = 0; f <= 2; f++)
     {
         std::cout << std::endl;
         timed_scope t1("total");
@@ -779,28 +779,18 @@ TEST(power_grid_model, ieee14_flat)
         uint max_iter = 1000;
         Real tol = 1e-6;
         Real w = 0.8;
-        SrnSteadyStateSolution sol;
+        IrreducibleSrnSteadyStateSol sol;
         {
             timed_scope t2("solution");
-            sol = srnSteadyStateDecomp(
-                rg.graph, rg.edgeRates, rg.initProbs,
-                [=](const Spmatrix& A, VectorMutableView x,
-                    VectorConstView b) {
-                    auto res = solveSor(A, x, b, w, tol, max_iter);
-                    if (res.error > tol || std::isnan(res.error))
-                    {
-                        std::cout << "Sor. nIter: " << res.nIter;
-                        std::cout << ", error: " << res.error << std::endl;
-                        throw std::invalid_argument(
-                            "Sor failed to converge.");
-                    }
+            sol = srnSteadyStateSor(rg.graph, rg.edgeRates, w, tol, max_iter);
+            auto reward_load =
+                srnProbReward(srn, sol, rg.nodeMarkings, [](auto state) {
+                    return servedLoad(exp_model, *state.marking);
                 });
-        }
-        auto reward_load = srnProbReward(
-            srn, sol, rg.nodeMarkings,
-            [](auto state) { return servedLoad(exp_model, *state.marking); });
 
-        std::cout << "load severed in average: " << reward_load << std::endl;
+            std::cout << "load severed in average: " << reward_load
+                      << std::endl;
+        }
     }
 }
 
@@ -872,7 +862,7 @@ TEST(power_grid_model, ieee14_diff)
         uint max_iter = 1000;
         Real tol = 1e-6;
         Real w = 0.8;
-        SrnSteadyStateSolution sol;
+        GeneralSrnSteadyStateSol sol;
         {
             timed_scope t2("solution");
             sol = srnSteadyStateDecomp(
@@ -936,7 +926,7 @@ DiffRes solveDiff(DiffTrunc tr)
     uint max_iter = 1000;
     Real tol = 1e-6;
     Real w = 0.8;
-    SrnSteadyStateSolution sol;
+    GeneralSrnSteadyStateSol sol;
     {
         timed_scope t2("solution");
         sol = srnSteadyStateDecomp(

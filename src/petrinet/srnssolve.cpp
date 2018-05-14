@@ -11,29 +11,19 @@ using namespace splinear;
 using namespace graph;
 
 Spmatrix srnRateMatrix(const DiGraph& reach_graph,
-                       const std::vector<Real>& edge_rates,
-                       const linear::Permutation& mat2rg_idx)
+                       const std::vector<Real>& edge_rates)
 {
-    const uint n = mat2rg_idx.maxOrgIdx() + 1;
+    const uint n = reach_graph.nodeCount();
     auto spmat = SpmatrixCreator(n, n);
     for (uint j = 0; j < n; j++)
     {
-        int nid = mat2rg_idx.forward(j);
-        assert(nid >= 0);
-        const auto& node = reach_graph.getNode((uint)nid);
+        const auto& node = reach_graph.getNode(j);
         for (const auto& edge : node.edges)
         {
             Real rate = edge_rates[edge.eid];
-            int i = mat2rg_idx.backward(edge.dst);
-            if (i >= 0)
-            {
-                spmat.addEntry((uint)i, j, rate);
-                spmat.addEntry(j, j, -rate);
-            }
-            else
-            {  // dst is not in the matrix
-                spmat.addEntry(j, j, -rate);
-            }
+            uint i = edge.dst;
+            spmat.addEntry((uint)i, j, rate);
+            spmat.addEntry(j, j, -rate);
         }
     }
     return spmat.create(Spmatrix::RowCompressed);
@@ -45,6 +35,7 @@ IterationResult srnSteadyStateSor(const Spmatrix& Q, VectorMutableView prob,
     assert(Q.format == Spmatrix::RowCompressed);
     uint iter;
     Real error;
+    scale(1.0 / norm1(prob), prob);
     auto prob_prev = Vector(prob.size());
     for (iter = 1; iter <= max_iter; iter++)
     {
@@ -68,8 +59,7 @@ IterationResult srnSteadyStateSor(const Spmatrix& Q, VectorMutableView prob,
             }
             prob(i) = w * residual / a_ii + (1 - w) * prob(i);
         }
-        Real n1 = norm1(prob);
-        scale(1.0 / n1, prob);
+        scale(1.0 / norm1(prob), prob);
         error = maxDiff(prob, prob_prev);
         if (error < tol)
         {
@@ -77,6 +67,27 @@ IterationResult srnSteadyStateSor(const Spmatrix& Q, VectorMutableView prob,
         }
     }
     return {.nIter = iter, .error = error};
+}
+
+IrreducibleSrnSteadyStateSol srnSteadyStateSor(
+    const graph::DiGraph& rg, const std::vector<Real>& edge_rates, Real w,
+    Real tol, uint max_iter)
+{
+    auto Q = srnRateMatrix(rg, edge_rates);
+    Vector prob(rg.nodeCount(), 1.0);
+    if (rg.nodeCount() == 1)
+    {
+        return IrreducibleSrnSteadyStateSol{std::move(prob)};
+    }
+    auto res = srnSteadyStateSor(Q, mutableView(prob), w, tol, max_iter);
+    if (res.error > tol || std::isnan(res.error))
+    {
+        std::ostringstream os;
+        os << "SOR failed to converge in srnSteadyStateSor with error = "
+           << res.error << ", nIter = " << res.nIter << ".";
+        throw std::invalid_argument(os.str());
+    }
+    return IrreducibleSrnSteadyStateSol{std::move(prob)};
 }
 
 IterationResult srnSteadyStatePower(const splinear::Spmatrix& P,
@@ -234,11 +245,13 @@ static Spmatrix aaRateMatrix(const DiGraph& rg,
     return spmat.create(Spmatrix::RowCompressed);
 }
 
-SrnSteadyStateSolution srnSteadyStateDecomp(
-    const DiGraph& rg, const std::vector<Real>& edge_rates,
+GeneralSrnSteadyStateSol srnSteadyStateDecomp(
+    const graph::DiGraph& rg, const std::vector<Real>& edge_rates,
     const std::vector<MarkingInitProb>& init_probs,
-    const std::function<void(const Spmatrix& A, VectorMutableView x,
-                             VectorConstView b)>& spsolver)
+    const std::function<void(const splinear::Spmatrix& A,
+                             linear::VectorMutableView x,
+                             linear::VectorConstView b)>& spsolver)
+
 {
     auto reorder = reorderState(rg);
     Vector solution(rg.nodeCount(), 0.0);
@@ -304,8 +317,8 @@ SrnSteadyStateSolution srnSteadyStateDecomp(
         abs_start = abs_end;
     }
 
-    return SrnSteadyStateSolution{.matrix2node = std::move(reorder.mat2node),
-                                  .nTransient = reorder.ntan,
-                                  .solution = std::move(solution)};
+    return {.matrix2node = std::move(reorder.mat2node),
+            .nTransient = reorder.ntan,
+            .solution = std::move(solution)};
 }
 }  // namespace sanity::petrinet

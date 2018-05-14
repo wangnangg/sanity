@@ -6,7 +6,13 @@
 namespace sanity::petrinet
 {
 Real srnProbReward(const StochasticRewardNet& srn,
-                   const SrnSteadyStateSolution& sol,
+                   const GeneralSrnSteadyStateSol& sol,
                    const std::vector<Marking>& markings,
                    const MarkingDepReal& reward_func);
-}
+
+Real srnProbReward(const StochasticRewardNet& srn,
+                   const IrreducibleSrnSteadyStateSol& sol,
+                   const std::vector<Marking>& markings,
+                   const MarkingDepReal& reward_func);
+
+}  // namespace sanity::petrinet
