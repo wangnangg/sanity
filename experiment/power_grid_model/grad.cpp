@@ -38,9 +38,11 @@ TEST(power_grid_model, ieee14_diff)
         {1, 0, 1, 1},  //
         {2, 0, 1, 1},  //
         {2, 0, 2, 1},  // 3
+        {3, 0, 2, 1},  // 3
+        {2, 1, 2, 1},  // 3
         {2, 0, 2, 2}   // 2
     };
-    for (uint i = 0; i < trunc.size(); i++)
+    for (uint i = 6; i < trunc.size(); i++)
     {
         const auto& tr = trunc[i];
         std::cout << std::endl;

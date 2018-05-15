@@ -130,7 +130,7 @@ makefile_body.append(
 
 deps = list2makestr(
     map(lambda obj: change_ext(obj, '.d'),
-        obj_files + test_obj_files + gtest_obj_files))
+        obj_files + exp_obj_files + test_obj_files + gtest_obj_files))
 
 makefile_body.append('deps:=' + deps + '\n')
 

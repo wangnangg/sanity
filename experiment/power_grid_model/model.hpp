@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include "linear.hpp"
 #include "petrinet.hpp"
 #include "powerflow.hpp"
