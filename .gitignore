@@ -4,3 +4,4 @@
 build
 .depend
 gtags.files
+makefile

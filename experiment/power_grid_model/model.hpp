@@ -1,3 +1,4 @@
+#pragma once
 #include "linear.hpp"
 #include "petrinet.hpp"
 #include "powerflow.hpp"
@@ -41,9 +42,27 @@ struct ExpPowerFlowModel
 {
     std::vector<ExpBus> buses;  // 0, 1, 2, ...
     std::vector<ExpLine> lines;
+    uint nbus;
+    uint nload;
+    uint ngen;
+    uint nline;
+
+    ExpPowerFlowModel()
+        : buses(), lines(), nbus(0), nload(0), ngen(0), nline(0)
+    {
+    }
 
     uint addBus(ExpBusType type, Real load, Real generation)
     {
+        nbus += 1;
+        if (load > 0)
+        {
+            nload += 1;
+        }
+        if (generation > 0)
+        {
+            ngen += 1;
+        }
         uint idx = buses.size();
         buses.push_back({.idx = idx,
                          .generation = generation,
@@ -60,6 +79,7 @@ struct ExpPowerFlowModel
     }
     uint addLine(uint start, uint end, Real reactance, Real maxPower)
     {
+        nline += 1;
         uint idx = lines.size();
         lines.push_back({.idx = idx,
                          .reactance = reactance,
