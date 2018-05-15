@@ -71,7 +71,7 @@ DiffRes solveDiff(Context& context, DiffTrunc tr)
     return {.reward = reward_load, .nMarkings = (uint)rg.nodeMarkings.size()};
 }
 
-TEST(power_grid_model, ieee14_heru)
+TEST(power_grid_model, ieee14_effi)
 {
     auto cdf = readIeeeCdfModel(data_base + "ieee_cdf_models/ieee14cdf.txt");
 
@@ -98,7 +98,7 @@ TEST(power_grid_model, ieee14_heru)
         {1, 0, 1, 0},  //
         {1, 0, 2, 0},  //
         {2, 0, 2, 0},  //
-        {2, 0, 2, 1},  //
+        {2, 1, 2, 1},  //
     };
     uint base = trunc.size() - 1;
     auto org_res = solveDiff(context, trunc[base]);
