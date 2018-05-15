@@ -46,25 +46,17 @@ DiffRes solveDiff(Context& context, DiffTrunc tr)
     uint max_iter = 1000;
     Real tol = 1e-6;
     Real w = 0.8;
-    GeneralSrnSteadyStateSol sol;
+    IrreducibleSrnSteadyStateSol sol;
     {
         timed_scope t2("solution");
-        sol = srnSteadyStateDecomp(
-            rg.graph, rg.edgeRates, rg.initProbs,
-            [=](const Spmatrix& A, VectorMutableView x, VectorConstView b) {
-                auto res = solveSor(A, x, b, w, tol, max_iter);
-                if (res.error > tol || std::isnan(res.error))
-                {
-                    std::cout << "Sor. nIter: " << res.nIter;
-                    std::cout << ", error: " << res.error << std::endl;
-                    throw std::invalid_argument("Sor failed to converge.");
-                }
-            });
+        sol = srnSteadyStateSor(rg.graph, rg.edgeRates, w, tol, max_iter);
     }
     auto reward_load =
         srnProbReward(srn, sol, rg.nodeMarkings, [&context](auto state) {
             return servedLoad(context, *state.marking);
         });
+
+    std::cout << "load severed in average: " << reward_load << std::endl;
 
     std::cout << "load severed in average: " << reward_load << std::endl;
 
