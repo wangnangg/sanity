@@ -4,16 +4,6 @@ namespace sanity::petrinet
 {
 using namespace graph;
 
-void printMarking(const Marking& mk)
-{
-    std::cout << "( ";
-    for (uint i = 0; i < mk.size(); i++)
-    {
-        std::cout << mk.nToken(i) << " ";
-    }
-    std::cout << ")" << std::endl;
-}
-
 int findMarking(std::map<const Token*, uint, CompMarking>& mk_map,
                 const Marking& newmk)
 {

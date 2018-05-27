@@ -534,12 +534,15 @@ Real servedLoad(Context& context, const Marking& mk)
 {
     Real load = 0.0;
     syncContext(context, &mk);
+    Real total_load = 0.0;
     for (const auto& bus : context.model.buses)
     {
+        total_load += bus.load;
         if (bus.busOk && bus.loadOk && bus.loadConnected)
         {
             load += bus.load;
         }
     }
+    std::cout << "total load: " << std::endl;
     return load;
 }

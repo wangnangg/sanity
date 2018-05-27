@@ -89,36 +89,17 @@ struct StochasticRewardNet
 class SrnCreator
 {
     std::vector<SrnTransition> _trans;
-    uint _place_count;
+    std::vector<uint> _init_token;
     MarkingDepBool _g_enable;
 
 public:
-    SrnCreator() : _place_count(0), _g_enable(true) {}
-    SrnCreator(uint place_count) : _place_count(place_count), _g_enable(true)
-    {
-    }
-    uint place()
-    {
-        uint idx = _place_count;
-        _place_count += 1;
-        return idx;
-    }
-    SrnTransition& expTrans(MarkingDepReal rate = 1.0)
-    {
-        uint tid = _trans.size();
-        _trans.push_back(SrnTransition(tid, SrnTransType::Exponetial, rate));
-        return _trans.back();
-    }
-    SrnTransition& immTrans(MarkingDepReal weight = 1.0)
-    {
-        uint tid = _trans.size();
-        _trans.push_back(SrnTransition(tid, SrnTransType::Immediate, weight));
-        return _trans.back();
-    }
-
-    void globalEnable(MarkingDepBool g_enable) { _g_enable = g_enable; }
-
+    SrnCreator() : _g_enable(true) {}
+    uint place(uint token = 0);
+    SrnTransition& expTrans(MarkingDepReal rate);
+    SrnTransition& immTrans(MarkingDepReal weight = 1.0);
+    void globalEnable(MarkingDepBool g_enable);
     StochasticRewardNet create() const;
+    Marking marking() const;
 };
 
 }  // namespace sanity::petrinet

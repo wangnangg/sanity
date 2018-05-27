@@ -30,7 +30,6 @@ struct CompMarking
     }
 };
 
-void printMarking(const Marking& mk);
 int findMarking(std::map<const Token*, uint, CompMarking>& mk_map,
                 const Marking& newmk);
 uint addNewMarking(graph::DiGraph& graph,

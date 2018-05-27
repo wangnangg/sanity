@@ -1,7 +1,12 @@
 #pragma once
+#include "petrinet/gpn.hpp"
+#include "petrinet/gpn_ob.hpp"
+#include "petrinet/gpn_sampler.hpp"
+#include "petrinet/gpn_sim.hpp"
 #include "petrinet/petrinet.hpp"
 #include "petrinet/reach.hpp"
 #include "petrinet/srn.hpp"
 #include "petrinet/srnreach.hpp"
 #include "petrinet/srnreward.hpp"
 #include "petrinet/srnssolve.hpp"
+#include "petrinet/utils.hpp"
