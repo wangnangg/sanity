@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include "petrinet.hpp"
+#include "srn.hpp"
 
 namespace sanity::petrinet
 {
@@ -173,4 +174,7 @@ public:
     GeneralPetriNet create() const;
     Marking marking() const;
 };
+
+GeneralPetriNet srn2gpn(const StochasticRewardNet& srn);
+
 }  // namespace sanity::petrinet

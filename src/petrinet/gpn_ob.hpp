@@ -3,7 +3,6 @@
 
 namespace sanity::petrinet
 {
-using namespace simulate;
 class GpnObserver : public GpnSimulator::Observer
 {
 protected:
@@ -26,45 +25,9 @@ protected:
     GpnObserver(Real begin, Real end) : _begin_time(begin), _end_time(end) {}
 
 public:
-    void eventTriggered(const GpnSimulator::Event& evt,
-                        const GpnSimulator::State& state,
-                        const GpnSimulator::EventQueue& queue) override
-    {
-        switch (evt.type)
-        {
-            case EventType::User:
-                if (evt.time >= _begin_time)
-                {
-                    if (evt.time <= _end_time)
-                    {
-                        updateReward(evt, state, queue);
-                    }
-                    else
-                    {
-                        if (!_end_passed)
-                        {
-                            updateReward(evt, state, queue);
-                            end(evt, state, queue);
-                            _end_passed = true;
-                        }
-                    }
-                }
-                break;
-            case EventType::Begin:
-                reset(evt, state, queue);
-                _end_passed = false;
-                break;
-            case EventType::End:
-                if (!_end_passed)
-                {
-                    updateReward(evt, state, queue);
-                    end(evt, state, queue);
-                    _end_passed = true;
-                }
-                break;
-        }
-        houseKeeping(evt, state, queue);
-    }
+    virtual void eventTriggered(
+        const GpnSimulator::Event& evt, const GpnSimulator::State& state,
+        const GpnSimulator::EventQueue& queue) override;
     Real timeSpan() const { return _end_time - _begin_time; }
 };
 
@@ -81,38 +44,16 @@ class GpnObPlaceToken : public GpnObserver
 protected:
     virtual void reset(const GpnSimulator::Event& evt,
                        const GpnSimulator::State& state,
-                       const GpnSimulator::EventQueue& queue)
-    {
-        _acc_reward = 0;
-    }
+                       const GpnSimulator::EventQueue& queue);
     virtual void houseKeeping(const GpnSimulator::Event& evt,
                               const GpnSimulator::State& state,
-                              const GpnSimulator::EventQueue& queue)
-    {
-        _last_token = state.currMarking.nToken(_pid);
-        _last_time = evt.time;
-    }
+                              const GpnSimulator::EventQueue& queue);
     virtual void updateReward(const GpnSimulator::Event& evt,
                               const GpnSimulator::State& state,
-                              const GpnSimulator::EventQueue& queue)
-    {
-        Real time;
-        if (evt.time >= _end_time)
-        {
-            time = _end_time;
-        }
-        else
-        {
-            time = evt.time;
-        }
-        _acc_reward += (time - _last_time) * _last_token;
-    }
+                              const GpnSimulator::EventQueue& queue);
     virtual void end(const GpnSimulator::Event& evt,
                      const GpnSimulator::State& state,
-                     const GpnSimulator::EventQueue& queue)
-    {
-        _samples.push_back(_acc_reward / timeSpan());
-    }
+                     const GpnSimulator::EventQueue& queue);
 
 public:
     GpnObPlaceToken(uint pid, Real begin_time, Real end_time)

@@ -112,11 +112,11 @@ TEST(petrinet, gspn_simulate_two_server_queue)
 
 TEST(petrinet, gspn_simulate_two_server_queue_confidence)
 {
-    Interval queue_itv, done_itv;
+    Interval queue_itv;
     {
         GpnCreator creator;
-        auto queue = creator.place(0);
-        auto done = creator.place(4);
+        auto queue = creator.place(1);
+        auto done = creator.place(3);
         creator.expTrans(1.0).iarc(queue).oarc(done);
         creator.expTrans(2.0).iarc(queue).oarc(done);
         creator.expTrans(1.0).iarc(done).oarc(queue);
@@ -126,14 +126,12 @@ TEST(petrinet, gspn_simulate_two_server_queue_confidence)
 
         auto sim = gpnSimulator(gpn, init, UniformSampler());
 
-        Real start = 0;
-        Real end = 1000;
+        Real start = 100;
+        Real end = 200;
         uint nSample = 100;
         auto ob_queue = GpnObPlaceToken(queue, start, end);
-        auto ob_done = GpnObPlaceToken(done, start, end);
         auto log = GpnObLog(false);
         sim.addObserver(ob_queue);
-        sim.addObserver(ob_done);
         sim.addObserver(log);
 
         for (uint i = 0; i < nSample; i++)
@@ -141,14 +139,17 @@ TEST(petrinet, gspn_simulate_two_server_queue_confidence)
             sim.begin();
             sim.runFor(end);
             sim.end();
+            if ((i + 1) % 30 == 0)
+            {
+                std::cout << "place queue avg token: "
+                          << confidenceInterval(ob_queue.samples(), 0.95)
+                          << std::endl;
+            }
         }
 
         ASSERT_EQ(ob_queue.samples().size(), nSample);
-        ASSERT_EQ(ob_done.samples().size(), nSample);
         queue_itv = confidenceInterval(ob_queue.samples(), 0.95);
-        done_itv = confidenceInterval(ob_done.samples(), 0.95);
         std::cout << "place queue avg token: " << queue_itv << std::endl;
-        std::cout << "place done avg token: " << done_itv << std::endl;
     }
     {
         SrnCreator creator;
@@ -177,14 +178,68 @@ TEST(petrinet, gspn_simulate_two_server_queue_confidence)
         std::cout << "queue avg token in srn: " << avg_queue << std::endl;
         ASSERT_LT(queue_itv.begin, avg_queue);
         ASSERT_GT(queue_itv.end, avg_queue);
-        Real avg_done = 0;
+    }
+}
+
+TEST(petrinet, gspn_simulate_two_server_queue_conversion)
+{
+    SrnCreator creator;
+    auto queue = creator.place(4);
+    auto done = creator.place();
+    creator.expTrans(1.0).iarc(queue).oarc(done);
+    creator.expTrans(2.0).iarc(queue).oarc(done);
+    creator.expTrans(1.0).iarc(done).oarc(queue);
+
+    auto srn = creator.create();
+    Marking init = creator.marking();
+
+    Interval queue_itv;
+    {
+        auto gpn = srn2gpn(srn);
+
+        auto sim = gpnSimulator(gpn, init, UniformSampler());
+
+        Real start = 100;
+        Real end = 200;
+        uint nSample = 100;
+        auto ob_queue = GpnObPlaceToken(queue, start, end);
+        auto log = GpnObLog(false);
+        sim.addObserver(ob_queue);
+        sim.addObserver(log);
+
+        for (uint i = 0; i < nSample; i++)
+        {
+            sim.begin();
+            sim.runFor(end);
+            sim.end();
+            if ((i + 1) % 30 == 0)
+            {
+                std::cout << "place queue avg token: "
+                          << confidenceInterval(ob_queue.samples(), 0.95)
+                          << std::endl;
+            }
+        }
+
+        ASSERT_EQ(ob_queue.samples().size(), nSample);
+        queue_itv = confidenceInterval(ob_queue.samples(), 0.95);
+        std::cout << "place queue avg token: " << queue_itv << std::endl;
+    }
+    {
+        auto rg = genReducedReachGraph(srn, init, 1e-6, 100);
+        auto Q = srnRateMatrix(rg.graph, rg.edgeRates);
+        auto prob = Vector(rg.nodeMarkings.size(), 1.0);
+        auto iter = srnSteadyStateSor(Q, mutableView(prob), 1.0, 1e-6, 1000);
+        ASSERT_LT(iter.error, 1e-6);
+
+        std::cout << "prob: " << prob << std::endl;
+        Real avg_queue = 0;
         for (uint i = 0; i < rg.nodeMarkings.size(); i++)
         {
             const auto& mk = rg.nodeMarkings[i];
-            avg_done += mk.nToken(done) * prob(i);
+            avg_queue += mk.nToken(queue) * prob(i);
         }
-        std::cout << "done avg token in srn: " << avg_done << std::endl;
-        ASSERT_LT(done_itv.begin, avg_done);
-        ASSERT_GT(done_itv.end, avg_done);
+        std::cout << "queue avg token in srn: " << avg_queue << std::endl;
+        ASSERT_LT(queue_itv.begin, avg_queue);
+        ASSERT_GT(queue_itv.end, avg_queue);
     }
 }
