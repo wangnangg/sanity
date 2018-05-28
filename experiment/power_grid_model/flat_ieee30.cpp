@@ -17,7 +17,7 @@ TEST(power_grid_model, ieee30_flat)
     auto cdf = readIeeeCdfModel(data_base + "ieee_cdf_models/ieee30cdf.txt");
 
     Context ct;
-    ct.model = ieeeCdfModel2ExpModel(cdf);
+    ct.model = ieeeCdfModel2ExpModel(cdf, 1.2);
 
     std::cout << "# bus: " << ct.model.nbus;
     std::cout << ", # load: " << ct.model.nload;

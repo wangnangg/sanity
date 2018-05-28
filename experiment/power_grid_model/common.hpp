@@ -78,6 +78,11 @@ StochasticRewardNet exp2srn_diff(Context& context, Real bus_fail,
                                  Real line_repair, uint busTrunc,
                                  uint loadTrunc, uint genTrunc,
                                  uint lineTrunc);
+StochasticRewardNet exp2srn_sim(Context& context, Real bus_fail,
+                                Real bus_repair, Real load_fail,
+                                Real load_repair, Real gen_fail,
+                                Real gen_repair, Real line_fail,
+                                Real line_repair);
 
 Marking createInitMarking(const StochasticRewardNet& srn,
                           const Context& context);

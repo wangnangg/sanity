@@ -54,7 +54,8 @@ ConversionResult exp2DCModel(const ExpPowerFlowModel& exp_model)
             .exp2dcLine = std::move(exp2dc_line)};
 }
 
-ExpPowerFlowModel ieeeCdfModel2ExpModel(const IeeeCdfModel& model)
+ExpPowerFlowModel ieeeCdfModel2ExpModel(const IeeeCdfModel& model,
+                                        Real max_factor)
 {
     ExpPowerFlowModel exp_model;
     for (const auto& bus : model.buses)
@@ -83,6 +84,21 @@ ExpPowerFlowModel ieeeCdfModel2ExpModel(const IeeeCdfModel& model)
     {
         exp_model.addLine((uint)(branch.tapBus - 1), (uint)(branch.zBus - 1),
                           branch.reactanceX_PU, 1.0);
+    }
+
+    // set up line max
+    auto converted = exp2DCModel(exp_model);
+    auto dc_res = solveDC(converted.dcModel, solveLU);
+    for (bool s : dc_res.islandSolved)
+    {
+        assert(s);
+    }
+    for (auto& line : exp_model.lines)
+    {
+        int dc_line_idx = converted.exp2dcLine.forward(line.idx);
+        assert(dc_line_idx >= 0);
+        Real line_power = dc_res.lineRealPowers[(uint)dc_line_idx];
+        line.maxPower = std::max(std::abs(line_power * max_factor), 1.0);
     }
     return exp_model;
 }

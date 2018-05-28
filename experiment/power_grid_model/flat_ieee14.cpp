@@ -81,13 +81,13 @@ TEST(power_grid_model, ieee14_flat)
     auto cdf = readIeeeCdfModel(data_base + "ieee_cdf_models/ieee14cdf.txt");
 
     Context ct;
-    ct.model = ieeeCdfModel2ExpModel(cdf);
+    ct.model = ieeeCdfModel2ExpModel(cdf, 1.2);
 
     std::cout << "# bus: " << ct.model.nbus;
     std::cout << ", # load: " << ct.model.nload;
     std::cout << ", # gen: " << ct.model.ngen;
     std::cout << ", # line: " << ct.model.nline << std::endl;
-    for (uint f = 0; f <= 2; f++)
+    for (uint f = 0; f <= 3; f++)
     {
         std::cout << std::endl;
         timed_scope t1("total");

@@ -101,4 +101,5 @@ struct ConversionResult
 
 ConversionResult exp2DCModel(const ExpPowerFlowModel& exp_model);
 
-ExpPowerFlowModel ieeeCdfModel2ExpModel(const IeeeCdfModel& cdf);
+ExpPowerFlowModel ieeeCdfModel2ExpModel(const IeeeCdfModel& model,
+                                        Real max_factor);

@@ -33,7 +33,7 @@ static uint whichSlot(const std::vector<Real>& weights, Real rand_val)
     for (i = 0; i < weights.size(); i++)
     {
         acc += weights[i];
-        if (acc <= rand_val)
+        if (rand_val <= acc)
         {
             return i;
         }

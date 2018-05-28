@@ -153,7 +153,7 @@ bool validate(ExpPowerFlowModel& model)
             std::cout << "line " << line.idx << " power: " << line_power
                       << "/" << line.maxPower << std::endl;
 #endif
-            if (line_power > line.maxPower)
+            if (std::abs(line_power) > std::abs(line.maxPower))
             {
 #ifndef NDEBUG
                 std::cout << "overloaded." << std::endl;
@@ -305,7 +305,58 @@ void createTwoStates(SrnCreator& ct, Real failure_rate, Real repair_rate,
     ct.expTrans(failure_rate).iarc(up).oarc(down).enable(trunc);
     ct.expTrans(repair_rate).iarc(down).oarc(up);
 }
+StochasticRewardNet exp2srn_sim(Context& context, Real bus_fail,
+                                Real bus_repair, Real load_fail,
+                                Real load_repair, Real gen_fail,
+                                Real gen_repair, Real line_fail,
+                                Real line_repair)
+{
+    SrnCreator ct;
+    context.marking_map = std::vector<uint>();
+    // create bus
+    for (uint i = 0; i < context.model.buses.size(); i++)
+    {
+        createTwoStates(ct, bus_fail, bus_repair, true);
+        context.marking_map.push_back(i);
+        context.marking_map.push_back(i);
+    }
 
+    // create load
+    uint nload = 0;
+    for (uint i = 0; i < context.model.buses.size(); i++)
+    {
+        if (context.model.buses[i].load > 0)
+        {
+            createLoad(ct, load_fail, load_repair, nload, true, context);
+            nload += 1;
+            context.marking_map.push_back(i);
+            context.marking_map.push_back(i);
+            context.marking_map.push_back(i);
+        }
+    }
+    context.load_connected = std::vector<bool>(context.model.nload, true);
+
+    // create gen
+    for (uint i = 0; i < context.model.buses.size(); i++)
+    {
+        if (context.model.buses[i].generation > 0)
+        {
+            createTwoStates(ct, gen_fail, gen_repair, true);
+            context.marking_map.push_back(i);
+            context.marking_map.push_back(i);
+        }
+    }
+
+    // create line
+    for (uint i = 0; i < context.model.lines.size(); i++)
+    {
+        createTwoStates(ct, line_fail, line_repair, true);
+        context.marking_map.push_back(i);
+        context.marking_map.push_back(i);
+    }
+
+    return ct.create();
+}
 StochasticRewardNet exp2srn_flat(Context& context, Real bus_fail,
                                  Real bus_repair, Real load_fail,
                                  Real load_repair, Real gen_fail,
@@ -534,15 +585,12 @@ Real servedLoad(Context& context, const Marking& mk)
 {
     Real load = 0.0;
     syncContext(context, &mk);
-    Real total_load = 0.0;
     for (const auto& bus : context.model.buses)
     {
-        total_load += bus.load;
         if (bus.busOk && bus.loadOk && bus.loadConnected)
         {
             load += bus.load;
         }
     }
-    std::cout << "total load: " << std::endl;
     return load;
 }

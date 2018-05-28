@@ -1,4 +1,5 @@
 #include "gpn_ob.hpp"
+#include <iostream>
 #include "utils.hpp"
 
 namespace sanity::petrinet
