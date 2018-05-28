@@ -30,7 +30,8 @@ struct EventT
 template <typename EventData>
 struct EventComp
 {
-    bool operator()(EventT<EventData> e1, EventT<EventData> e2) const
+    bool operator()(const EventT<EventData>& e1,
+                    const EventT<EventData>& e2) const
     {
         return e1.time > e2.time;
     }

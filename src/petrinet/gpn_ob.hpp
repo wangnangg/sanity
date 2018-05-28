@@ -3,37 +3,123 @@
 
 namespace sanity::petrinet
 {
-class GpnObPlaceNonEmpty : public GpnSimulator::Observer
+using namespace simulate;
+class GpnObserver : public GpnSimulator::Observer
 {
-    uint _pid;
-    Real _acc_time;
-    bool _non_empty;
-    Real _last_time;
+protected:
+    virtual void reset(const GpnSimulator::Event& evt,
+                       const GpnSimulator::State& state,
+                       const GpnSimulator::EventQueue& queue) = 0;
+    virtual void houseKeeping(const GpnSimulator::Event& evt,
+                              const GpnSimulator::State& state,
+                              const GpnSimulator::EventQueue& queue) = 0;
+    virtual void updateReward(const GpnSimulator::Event& evt,
+                              const GpnSimulator::State& state,
+                              const GpnSimulator::EventQueue& queue) = 0;
+    virtual void end(const GpnSimulator::Event& evt,
+                     const GpnSimulator::State& state,
+                     const GpnSimulator::EventQueue& queue) = 0;
+    Real _begin_time;
+    Real _end_time;
+    bool _end_passed;
+
+    GpnObserver(Real begin, Real end) : _begin_time(begin), _end_time(end) {}
 
 public:
-    GpnObPlaceNonEmpty(uint pid) : _pid(pid) {}
-
-    virtual void eventTriggered(
-        const GpnSimulator::Event& evt, const GpnSimulator::State& state,
-        const GpnSimulator::EventQueue& queue) override;
-    Real prob() const { return _acc_time / _last_time; }
-    Real accSojTime() const { return _acc_time; }
+    void eventTriggered(const GpnSimulator::Event& evt,
+                        const GpnSimulator::State& state,
+                        const GpnSimulator::EventQueue& queue) override
+    {
+        switch (evt.type)
+        {
+            case EventType::User:
+                if (evt.time >= _begin_time)
+                {
+                    if (evt.time <= _end_time)
+                    {
+                        updateReward(evt, state, queue);
+                    }
+                    else
+                    {
+                        if (!_end_passed)
+                        {
+                            updateReward(evt, state, queue);
+                            end(evt, state, queue);
+                            _end_passed = true;
+                        }
+                    }
+                }
+                break;
+            case EventType::Begin:
+                reset(evt, state, queue);
+                _end_passed = false;
+                break;
+            case EventType::End:
+                if (!_end_passed)
+                {
+                    updateReward(evt, state, queue);
+                    end(evt, state, queue);
+                    _end_passed = true;
+                }
+                break;
+        }
+        houseKeeping(evt, state, queue);
+    }
+    Real timeSpan() const { return _end_time - _begin_time; }
 };
 
-class GpnObPlaceToken : public GpnSimulator::Observer
+class GpnObPlaceToken : public GpnObserver
 {
     uint _pid;
+
     Real _acc_reward;
     Token _last_token;
     Real _last_time;
 
-public:
-    GpnObPlaceToken(uint pid) : _pid(pid) {}
+    std::vector<Real> _samples;
 
-    virtual void eventTriggered(
-        const GpnSimulator::Event& evt, const GpnSimulator::State& state,
-        const GpnSimulator::EventQueue& queue) override;
-    Real avgToken() const { return _acc_reward / _last_time; }
+protected:
+    virtual void reset(const GpnSimulator::Event& evt,
+                       const GpnSimulator::State& state,
+                       const GpnSimulator::EventQueue& queue)
+    {
+        _acc_reward = 0;
+    }
+    virtual void houseKeeping(const GpnSimulator::Event& evt,
+                              const GpnSimulator::State& state,
+                              const GpnSimulator::EventQueue& queue)
+    {
+        _last_token = state.currMarking.nToken(_pid);
+        _last_time = evt.time;
+    }
+    virtual void updateReward(const GpnSimulator::Event& evt,
+                              const GpnSimulator::State& state,
+                              const GpnSimulator::EventQueue& queue)
+    {
+        Real time;
+        if (evt.time >= _end_time)
+        {
+            time = _end_time;
+        }
+        else
+        {
+            time = evt.time;
+        }
+        _acc_reward += (time - _last_time) * _last_token;
+    }
+    virtual void end(const GpnSimulator::Event& evt,
+                     const GpnSimulator::State& state,
+                     const GpnSimulator::EventQueue& queue)
+    {
+        _samples.push_back(_acc_reward / timeSpan());
+    }
+
+public:
+    GpnObPlaceToken(uint pid, Real begin_time, Real end_time)
+        : GpnObserver(begin_time, end_time), _pid(pid)
+    {
+    }
+    const std::vector<Real>& samples() const { return _samples; }
 };
 
 class GpnObLog : public GpnSimulator::Observer

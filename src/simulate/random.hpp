@@ -1,5 +1,6 @@
 #pragma once
 #include <random>
+#include <vector>
 #include "type.hpp"
 
 namespace sanity::simulate
@@ -15,4 +16,22 @@ public:
     UniformSampler(uint seed, Real a, Real b) : gen(seed), dis(a, b) {}
     Real operator()() { return dis(gen); }
 };
+
+struct Interval
+{
+    Real begin;
+    Real end;
+    Real center() const { return (begin + end) / 2.0; }
+};
+
+Real mean(const std::vector<Real>& samples);
+Real variance(const std::vector<Real>& samples, Real mean);
+Real sampleVariance(const std::vector<Real>& samples, Real mean);
+
+Real stdNormDistCdf(Real x);
+Real stdNormDistQuantile(Real quantile);
+
+Interval confidenceInterval(const std::vector<Real>& samples,
+                            Real confidence);
+
 }  // namespace sanity::simulate
