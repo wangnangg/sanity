@@ -15,11 +15,8 @@ TEST(power_grid_model, ieee14_effi)
         {0, 0, 0, 0},  //
         {0, 0, 1, 0},  //
         {1, 0, 1, 0},  //
-        {1, 0, 2, 0},  //
-        {2, 0, 2, 0},  //
-        {2, 0, 2, 1},  //
-        {2, 0, 2, 2},  //
-        {3, 0, 2, 2},
+        {2, 0, 1, 0},  //
+        {2, 0, 1, 1},  //
     };
     uint base = trunc.size() - 1;
     auto org_res = solveDiff(context, trunc[base]);
