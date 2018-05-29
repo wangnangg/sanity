@@ -96,14 +96,23 @@ TEST(power_grid_model, ieee14_sim)
     simulator.addObserver(log);
     simulator.addObserver(load_ob);
 
-    uint nSample = 30;
+    timer sim_timer("ieee14_sim");
+    sim_timer.start();
+    uint nSample = 900;
+    uint report_gap = 30;
     for (uint i = 0; i < nSample; i++)
     {
         simulator.begin();
         simulator.runFor(end_time);
         simulator.end();
-        std::cout << load_ob.samples().back() << std::endl;
+        if ((i + 1) % report_gap == 0)
+        {
+            sim_timer.whatTime();
+            std::cout << "load: "
+                      << confidenceInterval(load_ob.samples(), 0.95)
+                      << std::endl;
+        }
     }
-    std::cout << "load served in avg: "
-              << confidenceInterval(load_ob.samples(), 0.95) << std::endl;
+    std::cout << "load: " << confidenceInterval(load_ob.samples(), 0.95)
+              << std::endl;
 }

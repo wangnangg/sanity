@@ -1,0 +1,102 @@
+build with: make config=debug|release|profile|coverage
+make exp config=release
+make: Nothing to be done for 'exp'.
+./build/release/exp --gtest_filter=*ieee14_sim
+Note: Google Test filter = *ieee14_sim
+[==========] Running 1 test from 1 test case.
+[----------] Global test environment set-up.
+[----------] 1 test from power_grid_model
+[ RUN      ] power_grid_model.ieee14_sim
+# bus: 14, # load: 11, # gen: 2, # line: 20
+
+total timer started.
+ieee14_sim used 0 seconds
+load: [2.47815, 2.48103]
+^Cbuild with: make config=debug|release|profile|coverage
+make exp config=release
+clang -isystem googletest/googletest/include -Igoogletest/googletest -Isrc -std=c++1z -Wall -Wno-error=unused-variable -Wno-error=unused-function -Wfloat-conversion -Wsign-conversion -Wimplicit-fallthrough -Wno-return-type-c-linkage  -Werror -MMD -g -O3 -DNDEBUG -c experiment/power_grid_model/timer.cpp -o build/release/experiment/power_grid_model/timer.o
+clang -isystem googletest/googletest/include -Igoogletest/googletest -Isrc -std=c++1z -Wall -Wno-error=unused-variable -Wno-error=unused-function -Wfloat-conversion -Wsign-conversion -Wimplicit-fallthrough -Wno-return-type-c-linkage  -Werror -MMD -g -O3 -DNDEBUG -c experiment/power_grid_model/flat_ieee14.cpp -o build/release/experiment/power_grid_model/flat_ieee14.o
+clang -isystem googletest/googletest/include -Igoogletest/googletest -Isrc -std=c++1z -Wall -Wno-error=unused-variable -Wno-error=unused-function -Wfloat-conversion -Wsign-conversion -Wimplicit-fallthrough -Wno-return-type-c-linkage  -Werror -MMD -g -O3 -DNDEBUG -c experiment/power_grid_model/sim_ieee14.cpp -o build/release/experiment/power_grid_model/sim_ieee14.o
+clang -isystem googletest/googletest/include -Igoogletest/googletest -Isrc -std=c++1z -Wall -Wno-error=unused-variable -Wno-error=unused-function -Wfloat-conversion -Wsign-conversion -Wimplicit-fallthrough -Wno-return-type-c-linkage  -Werror -MMD -g -O3 -DNDEBUG -c experiment/power_grid_model/efficiency.cpp -o build/release/experiment/power_grid_model/efficiency.o
+clang -isystem googletest/googletest/include -Igoogletest/googletest -Isrc -std=c++1z -Wall -Wno-error=unused-variable -Wno-error=unused-function -Wfloat-conversion -Wsign-conversion -Wimplicit-fallthrough -Wno-return-type-c-linkage  -Werror -MMD -g -O3 -DNDEBUG -c experiment/power_grid_model/grad_ieee14.cpp -o build/release/experiment/power_grid_model/grad_ieee14.o
+[1mexperiment/power_grid_model/grad_ieee14.cpp:5:10: [0m[0;1;35mwarning: [0m[1munused variable
+      'bus_fail' [-Wunused-variable][0m
+    Real bus_fail = 0.0001;
+[0;1;32m         ^
+[0m[1mexperiment/power_grid_model/grad_ieee14.cpp:9:10: [0m[0;1;35mwarning: [0m[1munused variable
+      'load_repair' [-Wunused-variable][0m
+    Real load_repair = 1;
+[0;1;32m         ^
+[0m[1mexperiment/power_grid_model/grad_ieee14.cpp:14:10: [0m[0;1;35mwarning: [0m[1munused variable
+      'line_fail' [-Wunused-variable][0m
+    Real line_fail = 0.005;
+[0;1;32m         ^
+[0m[1mexperiment/power_grid_model/grad_ieee14.cpp:11:10: [0m[0;1;35mwarning: [0m[1munused variable
+      'gen_fail' [-Wunused-variable][0m
+    Real gen_fail = 0.001;
+[0;1;32m         ^
+[0m[1mexperiment/power_grid_model/grad_ieee14.cpp:15:10: [0m[0;1;35mwarning: [0m[1munused variable
+      'line_repair' [-Wunused-variable][0m
+    Real line_repair = 0.5;
+[0;1;32m         ^
+[0m[1mexperiment/power_grid_model/grad_ieee14.cpp:6:10: [0m[0;1;35mwarning: [0m[1munused variable
+      'bus_repair' [-Wunused-variable][0m
+    Real bus_repair = 0.01;
+[0;1;32m         ^
+[0m[1mexperiment/power_grid_model/grad_ieee14.cpp:12:10: [0m[0;1;35mwarning: [0m[1munused variable
+      'gen_repair' [-Wunused-variable][0m
+    Real gen_repair = 0.1;
+[0;1;32m         ^
+[0m[1mexperiment/power_grid_model/grad_ieee14.cpp:8:10: [0m[0;1;35mwarning: [0m[1munused variable
+      'load_fail' [-Wunused-variable][0m
+    Real load_fail = 0.001;
+[0;1;32m         ^
+[0m8 warnings generated.
+clang -isystem googletest/googletest/include -Igoogletest/googletest -Isrc -std=c++1z -Wall -Wno-error=unused-variable -Wno-error=unused-function -Wfloat-conversion -Wsign-conversion -Wimplicit-fallthrough -Wno-return-type-c-linkage  -Werror -MMD -g -O3 -DNDEBUG -c experiment/power_grid_model/flat_ieee30.cpp -o build/release/experiment/power_grid_model/flat_ieee30.o
+clang -isystem googletest/googletest/include -Igoogletest/googletest -Isrc -std=c++1z -Wall -Wno-error=unused-variable -Wno-error=unused-function -Wfloat-conversion -Wsign-conversion -Wimplicit-fallthrough -Wno-return-type-c-linkage  -Werror -MMD -g -O3 -DNDEBUG -c experiment/power_grid_model/common.cpp -o build/release/experiment/power_grid_model/common.o
+clang build/release/src/graph/decompose.o build/release/src/graph/search.o build/release/src/simulate/random.o build/release/src/simulate/utils.o build/release/src/root/newton.o build/release/src/linear/oper.o build/release/src/linear/matrix_view.o build/release/src/linear/lapack.o build/release/src/linear/utils.o build/release/src/linear/permute.o build/release/src/linear/vector_view.o build/release/src/linear/blas.o build/release/src/linear/solve.o build/release/src/linear/decomp.o build/release/src/powerflow/matpower_format.o build/release/src/powerflow/dcsolve.o build/release/src/powerflow/model.o build/release/src/powerflow/dcmodel.o build/release/src/powerflow/ieee_cdf.o build/release/src/powerflow/solve.o build/release/src/petrinet/gpn_sim.o build/release/src/petrinet/reach.o build/release/src/petrinet/gpn.o build/release/src/petrinet/gpn_sampler.o build/release/src/petrinet/srn.o build/release/src/petrinet/srnreach.o build/release/src/petrinet/utils.o build/release/src/petrinet/mkutils.o build/release/src/petrinet/petrinet.o build/release/src/petrinet/srnssolve.o build/release/src/petrinet/gpn_ob.o build/release/src/petrinet/srnreward.o build/release/src/splinear/oper.o build/release/src/splinear/eigen.o build/release/src/splinear/utils.o build/release/src/splinear/solve.o build/release/src/splinear/matrix.o build/release/experiment/main.o build/release/experiment/power_grid_model/timer.o build/release/experiment/power_grid_model/flat_ieee14.o build/release/experiment/power_grid_model/model.o build/release/experiment/power_grid_model/sim_ieee14.o build/release/experiment/power_grid_model/efficiency.o build/release/experiment/power_grid_model/grad_ieee14.o build/release/experiment/power_grid_model/flat_ieee30.o build/release/experiment/power_grid_model/common.o build/release/googletest/googletest/src/gtest-all.o  -lstdc++ -lm -pthread -lblas -llapacke -g -O3 -DNDEBUG -o build/release/exp
+./build/release/exp --gtest_filter=*ieee14_sim
+Note: Google Test filter = *ieee14_sim
+[==========] Running 1 test from 1 test case.
+[----------] Global test environment set-up.
+[----------] 1 test from power_grid_model
+[ RUN      ] power_grid_model.ieee14_sim
+# bus: 14, # load: 11, # gen: 2, # line: 20
+
+total timer started.
+ieee14_sim used 338.775 seconds
+load: [2.47798, 2.48111]
+ieee14_sim used 678.935 seconds
+load: [2.47818, 2.48016]
+ieee14_sim used 1033.31 seconds
+load: [2.4785, 2.48022]
+ieee14_sim used 1377.52 seconds
+load: [2.47885, 2.48027]
+ieee14_sim used 1720.87 seconds
+load: [2.47906, 2.48029]
+ieee14_sim used 2048.52 seconds
+load: [2.47908, 2.48019]
+ieee14_sim used 2390.99 seconds
+load: [2.47924, 2.48028]
+ieee14_sim used 2733.97 seconds
+load: [2.47928, 2.48027]
+ieee14_sim used 3075.23 seconds
+load: [2.47938, 2.48035]
+ieee14_sim used 3414.72 seconds
+load: [2.47928, 2.48019]
+ieee14_sim used 3751.85 seconds
+load: [2.47927, 2.48013]
+ieee14_sim used 4112.75 seconds
+load: [2.47929, 2.48013]
+ieee14_sim used 4470.94 seconds
+load: [2.47923, 2.48003]
+ieee14_sim used 4826.75 seconds
+load: [2.47919, 2.47997]
+ieee14_sim used 5182.86 seconds
+load: [2.4793, 2.48005]
+ieee14_sim used 5542.91 seconds
+load: [2.47931, 2.48003]
+ieee14_sim used 5902.74 seconds
+load: [2.47932, 2.48002]
+ieee14_sim used 6259.85 seconds
+load: [2.47933, 2.48001]

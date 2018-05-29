@@ -84,6 +84,21 @@ StochasticRewardNet exp2srn_sim(Context& context, Real bus_fail,
                                 Real gen_repair, Real line_fail,
                                 Real line_repair);
 
+struct DiffTrunc
+{
+    uint bus;
+    uint load;
+    uint gen;
+    uint line;
+};
+
+struct DiffRes
+{
+    Real reward;
+    uint nMarkings;
+};
+DiffRes solveDiff(Context& context, DiffTrunc tr);
+
 Marking createInitMarking(const StochasticRewardNet& srn,
                           const Context& context);
 Real servedLoad(Context& context, const Marking& mk);
