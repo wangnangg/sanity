@@ -30,6 +30,7 @@ TEST(power_grid_model, ieee14_grad)
         {1, 0, 1, 1},  //
         {2, 0, 1, 1},  //
         {2, 0, 1, 2},  //
+        {2, 1, 1, 2},  //
     };
 
     uint base = trunc.size() - 1;
