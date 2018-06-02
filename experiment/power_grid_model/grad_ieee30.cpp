@@ -1,6 +1,6 @@
 #include "common.hpp"
 
-TEST(power_grid_model, ieee14_grad)
+TEST(power_grid_model, ieee30_grad)
 {
     Real bus_fail = 0.0001;
     Real bus_repair = 0.01;
@@ -14,7 +14,7 @@ TEST(power_grid_model, ieee14_grad)
     Real line_fail = 0.005;
     Real line_repair = 0.5;
 
-    auto cdf = readIeeeCdfModel(data_base + "ieee_cdf_models/ieee14cdf.txt");
+    auto cdf = readIeeeCdfModel(data_base + "ieee_cdf_models/ieee30cdf.txt");
 
     Context context;
     context.model = ieeeCdfModel2ExpModel(cdf, 1.2);
@@ -25,17 +25,10 @@ TEST(power_grid_model, ieee14_grad)
     std::cout << ", # line: " << context.model.nline << std::endl;
     std::vector<DiffTrunc> trunc = {
         {0, 0, 0, 0},  //
-        {1, 0, 0, 0},  //
-        {1, 0, 1, 0},  //
-        {1, 0, 1, 1},  //
-        {2, 0, 1, 1},  //
-        {2, 0, 1, 2},  //
-        {2, 1, 1, 2},  //
-        {3, 1, 1, 2},  //
     };
 
     uint base = trunc.size() - 1;
-    Real org_reward = 2.48054;
+    Real org_reward = solveDiff(context, trunc[base]).reward;
     std::vector<DiffTrunc> candi;
 
     if (trunc[base].bus < context.model.nbus)

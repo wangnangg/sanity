@@ -1,20 +1,8 @@
 #include "common.hpp"
 
-TEST(power_grid_model, ieee14_grad)
+TEST(power_grid_model, ieee30_effi)
 {
-    Real bus_fail = 0.0001;
-    Real bus_repair = 0.01;
-
-    Real load_fail = 0.001;
-    Real load_repair = 1;
-
-    Real gen_fail = 0.001;
-    Real gen_repair = 0.1;
-
-    Real line_fail = 0.005;
-    Real line_repair = 0.5;
-
-    auto cdf = readIeeeCdfModel(data_base + "ieee_cdf_models/ieee14cdf.txt");
+    auto cdf = readIeeeCdfModel(data_base + "ieee_cdf_models/ieee30cdf.txt");
 
     Context context;
     context.model = ieeeCdfModel2ExpModel(cdf, 1.2);
@@ -25,19 +13,10 @@ TEST(power_grid_model, ieee14_grad)
     std::cout << ", # line: " << context.model.nline << std::endl;
     std::vector<DiffTrunc> trunc = {
         {0, 0, 0, 0},  //
-        {1, 0, 0, 0},  //
-        {1, 0, 1, 0},  //
-        {1, 0, 1, 1},  //
-        {2, 0, 1, 1},  //
-        {2, 0, 1, 2},  //
-        {2, 1, 1, 2},  //
-        {3, 1, 1, 2},  //
     };
-
     uint base = trunc.size() - 1;
-    Real org_reward = 2.48054;
+    auto org_res = solveDiff(context, trunc[base]);
     std::vector<DiffTrunc> candi;
-
     if (trunc[base].bus < context.model.nbus)
     {
         auto tr = trunc[base];
@@ -67,7 +46,8 @@ TEST(power_grid_model, ieee14_grad)
     for (uint i = 0; i < candi.size(); i++)
     {
         auto new_res = solveDiff(context, candi[i]);
-        Real gain = std::abs(org_reward - new_res.reward);
+        Real gain = (org_res.reward - new_res.reward) /
+                    ((Real)new_res.nMarkings - (Real)org_res.nMarkings);
         if (gain > max)
         {
             max = gain;
@@ -75,7 +55,7 @@ TEST(power_grid_model, ieee14_grad)
         }
         std::cout << "gain: " << gain << std::endl;
     }
-    std::cout << "max_i : " << max_i << ", max gain: " << max << std::endl;
+    std::cout << "max_i : " << max_i << std::endl;
     std::cout << "{ " << candi[(uint)max_i].bus << ", "
               << candi[(uint)max_i].load << ", " << candi[(uint)max_i].gen
               << ", " << candi[(uint)max_i].line << " }" << std::endl;

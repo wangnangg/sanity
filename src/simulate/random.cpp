@@ -101,10 +101,10 @@ Real stdNormDistQuantile(Real p)
 
 Interval confidenceInterval(const std::vector<Real>& samples, Real confidence)
 {
-    if (samples.size() < 30)
+    if (samples.size() < 10)
     {
         throw std::invalid_argument(
-            "You need at least 30 samples to compute confidence interval.");
+            "You need at least 10 samples to compute confidence interval.");
     }
     Real mu = mean(samples);
     Real var = sampleVariance(samples, mu);

@@ -19,7 +19,8 @@ TEST(power_grid_model, ieee14_effi)
         {2, 0, 1, 1},  //
     };
     uint base = trunc.size() - 1;
-    auto org_res = solveDiff(context, trunc[base]);
+    Real org_reward = 2.48599;
+    uint org_nmarking = 6678;
     std::vector<DiffTrunc> candi;
     if (trunc[base].bus < context.model.nbus)
     {
@@ -50,8 +51,8 @@ TEST(power_grid_model, ieee14_effi)
     for (uint i = 0; i < candi.size(); i++)
     {
         auto new_res = solveDiff(context, candi[i]);
-        Real gain = (org_res.reward - new_res.reward) /
-                    ((Real)new_res.nMarkings - (Real)org_res.nMarkings);
+        Real gain = (org_reward - new_res.reward) /
+                    ((Real)new_res.nMarkings - (Real)org_nmarking);
         if (gain > max)
         {
             max = gain;
