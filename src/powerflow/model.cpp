@@ -17,8 +17,8 @@ uint PowerGrid::addGeneratorBus(Real real_power, Real voltage_amp,
     uint idx = _buses.size();
     Bus bus(idx, GeneratorAttr{.realPower = real_power,
                                .voltageAmp = voltage_amp,
-                               .minReact = min_react,
-                               .maxReact = max_react});
+                               .maxReact = max_react,
+                               .minReact = min_react});
     _buses.push_back(bus);
     _gen_count += 1;
     return idx;

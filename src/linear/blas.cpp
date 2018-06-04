@@ -1,5 +1,5 @@
 #include "blas.hpp"
-#include "blas/cblas.h"
+#include <cblas.h>
 namespace sanity::linear::blas
 {
 Real dot(VectorConstView x, VectorConstView y)
@@ -49,27 +49,29 @@ void scal(Real a, VectorMutableView x)
 
 void scal(Complex a, CVectorMutableView x)
 {
-    cblas_zscal((int)x.size(), &a, &x(0), (int)x.inc());
+    cblas_zscal((int)x.size(), (double *)&a, (double *)&x(0), (int)x.inc());
 }
 
 static CBLAS_ORDER order = CblasRowMajor;
-constexpr CBLAS_TRANSPOSE blasOper(Oper op)
+CBLAS_TRANSPOSE blasOper(Oper op)
 {
     switch (op)
     {
-        case NoTranspose:
+        case Oper::NoTranspose:
             return CblasNoTrans;
-        case Transpose:
+        case Oper::Transpose:
             return CblasTrans;
-        case ConjTranspose:
+        case Oper::ConjTranspose:
             return CblasConjTrans;
     }
+    assert(false);
+    return CblasNoTrans;
 }
 void gemv(Real a, MatrixConstView A, Oper op, VectorConstView x, Real b,
           VectorMutableView y)
 
 {
-    if (op == NoTranspose)
+    if (op == Oper::NoTranspose)
     {
         assert(A.ncol() == x.size());
         assert(A.nrow() == y.size());
@@ -87,7 +89,7 @@ void gemv(Real a, MatrixConstView A, Oper op, VectorConstView x, Real b,
 void gemv(Complex a, CMatrixConstView A, Oper op, CVectorConstView x,
           Complex b, CVectorMutableView y)
 {
-    if (op == NoTranspose)
+    if (op == Oper::NoTranspose)
     {
         assert(A.ncol() == x.size());
         assert(A.nrow() == y.size());
@@ -97,8 +99,9 @@ void gemv(Complex a, CMatrixConstView A, Oper op, CVectorConstView x,
         assert(A.nrow() == x.size());
         assert(A.ncol() == y.size());
     }
-    cblas_zgemv(order, blasOper(op), (int)A.nrow(), (int)A.ncol(), &a,
-                &A(0, 0), (int)A.ldim(), &x(0), (int)x.inc(), &b, &y(0),
+    cblas_zgemv(order, blasOper(op), (int)A.nrow(), (int)A.ncol(),
+                (double *)&a, (double *)&A(0, 0), (int)A.ldim(),
+                (double *)&x(0), (int)x.inc(), (double *)&b, (double *)&y(0),
                 (int)y.inc());
 }
 
@@ -106,7 +109,7 @@ void gemm(Real a, MatrixConstView A, Oper opA, MatrixConstView B, Oper opB,
           Real b, MatrixMutableView C)
 {
     uint m, n, k;
-    if (opA == NoTranspose)
+    if (opA == Oper::NoTranspose)
     {
         m = A.nrow();
         k = A.ncol();
@@ -116,7 +119,7 @@ void gemm(Real a, MatrixConstView A, Oper opA, MatrixConstView B, Oper opB,
         m = A.ncol();
         k = A.nrow();
     }
-    if (opB == NoTranspose)
+    if (opB == Oper::NoTranspose)
     {
         n = B.ncol();
         assert(k == B.nrow());

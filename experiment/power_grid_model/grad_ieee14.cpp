@@ -2,18 +2,6 @@
 
 TEST(power_grid_model, ieee14_grad)
 {
-    Real bus_fail = 0.0001;
-    Real bus_repair = 0.01;
-
-    Real load_fail = 0.001;
-    Real load_repair = 1;
-
-    Real gen_fail = 0.001;
-    Real gen_repair = 0.1;
-
-    Real line_fail = 0.005;
-    Real line_repair = 0.5;
-
     auto cdf = readIeeeCdfModel(data_base + "ieee_cdf_models/ieee14cdf.txt");
 
     Context context;

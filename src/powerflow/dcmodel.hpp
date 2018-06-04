@@ -35,8 +35,8 @@ public:
     {
         uint idx = _buses.size();
         _buses.push_back(DCBus{.idx = idx,
-                               .type = type,
-                               .injectedRealPower = injectedRealPower});
+                               .injectedRealPower = injectedRealPower,
+                               .type = type});
         return idx;
     }
     uint addTransmissionLine(uint start, uint end, Real reactance)

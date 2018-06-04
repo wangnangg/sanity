@@ -66,7 +66,7 @@ IterationResult srnSteadyStateSor(const Spmatrix& Q, VectorMutableView prob,
             break;
         }
     }
-    return {.nIter = iter, .error = error};
+    return {.error = error, .nIter = iter};
 }
 
 IrreducibleSrnSteadyStateSol srnSteadyStateSor(
@@ -112,7 +112,7 @@ IterationResult srnSteadyStatePower(const splinear::Spmatrix& P,
             break;
         }
     }
-    return {.nIter = iter, .error = error};
+    return {.error = error, .nIter = iter};
 }
 
 struct StateReordering

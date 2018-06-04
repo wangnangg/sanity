@@ -53,7 +53,7 @@ IterationResult solveSor(const Spmatrix& A, linear::VectorMutableView x,
             break;
         }
     }
-    return {.nIter = iter, .error = error};
+    return {.error = error, .nIter = iter};
 }
 
 }  // namespace sanity::splinear

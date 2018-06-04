@@ -42,11 +42,11 @@ void swap(VectorMutableView x, VectorMutableView y) { blas::swap(x, y); }
 Real dot(VectorConstView x, VectorConstView y) { return blas::dot(x, y); }
 void dot(MatrixConstView A, VectorConstView v, VectorMutableView x)
 {
-    blas::gemv(1.0, A, blas::NoTranspose, v, 0.0, x);
+    blas::gemv(1.0, A, blas::Oper::NoTranspose, v, 0.0, x);
 }
 void dot(CMatrixConstView A, CVectorConstView v, CVectorMutableView x)
 {
-    blas::gemv(1.0, A, blas::NoTranspose, v, 0.0, x);
+    blas::gemv(1.0, A, blas::Oper::NoTranspose, v, 0.0, x);
 }
 
 Vector dot(MatrixConstView A, VectorConstView v)
@@ -64,7 +64,8 @@ CVector dot(CMatrixConstView A, CVectorConstView v)
 
 void dot(MatrixConstView A, MatrixConstView B, MatrixMutableView C)
 {
-    blas::gemm(1.0, A, blas::NoTranspose, B, blas::NoTranspose, 0.0, C);
+    blas::gemm(1.0, A, blas::Oper::NoTranspose, B, blas::Oper::NoTranspose,
+               0.0, C);
 }
 Matrix dot(MatrixConstView A, MatrixConstView B)
 {

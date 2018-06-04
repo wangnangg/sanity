@@ -87,6 +87,6 @@ TEST(linear_blas, gemv)
 
     auto x = createVector(4, {1, 1, 1, 1});
     auto y = createVector(3, {1, 2, 3});
-    blas::gemv(2, A, blas::NoTranspose, x, 1, mutableView(y));
+    blas::gemv(2, A, blas::Oper::NoTranspose, x, 1, mutableView(y));
     ASSERT_LT(maxDiff(y, createVector(3, {7, 6, 7})), 1e-6);
 }

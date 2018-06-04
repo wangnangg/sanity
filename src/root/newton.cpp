@@ -18,7 +18,7 @@ IterationResult solveNewton(
     auto y = Vector(n);
     auto jac = Matrix(n, n);
     uint iter;
-    Real error;
+    Real error = 0;
 
     for (iter = 0; iter < max_iter; iter++)
     {

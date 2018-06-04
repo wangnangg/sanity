@@ -25,17 +25,18 @@ struct Bus
 {
     uint idx;
     BusType type;
-    union {
+    struct
+    {
         LoadAttr load;
         GeneratorAttr generator;
     } attr;
-    Bus(uint idx, LoadAttr load)
-        : idx(idx), type(LoadBus), attr({.load = load})
+    Bus(uint idx, LoadAttr load) : idx(idx), type(LoadBus)
     {
+        attr.load = load;
     }
-    Bus(uint idx, GeneratorAttr gen)
-        : idx(idx), type(GeneratorBus), attr({.generator = gen})
+    Bus(uint idx, GeneratorAttr gen) : idx(idx), type(GeneratorBus)
     {
+        attr.generator = gen;
     }
 };
 

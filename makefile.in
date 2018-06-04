@@ -1,17 +1,17 @@
-cpp_compiler?=clang
-linker?=clang
+cpp_compiler?=gcc
+linker?=gcc
 config?=debug
 build_dir:=build/${config}
-flags:= -Isrc -std=c++1z -Wall -Wno-error=unused-variable -Wno-error=unused-function -Wfloat-conversion -Wsign-conversion -Wimplicit-fallthrough -Wno-return-type-c-linkage  -Werror -MMD
+flags:= -Isrc -std=c++1z -Wall -Wno-error=unused-function -Wfloat-conversion -Wsign-conversion -Wimplicit-fallthrough -Werror -MMD
 gtest_dir:= googletest/googletest
 gtest_flags:=-isystem ${gtest_dir}/include -I${gtest_dir}
 link_flags:=-lstdc++ -lm -pthread -lblas -llapacke
 ifeq ($(config), release)
-  flags += -g -O3 -DNDEBUG
-  link_flags += -g -O3 -DNDEBUG
+  flags += -g -O3 -DNDEBUG -Wno-error=unused-variable
+  link_flags += -g -O3
 else
   ifeq ($(config), profile)
-    flags += -g -O3 -pg -no-pie
+    flags += -g -O3 -pg -no-pie -DNDEBUG -Wno-error=unused-variable
     link_flags += -g -O3 -no-pie
   else
     ifeq ($(config), coverage)

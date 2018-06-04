@@ -4,7 +4,7 @@
 #include "vector.hpp"
 namespace sanity::linear::blas
 {
-enum Oper
+enum class Oper
 {
     NoTranspose,
     Transpose,

@@ -1,7 +1,7 @@
 #include "lapack.hpp"
 #define HAVE_LAPACK_CONFIG_H
 #define LAPACK_COMPLEX_CPP
-#include "lapack/lapacke.h"
+#include <lapacke.h>
 
 namespace sanity::linear::lapack
 {
