@@ -19,7 +19,7 @@ struct EventT
     EventType type;
     Real time;
     EventData data;
-    EventT() = default;
+    EventT() : type(EventType::User), time(0), data() {}
     EventT(EventType type, Real time) : type(type), time(time), data() {}
     EventT(EventType type, Real time, EventData data)
         : type(type), time(time), data(std::move(data))

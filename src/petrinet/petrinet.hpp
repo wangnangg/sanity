@@ -51,7 +51,7 @@ public:
     MarkingDepBool() : _val(), _func(nullptr) {}
     template <typename QueryFunc,
               std::enable_if_t<!std::is_integral<QueryFunc>::value, int> = 0>
-    MarkingDepBool(QueryFunc func) : _func(func)
+    MarkingDepBool(QueryFunc func) : _val(), _func(func)
     {
     }
     MarkingDepBool(ReturnType value) : _val(value), _func(nullptr) {}
@@ -81,7 +81,7 @@ public:
     MarkingDepInt() : _val(), _func(nullptr) {}
     template <typename QueryFunc,
               std::enable_if_t<!std::is_integral<QueryFunc>::value, int> = 0>
-    MarkingDepInt(QueryFunc func) : _func(func)
+    MarkingDepInt(QueryFunc func) : _val(), _func(func)
     {
     }
     MarkingDepInt(ReturnType value) : _val(value), _func(nullptr) {}
@@ -110,7 +110,7 @@ public:
     MarkingDepReal() : _val(), _func(nullptr) {}
     template <typename QueryFunc,
               std::enable_if_t<!std::is_integral<QueryFunc>::value, int> = 0>
-    MarkingDepReal(QueryFunc func) : _func(func)
+    MarkingDepReal(QueryFunc func) : _val(), _func(func)
     {
     }
     MarkingDepReal(ReturnType value) : _val(value), _func(nullptr) {}

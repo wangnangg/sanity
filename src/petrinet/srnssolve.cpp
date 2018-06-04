@@ -34,7 +34,7 @@ IterationResult srnSteadyStateSor(const Spmatrix& Q, VectorMutableView prob,
 {
     assert(Q.format == Spmatrix::RowCompressed);
     uint iter;
-    Real error;
+    Real error = NAN;
     scale(1.0 / norm1(prob), prob);
     auto prob_prev = Vector(prob.size());
     for (iter = 1; iter <= max_iter; iter++)
@@ -99,7 +99,7 @@ IterationResult srnSteadyStatePower(const splinear::Spmatrix& P,
 
     auto next_prob = Vector(prob.size());
     uint iter;
-    Real error;
+    Real error = NAN;
     for (iter = 1; iter <= max_iter; iter++)
     {
         dot(P, prob, mutableView(next_prob));

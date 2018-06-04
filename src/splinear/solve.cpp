@@ -19,7 +19,7 @@ IterationResult solveSor(const Spmatrix& A, linear::VectorMutableView x,
     std::cout << "guess = " << x << std::endl;
     */
     uint iter;
-    Real error;
+    Real error = NAN;
     auto x_prev = Vector(x.size());
     for (iter = 1; iter <= max_iter; iter++)
     {
