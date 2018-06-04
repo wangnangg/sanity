@@ -142,13 +142,13 @@ TEST(petrinet, gspn_simulate_two_server_queue_confidence)
             if ((i + 1) % 30 == 0)
             {
                 std::cout << "place queue avg token: "
-                          << confidenceInterval(ob_queue.samples(), 0.95)
+                          << confidenceInterval(ob_queue.samples(), 0.99)
                           << std::endl;
             }
         }
 
         ASSERT_EQ(ob_queue.samples().size(), nSample);
-        queue_itv = confidenceInterval(ob_queue.samples(), 0.95);
+        queue_itv = confidenceInterval(ob_queue.samples(), 0.99);
         std::cout << "place queue avg token: " << queue_itv << std::endl;
     }
     {
@@ -215,13 +215,13 @@ TEST(petrinet, gspn_simulate_two_server_queue_conversion)
             if ((i + 1) % 30 == 0)
             {
                 std::cout << "place queue avg token: "
-                          << confidenceInterval(ob_queue.samples(), 0.95)
+                          << confidenceInterval(ob_queue.samples(), 0.99)
                           << std::endl;
             }
         }
 
         ASSERT_EQ(ob_queue.samples().size(), nSample);
-        queue_itv = confidenceInterval(ob_queue.samples(), 0.95);
+        queue_itv = confidenceInterval(ob_queue.samples(), 0.99);
         std::cout << "place queue avg token: " << queue_itv << std::endl;
     }
     {
