@@ -1,4 +1,4 @@
 #!/bin/bash
 ./format.sh
-git add .
+git add -u
 ./test.sh debug "-*__*"
