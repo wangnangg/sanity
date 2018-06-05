@@ -23,7 +23,7 @@ TEST(power_grid_model, ieee30_flat)
     std::cout << ", # load: " << ct.model.nload;
     std::cout << ", # gen: " << ct.model.ngen;
     std::cout << ", # line: " << ct.model.nline << std::endl;
-    for (uint f = 1; f <= 1; f++)
+    for (uint f = 2; f <= 2; f++)
     {
         std::cout << std::endl;
         timed_scope t1("total");

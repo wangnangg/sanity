@@ -1,0 +1,1023 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls   s/call   s/call  name    
+ 49.88      2.02     2.02  2158536     0.00     0.00  sanity::petrinet::findMarking(std::map<int const*, unsigned int, sanity::petrinet::CompMarking, std::allocator<std::pair<int const* const, unsigned int> > >&, sanity::petrinet::Marking const&)
+ 14.32      2.60     0.58 12783446     0.00     0.00  powerflowUpdate(Context&, sanity::petrinet::Marking const*)
+  5.43      2.82     0.22   918729     0.00     0.00  exp2DCModel(ExpPowerFlowModel const&)
+  3.21      2.95     0.13 64796599     0.00     0.00  void std::vector<sanity::graph::Graph::Edge, std::allocator<sanity::graph::Graph::Edge> >::_M_realloc_insert<sanity::graph::Graph::Edge>(__gnu_cxx::__normal_iterator<sanity::graph::Graph::Edge*, std::vector<sanity::graph::Graph::Edge, std::allocator<sanity::graph::Graph::Edge> > >, sanity::graph::Graph::Edge&&)
+  3.21      3.08     0.13   918729     0.00     0.00  sanity::powerflow::solveDC(sanity::powerflow::DCPowerFlowModel const&, std::function<void (sanity::linear::MatrixMutableView, sanity::linear::VectorMutableView)> const&)
+  2.72      3.19     0.11       65     0.00     0.00  sanity::splinear::SpmatrixGet(sanity::splinear::Spmatrix const&, unsigned long, unsigned long)
+  2.22      3.28     0.09   918846     0.00     0.00  sanity::graph::dfsRecursion(sanity::graph::Graph const&, unsigned int, std::vector<bool, std::allocator<bool> >&, std::function<bool (unsigned int, unsigned int)> const&)
+  2.22      3.37     0.09   274151     0.00     0.00  sanity::petrinet::addNewMarking(sanity::graph::DiGraph&, std::map<int const*, unsigned int, sanity::petrinet::CompMarking, std::allocator<std::pair<int const* const, unsigned int> > >&, std::vector<sanity::petrinet::Marking, std::allocator<sanity::petrinet::Marking> >&, sanity::petrinet::Marking&&)
+  1.98      3.45     0.08 12796841     0.00     0.00  sanity::petrinet::PetriNet::isolateEnableCheck(sanity::petrinet::Transition const&, sanity::petrinet::Marking const&) const
+  1.48      3.51     0.06  3149120     0.00     0.00  balance(ExpPowerFlowModel&)
+  1.48      3.57     0.06   918729     0.00     0.00  sanity::powerflow::admittanceMatrixB(sanity::powerflow::DCPowerFlowModel const&, std::vector<unsigned int, std::allocator<unsigned int> > const&)
+  1.23      3.62     0.05       64     0.00     0.06  sanity::petrinet::eliminateVanMarking(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::Marking&&, double, unsigned int)
+  0.99      3.66     0.04 27171115     0.00     0.00  std::_Function_handler<bool (unsigned int, unsigned int), sanity::graph::decompCc(sanity::graph::Graph const&)::{lambda(unsigned int, unsigned int)#1}>::_M_invoke(std::_Any_data const&, unsigned int&&, std::_Any_data const&)
+  0.99      3.70     0.04  6533385     0.00     0.00  std::_Function_handler<bool (sanity::petrinet::PetriNetState), createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#1}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&)
+  0.99      3.74     0.04  6431103     0.00     0.00  void std::vector<sanity::powerflow::DCTransmissionLine, std::allocator<sanity::powerflow::DCTransmissionLine> >::_M_realloc_insert<sanity::powerflow::DCTransmissionLine>(__gnu_cxx::__normal_iterator<sanity::powerflow::DCTransmissionLine*, std::vector<sanity::powerflow::DCTransmissionLine, std::allocator<sanity::powerflow::DCTransmissionLine> > >, sanity::powerflow::DCTransmissionLine&&)
+  0.99      3.78     0.04  2158536     0.00     0.00  sanity::petrinet::PetriNet::fireTransition(unsigned int, sanity::petrinet::Marking const&) const
+  0.74      3.81     0.03 18642084     0.00     0.00  void std::vector<unsigned int, std::allocator<unsigned int> >::_M_realloc_insert<unsigned int const&>(__gnu_cxx::__normal_iterator<unsigned int*, std::vector<unsigned int, std::allocator<unsigned int> > >, unsigned int const&)
+  0.74      3.84     0.03   274152     0.00     0.00  sanity::petrinet::PetriNet::enabledTransitions(sanity::petrinet::Marking const&) const
+  0.74      3.87     0.03   274151     0.00     0.00  std::_Rb_tree<int const*, std::pair<int const* const, unsigned int>, std::_Select1st<std::pair<int const* const, unsigned int> >, sanity::petrinet::CompMarking, std::allocator<std::pair<int const* const, unsigned int> > >::_M_get_insert_hint_unique_pos(std::_Rb_tree_const_iterator<std::pair<int const* const, unsigned int> >, int const* const&)
+  0.49      3.89     0.02  6236522     0.00     0.00  std::_Function_handler<bool (sanity::petrinet::PetriNetState), createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#2}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&)
+  0.49      3.91     0.02  5512374     0.00     0.00  void std::vector<sanity::powerflow::DCBus, std::allocator<sanity::powerflow::DCBus> >::_M_realloc_insert<sanity::powerflow::DCBus>(__gnu_cxx::__normal_iterator<sanity::powerflow::DCBus*, std::vector<sanity::powerflow::DCBus, std::allocator<sanity::powerflow::DCBus> > >, sanity::powerflow::DCBus&&)
+  0.49      3.93     0.02  3149120     0.00     0.00  validate(ExpPowerFlowModel&)
+  0.49      3.95     0.02   918729     0.00     0.00  sanity::graph::decompCc(sanity::graph::Graph const&)
+  0.25      3.96     0.01  2756187     0.00     0.00  sanity::linear::Permutation::Permutation(std::vector<unsigned int, std::allocator<unsigned int> >, bool)
+  0.25      3.97     0.01  1186096     0.00     0.00  void std::vector<sanity::graph::DiGraph::Edge, std::allocator<sanity::graph::DiGraph::Edge> >::_M_realloc_insert<sanity::graph::DiGraph::Edge>(__gnu_cxx::__normal_iterator<sanity::graph::DiGraph::Edge*, std::vector<sanity::graph::DiGraph::Edge, std::allocator<sanity::graph::DiGraph::Edge> > >, sanity::graph::DiGraph::Edge&&)
+  0.25      3.98     0.01   918729     0.00     0.00  sanity::linear::solveLU(sanity::linear::MatrixMutableView, sanity::linear::VectorMutableView)
+  0.25      3.99     0.01   918729     0.00     0.00  sanity::linear::blockView(sanity::linear::MatrixMutableView, unsigned int, unsigned int, unsigned int, unsigned int)
+  0.25      4.00     0.01   274434     0.00     0.00  syncContext(Context&, sanity::petrinet::Marking const*)
+  0.25      4.01     0.01   274339     0.00     0.00  shedload(ExpPowerFlowModel&)
+  0.25      4.02     0.01   274309     0.00     0.00  sanity::petrinet::PetriNet::firstEanbledTrans(sanity::petrinet::Marking const&) const
+  0.25      4.03     0.01      388     0.00     0.00  void std::vector<sanity::petrinet::Marking, std::allocator<sanity::petrinet::Marking> >::_M_realloc_insert<sanity::petrinet::Marking>(__gnu_cxx::__normal_iterator<sanity::petrinet::Marking*, std::vector<sanity::petrinet::Marking, std::allocator<sanity::petrinet::Marking> > >, sanity::petrinet::Marking&&)
+  0.25      4.04     0.01      316     0.00     0.00  sanity::splinear::dot(sanity::splinear::Spmatrix const&, sanity::linear::VectorConstView, sanity::linear::VectorMutableView)
+  0.25      4.05     0.01       65     0.00     0.00  sanity::splinear::sortTriples(sanity::splinear::SpmatrixTriple&, bool)
+  0.00      4.05     0.00  7948058     0.00     0.00  sanity::splinear::compTripleRow(sanity::splinear::SpmatrixTriple::Triple const&, sanity::splinear::SpmatrixTriple::Triple const&)
+  0.00      4.05     0.00   918846     0.00     0.00  sanity::graph::depthFirstSearch(sanity::graph::Graph const&, unsigned int, std::function<bool (unsigned int, unsigned int)> const&)
+  0.00      4.05     0.00   918846     0.00     0.00  std::_Function_base::_Base_manager<sanity::graph::decompCc(sanity::graph::Graph const&)::{lambda(unsigned int, unsigned int)#1}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<sanity::graph::decompCc(sanity::graph::Graph const&)::{lambda(unsigned int, unsigned int)#1}> const&, std::_Manager_operation)
+  0.00      4.05     0.00   918846     0.00     0.00  void std::vector<sanity::graph::ConnectedComponent, std::allocator<sanity::graph::ConnectedComponent> >::_M_realloc_insert<sanity::graph::ConnectedComponent>(__gnu_cxx::__normal_iterator<sanity::graph::ConnectedComponent*, std::vector<sanity::graph::ConnectedComponent, std::allocator<sanity::graph::ConnectedComponent> > >, sanity::graph::ConnectedComponent&&)
+  0.00      4.05     0.00   918846     0.00     0.00  void std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >::_M_realloc_insert<std::vector<unsigned int, std::allocator<unsigned int> > const&>(__gnu_cxx::__normal_iterator<std::vector<unsigned int, std::allocator<unsigned int> >*, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > > >, std::vector<unsigned int, std::allocator<unsigned int> > const&)
+  0.00      4.05     0.00   918729     0.00     0.00  sanity::linear::dot(sanity::linear::VectorConstView, sanity::linear::VectorConstView)
+  0.00      4.05     0.00   918729     0.00     0.00  sanity::linear::blas::dot(sanity::linear::VectorConstView, sanity::linear::VectorConstView)
+  0.00      4.05     0.00   918729     0.00     0.00  sanity::linear::lapack::gesv(sanity::linear::MatrixMutableView, sanity::linear::MatrixMutableView, std::vector<int, std::allocator<int> >*)
+  0.00      4.05     0.00   918729     0.00     0.00  sanity::linear::blockView(sanity::linear::VectorMutableView, unsigned int, unsigned int)
+  0.00      4.05     0.00   918729     0.00     0.00  std::_Function_base::_Base_manager<void (*)(sanity::linear::MatrixMutableView, sanity::linear::VectorMutableView)>::_M_manager(std::_Any_data&, std::_Any_data const&, std::_Manager_operation)
+  0.00      4.05     0.00   918729     0.00     0.00  std::_Function_handler<void (sanity::linear::MatrixMutableView, sanity::linear::VectorMutableView), void (*)(sanity::linear::MatrixMutableView, sanity::linear::VectorMutableView)>::_M_invoke(std::_Any_data const&, sanity::linear::MatrixMutableView&&, sanity::linear::VectorMutableView&&)
+  0.00      4.05     0.00   274280     0.00     0.00  unsigned int& std::vector<unsigned int, std::allocator<unsigned int> >::emplace_back<unsigned int>(unsigned int&&)
+  0.00      4.05     0.00     6932     0.00     0.00  std::_Function_handler<bool (sanity::petrinet::PetriNetState), exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#4}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&)
+  0.00      4.05     0.00     3866     0.00     0.00  std::_Function_handler<bool (sanity::petrinet::PetriNetState), exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#1}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&)
+  0.00      4.05     0.00     2385     0.00     0.00  std::_Function_handler<bool (sanity::petrinet::PetriNetState), exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#2}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&)
+  0.00      4.05     0.00      460     0.00     0.00  void std::vector<sanity::petrinet::Arc, std::allocator<sanity::petrinet::Arc> >::_M_realloc_insert<sanity::petrinet::Arc>(__gnu_cxx::__normal_iterator<sanity::petrinet::Arc*, std::vector<sanity::petrinet::Arc, std::allocator<sanity::petrinet::Arc> > >, sanity::petrinet::Arc&&)
+  0.00      4.05     0.00      405     0.00     0.00  void std::vector<double, std::allocator<double> >::_M_realloc_insert<double const&>(__gnu_cxx::__normal_iterator<double*, std::vector<double, std::allocator<double> > >, double const&)
+  0.00      4.05     0.00      396     0.00     0.00  void std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> >::_M_realloc_insert<sanity::splinear::SpmatrixTriple::Triple>(__gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, sanity::splinear::SpmatrixTriple::Triple&&)
+  0.00      4.05     0.00      389     0.00     0.00  sanity::linear::blas::asum(sanity::linear::VectorConstView)
+  0.00      4.05     0.00      389     0.00     0.00  sanity::linear::blas::scal(double, sanity::linear::VectorMutableView)
+  0.00      4.05     0.00      389     0.00     0.00  sanity::linear::norm1(sanity::linear::VectorConstView)
+  0.00      4.05     0.00      389     0.00     0.00  sanity::linear::scale(double, sanity::linear::VectorMutableView)
+  0.00      4.05     0.00      356     0.00     0.00  std::_Function_handler<bool (sanity::petrinet::PetriNetState), exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#3}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&)
+  0.00      4.05     0.00      324     0.00     0.00  sanity::linear::copy(sanity::linear::VectorConstView, sanity::linear::VectorMutableView)
+  0.00      4.05     0.00      324     0.00     0.00  sanity::linear::maxDiff(sanity::linear::VectorConstView, sanity::linear::VectorConstView)
+  0.00      4.05     0.00      324     0.00     0.00  void std::vector<sanity::graph::DiGraph::Node, std::allocator<sanity::graph::DiGraph::Node> >::_M_realloc_insert<sanity::graph::DiGraph::Node>(__gnu_cxx::__normal_iterator<sanity::graph::DiGraph::Node*, std::vector<sanity::graph::DiGraph::Node, std::allocator<sanity::graph::DiGraph::Node> > >, sanity::graph::DiGraph::Node&&)
+  0.00      4.05     0.00      301     0.00     0.00  std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::~basic_string()
+  0.00      4.05     0.00      287     0.00     0.00  std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#4}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#4}> const&, std::_Manager_operation)
+  0.00      4.05     0.00      268     0.00     0.00  std::_Rb_tree<int const*, std::pair<int const* const, unsigned int>, std::_Select1st<std::pair<int const* const, unsigned int> >, sanity::petrinet::CompMarking, std::allocator<std::pair<int const* const, unsigned int> > >::_M_erase(std::_Rb_tree_node<std::pair<int const* const, unsigned int> >*)
+  0.00      4.05     0.00      244     0.00     0.00  sanity::petrinet::cmpTrans(sanity::petrinet::Transition const&, sanity::petrinet::Transition const&)
+  0.00      4.05     0.00      210     0.00     0.00  std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#1}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#1}> const&, std::_Manager_operation)
+  0.00      4.05     0.00      209     0.00     0.00  sanity::petrinet::SrnCreator::place(unsigned int)
+  0.00      4.05     0.00      188     0.00     0.00  sanity::petrinet::SrnCreator::expTrans(sanity::petrinet::MarkingDepReal)
+  0.00      4.05     0.00      147     0.00     0.00  std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#2}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#2}> const&, std::_Manager_operation)
+  0.00      4.05     0.00      130     0.00     0.00  std::vector<unsigned int, std::allocator<unsigned int> >::reserve(unsigned long)
+  0.00      4.05     0.00      105     0.00     0.00  std::_Function_base::_Base_manager<createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#2}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#2}> const&, std::_Manager_operation)
+  0.00      4.05     0.00      105     0.00     0.00  std::_Function_base::_Base_manager<createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#1}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#1}> const&, std::_Manager_operation)
+  0.00      4.05     0.00       96     0.00     0.00  std::_Function_handler<double (sanity::petrinet::PetriNetState), power_grid_model_ieee30_flat_Test::TestBody()::{lambda(auto:1)#1}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&)
+  0.00      4.05     0.00       95     0.00     0.00  servedLoad(Context&, sanity::petrinet::Marking const&)
+  0.00      4.05     0.00       95     0.00     0.00  void std::__adjust_heap<__gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, long, sanity::splinear::SpmatrixTriple::Triple, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sanity::splinear::SpmatrixTriple::Triple const&, sanity::splinear::SpmatrixTriple::Triple const&)> >(__gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, long, long, sanity::splinear::SpmatrixTriple::Triple, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sanity::splinear::SpmatrixTriple::Triple const&, sanity::splinear::SpmatrixTriple::Triple const&)>)
+  0.00      4.05     0.00       73     0.00     0.00  createTwoStates(sanity::petrinet::SrnCreator&, double, double, sanity::petrinet::MarkingDepBool)
+  0.00      4.05     0.00       65     0.00     0.00  sanity::splinear::triple2compressed(sanity::splinear::SpmatrixTriple&, sanity::splinear::Spmatrix::Format)
+  0.00      4.05     0.00       65     0.00     0.00  std::vector<double, std::allocator<double> >::reserve(unsigned long)
+  0.00      4.05     0.00       65     0.00     0.00  std::_Rb_tree<int const*, std::pair<int const* const, unsigned int>, std::_Select1st<std::pair<int const* const, unsigned int> >, sanity::petrinet::CompMarking, std::allocator<std::pair<int const* const, unsigned int> > >::_M_get_insert_unique_pos(int const* const&)
+  0.00      4.05     0.00       64     0.00     0.00  sanity::petrinet::srnSteadyStatePower(sanity::splinear::Spmatrix const&, sanity::linear::VectorMutableView, double, unsigned int)
+  0.00      4.05     0.00       64     0.00     0.00  void std::vector<unsigned int, std::allocator<unsigned int> >::_M_realloc_insert<unsigned int>(__gnu_cxx::__normal_iterator<unsigned int*, std::vector<unsigned int, std::allocator<unsigned int> > >, unsigned int&&)
+  0.00      4.05     0.00       46     0.00     0.00  std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_append(char const*, unsigned long)
+  0.00      4.05     0.00       42     0.00     0.00  sanity::petrinet::SrnCreator::immTrans(sanity::petrinet::MarkingDepReal)
+  0.00      4.05     0.00       21     0.00     0.00  createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)
+  0.00      4.05     0.00       20     0.00     0.00  std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_replace(unsigned long, unsigned long, char const*, unsigned long)
+  0.00      4.05     0.00       14     0.00     0.00  std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#3}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#3}> const&, std::_Manager_operation)
+  0.00      4.05     0.00        9     0.00     0.00  void std::vector<sanity::petrinet::Transition, std::allocator<sanity::petrinet::Transition> >::_M_realloc_insert<sanity::petrinet::Transition const&>(__gnu_cxx::__normal_iterator<sanity::petrinet::Transition*, std::vector<sanity::petrinet::Transition, std::allocator<sanity::petrinet::Transition> > >, sanity::petrinet::Transition const&)
+  0.00      4.05     0.00        9     0.00     0.00  void std::vector<sanity::petrinet::SrnTransProp, std::allocator<sanity::petrinet::SrnTransProp> >::_M_realloc_insert<sanity::petrinet::SrnTransProp const&>(__gnu_cxx::__normal_iterator<sanity::petrinet::SrnTransProp*, std::vector<sanity::petrinet::SrnTransProp, std::allocator<sanity::petrinet::SrnTransProp> > >, sanity::petrinet::SrnTransProp const&)
+  0.00      4.05     0.00        9     0.00     0.00  void std::vector<sanity::petrinet::SrnTransition, std::allocator<sanity::petrinet::SrnTransition> >::_M_realloc_insert<sanity::petrinet::SrnTransition>(__gnu_cxx::__normal_iterator<sanity::petrinet::SrnTransition*, std::vector<sanity::petrinet::SrnTransition, std::allocator<sanity::petrinet::SrnTransition> > >, sanity::petrinet::SrnTransition&&)
+  0.00      4.05     0.00        7     0.00     0.00  void std::vector<ExpLine, std::allocator<ExpLine> >::_M_realloc_insert<ExpLine>(__gnu_cxx::__normal_iterator<ExpLine*, std::vector<ExpLine, std::allocator<ExpLine> > >, ExpLine&&)
+  0.00      4.05     0.00        7     0.00     0.00  void std::vector<sanity::powerflow::IeeeCdfBranch, std::allocator<sanity::powerflow::IeeeCdfBranch> >::_M_realloc_insert<sanity::powerflow::IeeeCdfBranch const&>(__gnu_cxx::__normal_iterator<sanity::powerflow::IeeeCdfBranch*, std::vector<sanity::powerflow::IeeeCdfBranch, std::allocator<sanity::powerflow::IeeeCdfBranch> > >, sanity::powerflow::IeeeCdfBranch const&)
+  0.00      4.05     0.00        6     0.00     0.00  void std::vector<ExpBus, std::allocator<ExpBus> >::_M_realloc_insert<ExpBus>(__gnu_cxx::__normal_iterator<ExpBus*, std::vector<ExpBus, std::allocator<ExpBus> > >, ExpBus&&)
+  0.00      4.05     0.00        6     0.00     0.00  void std::vector<sanity::powerflow::IeeeCdfBus, std::allocator<sanity::powerflow::IeeeCdfBus> >::_M_realloc_insert<sanity::powerflow::IeeeCdfBus const&>(__gnu_cxx::__normal_iterator<sanity::powerflow::IeeeCdfBus*, std::vector<sanity::powerflow::IeeeCdfBus, std::allocator<sanity::powerflow::IeeeCdfBus> > >, sanity::powerflow::IeeeCdfBus const&)
+  0.00      4.05     0.00        3     0.00     0.00  timed_scope::timed_scope(char const*)
+  0.00      4.05     0.00        3     0.00     0.00  timed_scope::~timed_scope()
+  0.00      4.05     0.00        2     0.00     0.00  void std::vector<double, std::allocator<double> >::_M_realloc_insert<double>(__gnu_cxx::__normal_iterator<double*, std::vector<double, std::allocator<double> > >, double&&)
+  0.00      4.05     0.00        1     0.00     0.00  _GLOBAL__sub_I__Z11exp2DCModelRK17ExpPowerFlowModel
+  0.00      4.05     0.00        1     0.00     0.00  _GLOBAL__sub_I__Z11syncContextR7ContextPKN6sanity8petrinet7MarkingE
+  0.00      4.05     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN11timed_scopeC2EPKc
+  0.00      4.05     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN32power_grid_model_ieee14_sim_Test10test_info_E
+  0.00      4.05     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN32power_grid_model_ieee30_sim_Test10test_info_E
+  0.00      4.05     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN33power_grid_model_ieee14_effi_Test10test_info_E
+  0.00      4.05     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN33power_grid_model_ieee14_grad_Test10test_info_E
+  0.00      4.05     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN33power_grid_model_ieee30_effi_Test10test_info_E
+  0.00      4.05     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN33power_grid_model_ieee30_flat_Test10test_info_E
+  0.00      4.05     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN33power_grid_model_ieee30_grad_Test10test_info_E
+  0.00      4.05     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN33power_grid_model_three_nodes_Test10test_info_E
+  0.00      4.05     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN6sanity6linear6maxAbsENS0_15VectorConstViewE
+  0.00      4.05     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN6sanity6linear8decompQRENS0_17MatrixMutableViewE
+  0.00      4.05     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN6sanity8petrinet11GpnObserver14eventTriggeredERKNS_8simulate6EventTIjEERKNS0_11GpnSimStateERKNS2_11EventQueueTIjEE
+  0.00      4.05     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN6sanity8petrinet11findMarkingERSt3mapIPKijNS0_11CompMarkingESaISt4pairIKS3_jEEERKNS0_7MarkingE
+  0.00      4.05     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN6sanity8petrinet12isVanMarkingERKNS0_19StochasticRewardNetERKNS0_7MarkingE
+  0.00      4.05     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN6sanity8splinearlsERSoRKNS0_8SpmatrixE
+  0.00      4.05     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN6sanity9powerflow16readIeeeCdfModelERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+  0.00      4.05     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN6sanity9powerflow17readMatpowerModelERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+  0.00      4.05     0.00        1     0.00     0.00  _GLOBAL__sub_I_main
+  0.00      4.05     0.00        1     0.00     0.00  exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)
+  0.00      4.05     0.00        1     0.00     0.00  createInitMarking(sanity::petrinet::StochasticRewardNet const&, Context const&)
+  0.00      4.05     0.00        1     0.00     0.00  ieeeCdfModel2ExpModel(sanity::powerflow::IeeeCdfModel const&, double)
+  0.00      4.05     0.00        1     0.00     4.05  power_grid_model_ieee30_flat_Test::TestBody()
+  0.00      4.05     0.00        1     0.00     0.00  power_grid_model_ieee30_flat_Test::~power_grid_model_ieee30_flat_Test()
+  0.00      4.05     0.00        1     0.00     0.00  sanity::petrinet::srnProbReward(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::IrreducibleSrnSteadyStateSol const&, std::vector<sanity::petrinet::Marking, std::allocator<sanity::petrinet::Marking> > const&, sanity::petrinet::MarkingDepReal const&)
+  0.00      4.05     0.00        1     0.00     0.00  sanity::petrinet::srnRateMatrix(sanity::graph::DiGraph const&, std::vector<double, std::allocator<double> > const&)
+  0.00      4.05     0.00        1     0.00     0.00  sanity::petrinet::srnSteadyStateSor(sanity::graph::DiGraph const&, std::vector<double, std::allocator<double> > const&, double, double, unsigned int)
+  0.00      4.05     0.00        1     0.00     4.05  sanity::petrinet::genReducedReachGraph(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::Marking const&, double, unsigned int)
+  0.00      4.05     0.00        1     0.00     0.00  sanity::petrinet::PetriNet::PetriNet(unsigned int, sanity::petrinet::MarkingDepBool, std::vector<sanity::petrinet::Transition, std::allocator<sanity::petrinet::Transition> >)
+  0.00      4.05     0.00        1     0.00     0.00  sanity::powerflow::readIeeeCdfModel(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
+  0.00      4.05     0.00        1     0.00     0.00  testing::Test::SetUpTestCase()
+  0.00      4.05     0.00        1     0.00     0.00  testing::Test::TearDownTestCase()
+  0.00      4.05     0.00        1     0.00     0.00  testing::internal::TestFactoryImpl<power_grid_model_ieee14_sim_Test>::~TestFactoryImpl()
+  0.00      4.05     0.00        1     0.00     0.00  testing::internal::TestFactoryImpl<power_grid_model_ieee30_sim_Test>::~TestFactoryImpl()
+  0.00      4.05     0.00        1     0.00     0.00  testing::internal::TestFactoryImpl<power_grid_model_ieee14_effi_Test>::~TestFactoryImpl()
+  0.00      4.05     0.00        1     0.00     0.00  testing::internal::TestFactoryImpl<power_grid_model_ieee14_flat_Test>::~TestFactoryImpl()
+  0.00      4.05     0.00        1     0.00     0.00  testing::internal::TestFactoryImpl<power_grid_model_ieee14_grad_Test>::~TestFactoryImpl()
+  0.00      4.05     0.00        1     0.00     0.00  testing::internal::TestFactoryImpl<power_grid_model_ieee30_effi_Test>::~TestFactoryImpl()
+  0.00      4.05     0.00        1     0.00     0.00  testing::internal::TestFactoryImpl<power_grid_model_ieee30_flat_Test>::CreateTest()
+  0.00      4.05     0.00        1     0.00     0.00  testing::internal::TestFactoryImpl<power_grid_model_ieee30_flat_Test>::~TestFactoryImpl()
+  0.00      4.05     0.00        1     0.00     0.00  testing::internal::TestFactoryImpl<power_grid_model_ieee30_grad_Test>::~TestFactoryImpl()
+  0.00      4.05     0.00        1     0.00     0.00  testing::internal::TestFactoryImpl<power_grid_model_three_nodes_Test>::~TestFactoryImpl()
+  0.00      4.05     0.00        1     0.00     0.00  sanity::petrinet::SrnCreator::create() const
+  0.00      4.05     0.00        1     0.00     0.00  std::_Function_base::_Base_manager<power_grid_model_ieee30_flat_Test::TestBody()::{lambda(auto:1)#1}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<power_grid_model_ieee30_flat_Test::TestBody()::{lambda(auto:1)#1}> const&, std::_Manager_operation)
+  0.00      4.05     0.00        1     0.00     0.00  void std::vector<sanity::petrinet::MarkingInitProb, std::allocator<sanity::petrinet::MarkingInitProb> >::_M_realloc_insert<sanity::petrinet::MarkingInitProb>(__gnu_cxx::__normal_iterator<sanity::petrinet::MarkingInitProb*, std::vector<sanity::petrinet::MarkingInitProb, std::allocator<sanity::petrinet::MarkingInitProb> > >, sanity::petrinet::MarkingInitProb&&)
+  0.00      4.05     0.00        1     0.00     0.00  void std::__heap_select<__gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sanity::splinear::SpmatrixTriple::Triple const&, sanity::splinear::SpmatrixTriple::Triple const&)> >(__gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, __gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, __gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sanity::splinear::SpmatrixTriple::Triple const&, sanity::splinear::SpmatrixTriple::Triple const&)>)
+  0.00      4.05     0.00        1     0.00     0.00  void std::__insertion_sort<__gnu_cxx::__normal_iterator<sanity::petrinet::Transition*, std::vector<sanity::petrinet::Transition, std::allocator<sanity::petrinet::Transition> > >, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sanity::petrinet::Transition const&, sanity::petrinet::Transition const&)> >(__gnu_cxx::__normal_iterator<sanity::petrinet::Transition*, std::vector<sanity::petrinet::Transition, std::allocator<sanity::petrinet::Transition> > >, __gnu_cxx::__normal_iterator<sanity::petrinet::Transition*, std::vector<sanity::petrinet::Transition, std::allocator<sanity::petrinet::Transition> > >, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sanity::petrinet::Transition const&, sanity::petrinet::Transition const&)>)
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+	   else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this
+	   function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+	   the function in the gprof listing. If the index is
+	   in parenthesis it shows where it would appear in
+	   the gprof listing if it were to be printed.
+
+Copyright (C) 2012-2018 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+		     Call graph (explanation follows)
+
+
+granularity: each sample hit covers 4 byte(s) for 0.25% of 4.05 seconds
+
+index % time    self  children    called     name
+                0.00    4.05       1/1           void testing::internal::HandleSehExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [2]
+[1]    100.0    0.00    4.05       1         power_grid_model_ieee30_flat_Test::TestBody() [1]
+                0.00    4.05       1/1           sanity::petrinet::genReducedReachGraph(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::Marking const&, double, unsigned int) [3]
+                0.00    0.00       1/1           sanity::petrinet::srnSteadyStateSor(sanity::graph::DiGraph const&, std::vector<double, std::allocator<double> > const&, double, double, unsigned int) [42]
+                0.00    0.00       1/1           exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int) [47]
+                0.00    0.00       1/1           sanity::petrinet::srnProbReward(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::IrreducibleSrnSteadyStateSol const&, std::vector<sanity::petrinet::Marking, std::allocator<sanity::petrinet::Marking> > const&, sanity::petrinet::MarkingDepReal const&) [51]
+                0.00    0.00       1/1           ieeeCdfModel2ExpModel(sanity::powerflow::IeeeCdfModel const&, double) [52]
+                0.00    0.00      41/287         std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#4}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#4}> const&, std::_Manager_operation) [86]
+                0.00    0.00      30/210         std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#1}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#1}> const&, std::_Manager_operation) [89]
+                0.00    0.00      21/147         std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#2}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#2}> const&, std::_Manager_operation) [91]
+                0.00    0.00      21/105         std::_Function_base::_Base_manager<createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#1}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#1}> const&, std::_Manager_operation) [94]
+                0.00    0.00      21/105         std::_Function_base::_Base_manager<createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#2}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#2}> const&, std::_Manager_operation) [93]
+                0.00    0.00       3/3           timed_scope::timed_scope(char const*) [111]
+                0.00    0.00       3/3           timed_scope::~timed_scope() [112]
+                0.00    0.00       2/14          std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#3}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#3}> const&, std::_Manager_operation) [103]
+                0.00    0.00       1/96          std::_Function_handler<double (sanity::petrinet::PetriNetState), power_grid_model_ieee30_flat_Test::TestBody()::{lambda(auto:1)#1}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&) [95]
+                0.00    0.00       1/1           sanity::powerflow::readIeeeCdfModel(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [136]
+                0.00    0.00       1/1           createInitMarking(sanity::petrinet::StochasticRewardNet const&, Context const&) [134]
+                0.00    0.00       1/1           std::_Function_base::_Base_manager<power_grid_model_ieee30_flat_Test::TestBody()::{lambda(auto:1)#1}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<power_grid_model_ieee30_flat_Test::TestBody()::{lambda(auto:1)#1}> const&, std::_Manager_operation) [149]
+-----------------------------------------------
+                                                 <spontaneous>
+[2]    100.0    0.00    4.05                 void testing::internal::HandleSehExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [2]
+                0.00    4.05       1/1           power_grid_model_ieee30_flat_Test::TestBody() [1]
+-----------------------------------------------
+                0.00    4.05       1/1           power_grid_model_ieee30_flat_Test::TestBody() [1]
+[3]    100.0    0.00    4.05       1         sanity::petrinet::genReducedReachGraph(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::Marking const&, double, unsigned int) [3]
+                0.05    4.00      64/64          sanity::petrinet::eliminateVanMarking(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::Marking&&, double, unsigned int) [4]
+                0.00    0.00      95/274152      sanity::petrinet::PetriNet::enabledTransitions(sanity::petrinet::Marking const&) const [7]
+                0.00    0.00     188/2158536     sanity::petrinet::findMarking(std::map<int const*, unsigned int, sanity::petrinet::CompMarking, std::allocator<std::pair<int const* const, unsigned int> > >&, sanity::petrinet::Marking const&) [5]
+                0.00    0.00     189/274309      sanity::petrinet::PetriNet::firstEanbledTrans(sanity::petrinet::Marking const&) const [15]
+                0.00    0.00      95/274151      sanity::petrinet::addNewMarking(sanity::graph::DiGraph&, std::map<int const*, unsigned int, sanity::petrinet::CompMarking, std::allocator<std::pair<int const* const, unsigned int> > >&, std::vector<sanity::petrinet::Marking, std::allocator<sanity::petrinet::Marking> >&, sanity::petrinet::Marking&&) [20]
+                0.00    0.00     188/2158536     sanity::petrinet::PetriNet::fireTransition(unsigned int, sanity::petrinet::Marking const&) const [28]
+                0.00    0.00     102/1186096     void std::vector<sanity::graph::DiGraph::Edge, std::allocator<sanity::graph::DiGraph::Edge> >::_M_realloc_insert<sanity::graph::DiGraph::Edge>(__gnu_cxx::__normal_iterator<sanity::graph::DiGraph::Edge*, std::vector<sanity::graph::DiGraph::Edge, std::allocator<sanity::graph::DiGraph::Edge> > >, sanity::graph::DiGraph::Edge&&) [33]
+                0.00    0.00       7/405         void std::vector<double, std::allocator<double> >::_M_realloc_insert<double const&>(__gnu_cxx::__normal_iterator<double*, std::vector<double, std::allocator<double> > >, double const&) [76]
+                0.00    0.00       6/268         std::_Rb_tree<int const*, std::pair<int const* const, unsigned int>, std::_Select1st<std::pair<int const* const, unsigned int> >, sanity::petrinet::CompMarking, std::allocator<std::pair<int const* const, unsigned int> > >::_M_erase(std::_Rb_tree_node<std::pair<int const* const, unsigned int> >*) [87]
+                0.00    0.00       2/2           void std::vector<double, std::allocator<double> >::_M_realloc_insert<double>(__gnu_cxx::__normal_iterator<double*, std::vector<double, std::allocator<double> > >, double&&) [113]
+                0.00    0.00       1/1           void std::vector<sanity::petrinet::MarkingInitProb, std::allocator<sanity::petrinet::MarkingInitProb> >::_M_realloc_insert<sanity::petrinet::MarkingInitProb>(__gnu_cxx::__normal_iterator<sanity::petrinet::MarkingInitProb*, std::vector<sanity::petrinet::MarkingInitProb, std::allocator<sanity::petrinet::MarkingInitProb> > >, sanity::petrinet::MarkingInitProb&&) [150]
+-----------------------------------------------
+                0.05    4.00      64/64          sanity::petrinet::genReducedReachGraph(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::Marking const&, double, unsigned int) [3]
+[4]     99.9    0.05    4.00      64         sanity::petrinet::eliminateVanMarking(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::Marking&&, double, unsigned int) [4]
+                2.02    0.00 2158348/2158536     sanity::petrinet::findMarking(std::map<int const*, unsigned int, sanity::petrinet::CompMarking, std::allocator<std::pair<int const* const, unsigned int> > >&, sanity::petrinet::Marking const&) [5]
+                0.03    1.47  274056/274152      sanity::petrinet::PetriNet::enabledTransitions(sanity::petrinet::Marking const&) const [7]
+                0.01    0.16  274120/274309      sanity::petrinet::PetriNet::firstEanbledTrans(sanity::petrinet::Marking const&) const [15]
+                0.09    0.04  274056/274151      sanity::petrinet::addNewMarking(sanity::graph::DiGraph&, std::map<int const*, unsigned int, sanity::petrinet::CompMarking, std::allocator<std::pair<int const* const, unsigned int> > >&, std::vector<sanity::petrinet::Marking, std::allocator<sanity::petrinet::Marking> >&, sanity::petrinet::Marking&&) [20]
+                0.00    0.12      64/65          sanity::splinear::triple2compressed(sanity::splinear::SpmatrixTriple&, sanity::splinear::Spmatrix::Format) [22]
+                0.04    0.00 2158348/2158536     sanity::petrinet::PetriNet::fireTransition(unsigned int, sanity::petrinet::Marking const&) const [28]
+                0.00    0.01      64/64          sanity::petrinet::srnSteadyStatePower(sanity::splinear::Spmatrix const&, sanity::linear::VectorMutableView, double, unsigned int) [40]
+                0.01    0.00 1185994/1186096     void std::vector<sanity::graph::DiGraph::Edge, std::allocator<sanity::graph::DiGraph::Edge> >::_M_realloc_insert<sanity::graph::DiGraph::Edge>(__gnu_cxx::__normal_iterator<sanity::graph::DiGraph::Edge*, std::vector<sanity::graph::DiGraph::Edge, std::allocator<sanity::graph::DiGraph::Edge> > >, sanity::graph::DiGraph::Edge&&) [33]
+                0.00    0.00     128/388         void std::vector<sanity::petrinet::Marking, std::allocator<sanity::petrinet::Marking> >::_M_realloc_insert<sanity::petrinet::Marking>(__gnu_cxx::__normal_iterator<sanity::petrinet::Marking*, std::vector<sanity::petrinet::Marking, std::allocator<sanity::petrinet::Marking> > >, sanity::petrinet::Marking&&) [38]
+                0.00    0.00     398/405         void std::vector<double, std::allocator<double> >::_M_realloc_insert<double const&>(__gnu_cxx::__normal_iterator<double*, std::vector<double, std::allocator<double> > >, double const&) [76]
+                0.00    0.00     386/396         void std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> >::_M_realloc_insert<sanity::splinear::SpmatrixTriple::Triple>(__gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, sanity::splinear::SpmatrixTriple::Triple&&) [77]
+                0.00    0.00     262/268         std::_Rb_tree<int const*, std::pair<int const* const, unsigned int>, std::_Select1st<std::pair<int const* const, unsigned int> >, sanity::petrinet::CompMarking, std::allocator<std::pair<int const* const, unsigned int> > >::_M_erase(std::_Rb_tree_node<std::pair<int const* const, unsigned int> >*) [87]
+                0.00    0.00      64/64          void std::vector<unsigned int, std::allocator<unsigned int> >::_M_realloc_insert<unsigned int>(__gnu_cxx::__normal_iterator<unsigned int*, std::vector<unsigned int, std::allocator<unsigned int> > >, unsigned int&&) [99]
+                0.00    0.00      64/324         void std::vector<sanity::graph::DiGraph::Node, std::allocator<sanity::graph::DiGraph::Node> >::_M_realloc_insert<sanity::graph::DiGraph::Node>(__gnu_cxx::__normal_iterator<sanity::graph::DiGraph::Node*, std::vector<sanity::graph::DiGraph::Node, std::allocator<sanity::graph::DiGraph::Node> > >, sanity::graph::DiGraph::Node&&) [84]
+-----------------------------------------------
+                0.00    0.00     188/2158536     sanity::petrinet::genReducedReachGraph(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::Marking const&, double, unsigned int) [3]
+                2.02    0.00 2158348/2158536     sanity::petrinet::eliminateVanMarking(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::Marking&&, double, unsigned int) [4]
+[5]     49.9    2.02    0.00 2158536         sanity::petrinet::findMarking(std::map<int const*, unsigned int, sanity::petrinet::CompMarking, std::allocator<std::pair<int const* const, unsigned int> > >&, sanity::petrinet::Marking const&) [5]
+-----------------------------------------------
+                0.01    0.15 1264639/12796841     sanity::petrinet::PetriNet::firstEanbledTrans(sanity::petrinet::Marking const&) const [15]
+                0.07    1.40 11532202/12796841     sanity::petrinet::PetriNet::enabledTransitions(sanity::petrinet::Marking const&) const [7]
+[6]     40.2    0.08    1.55 12796841         sanity::petrinet::PetriNet::isolateEnableCheck(sanity::petrinet::Transition const&, sanity::petrinet::Marking const&) const [6]
+                0.04    0.76 6533385/6533385     std::_Function_handler<bool (sanity::petrinet::PetriNetState), createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#1}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&) [11]
+                0.02    0.73 6236522/6236522     std::_Function_handler<bool (sanity::petrinet::PetriNetState), createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#2}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&) [12]
+                0.00    0.00    6932/6932        std::_Function_handler<bool (sanity::petrinet::PetriNetState), exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#4}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&) [43]
+                0.00    0.00    3866/3866        std::_Function_handler<bool (sanity::petrinet::PetriNetState), exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#1}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&) [44]
+                0.00    0.00    2385/2385        std::_Function_handler<bool (sanity::petrinet::PetriNetState), exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#2}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&) [45]
+                0.00    0.00     356/356         std::_Function_handler<bool (sanity::petrinet::PetriNetState), exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#3}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&) [46]
+-----------------------------------------------
+                                  19             sanity::petrinet::PetriNet::enabledTransitions(sanity::petrinet::Marking const&) const [7]
+                0.00    0.00       1/274152      sanity::petrinet::PetriNet::PetriNet(unsigned int, sanity::petrinet::MarkingDepBool, std::vector<sanity::petrinet::Transition, std::allocator<sanity::petrinet::Transition> >) [48]
+                0.00    0.00      95/274152      sanity::petrinet::genReducedReachGraph(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::Marking const&, double, unsigned int) [3]
+                0.03    1.47  274056/274152      sanity::petrinet::eliminateVanMarking(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::Marking&&, double, unsigned int) [4]
+[7]     37.0    0.03    1.47  274152+19      sanity::petrinet::PetriNet::enabledTransitions(sanity::petrinet::Marking const&) const [7]
+                0.07    1.40 11532202/12796841     sanity::petrinet::PetriNet::isolateEnableCheck(sanity::petrinet::Transition const&, sanity::petrinet::Marking const&) const [6]
+                0.00    0.00 1186096/18642084     void std::vector<unsigned int, std::allocator<unsigned int> >::_M_realloc_insert<unsigned int const&>(__gnu_cxx::__normal_iterator<unsigned int*, std::vector<unsigned int, std::allocator<unsigned int> > >, unsigned int const&) [29]
+                                  19             sanity::petrinet::PetriNet::enabledTransitions(sanity::petrinet::Marking const&) const [7]
+-----------------------------------------------
+                0.00    0.00     356/12783446     std::_Function_handler<bool (sanity::petrinet::PetriNetState), exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#3}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&) [46]
+                0.00    0.00    2385/12783446     std::_Function_handler<bool (sanity::petrinet::PetriNetState), exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#2}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&) [45]
+                0.00    0.00    3866/12783446     std::_Function_handler<bool (sanity::petrinet::PetriNetState), exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#1}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&) [44]
+                0.00    0.00    6932/12783446     std::_Function_handler<bool (sanity::petrinet::PetriNetState), exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#4}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&) [43]
+                0.28    0.44 6236522/12783446     std::_Function_handler<bool (sanity::petrinet::PetriNetState), createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#2}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&) [12]
+                0.30    0.46 6533385/12783446     std::_Function_handler<bool (sanity::petrinet::PetriNetState), createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#1}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&) [11]
+[8]     36.7    0.58    0.91 12783446         powerflowUpdate(Context&, sanity::petrinet::Marking const*) [8]
+                0.01    0.89  274339/274339      shedload(ExpPowerFlowModel&) [9]
+                0.01    0.00  274339/274434      syncContext(Context&, sanity::petrinet::Marking const*) [37]
+-----------------------------------------------
+                0.01    0.89  274339/274339      powerflowUpdate(Context&, sanity::petrinet::Marking const*) [8]
+[9]     22.2    0.01    0.89  274339         shedload(ExpPowerFlowModel&) [9]
+                0.02    0.87 3149120/3149120     validate(ExpPowerFlowModel&) [10]
+-----------------------------------------------
+                0.02    0.87 3149120/3149120     shedload(ExpPowerFlowModel&) [9]
+[10]    21.9    0.02    0.87 3149120         validate(ExpPowerFlowModel&) [10]
+                0.13    0.37  918728/918729      sanity::powerflow::solveDC(sanity::powerflow::DCPowerFlowModel const&, std::function<void (sanity::linear::MatrixMutableView, sanity::linear::VectorMutableView)> const&) [13]
+                0.22    0.09  918728/918729      exp2DCModel(ExpPowerFlowModel const&) [14]
+                0.06    0.00 3149120/3149120     balance(ExpPowerFlowModel&) [25]
+                0.00    0.00  918728/918729      std::_Function_base::_Base_manager<void (*)(sanity::linear::MatrixMutableView, sanity::linear::VectorMutableView)>::_M_manager(std::_Any_data&, std::_Any_data const&, std::_Manager_operation) [73]
+-----------------------------------------------
+                0.04    0.76 6533385/6533385     sanity::petrinet::PetriNet::isolateEnableCheck(sanity::petrinet::Transition const&, sanity::petrinet::Marking const&) const [6]
+[11]    19.8    0.04    0.76 6533385         std::_Function_handler<bool (sanity::petrinet::PetriNetState), createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#1}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&) [11]
+                0.30    0.46 6533385/12783446     powerflowUpdate(Context&, sanity::petrinet::Marking const*) [8]
+-----------------------------------------------
+                0.02    0.73 6236522/6236522     sanity::petrinet::PetriNet::isolateEnableCheck(sanity::petrinet::Transition const&, sanity::petrinet::Marking const&) const [6]
+[12]    18.4    0.02    0.73 6236522         std::_Function_handler<bool (sanity::petrinet::PetriNetState), createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#2}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&) [12]
+                0.28    0.44 6236522/12783446     powerflowUpdate(Context&, sanity::petrinet::Marking const*) [8]
+-----------------------------------------------
+                0.00    0.00       1/918729      ieeeCdfModel2ExpModel(sanity::powerflow::IeeeCdfModel const&, double) [52]
+                0.13    0.37  918728/918729      validate(ExpPowerFlowModel&) [10]
+[13]    12.4    0.13    0.37  918729         sanity::powerflow::solveDC(sanity::powerflow::DCPowerFlowModel const&, std::function<void (sanity::linear::MatrixMutableView, sanity::linear::VectorMutableView)> const&) [13]
+                0.02    0.14  918729/918729      sanity::graph::decompCc(sanity::graph::Graph const&) [16]
+                0.13    0.00 64796599/64796599     void std::vector<sanity::graph::Graph::Edge, std::allocator<sanity::graph::Graph::Edge> >::_M_realloc_insert<sanity::graph::Graph::Edge>(__gnu_cxx::__normal_iterator<sanity::graph::Graph::Edge*, std::vector<sanity::graph::Graph::Edge, std::allocator<sanity::graph::Graph::Edge> > >, sanity::graph::Graph::Edge&&) [19]
+                0.06    0.00  918729/918729      sanity::powerflow::admittanceMatrixB(sanity::powerflow::DCPowerFlowModel const&, std::vector<unsigned int, std::allocator<unsigned int> > const&) [24]
+                0.01    0.00  918729/918729      sanity::linear::blockView(sanity::linear::MatrixMutableView, unsigned int, unsigned int, unsigned int, unsigned int) [35]
+                0.00    0.01  918729/918729      std::_Function_handler<void (sanity::linear::MatrixMutableView, sanity::linear::VectorMutableView), void (*)(sanity::linear::MatrixMutableView, sanity::linear::VectorMutableView)>::_M_invoke(std::_Any_data const&, sanity::linear::MatrixMutableView&&, sanity::linear::VectorMutableView&&) [36]
+                0.00    0.00  918846/918846      void std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >::_M_realloc_insert<std::vector<unsigned int, std::allocator<unsigned int> > const&>(__gnu_cxx::__normal_iterator<std::vector<unsigned int, std::allocator<unsigned int> >*, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > > >, std::vector<unsigned int, std::allocator<unsigned int> > const&) [68]
+                0.00    0.00  918729/918729      sanity::linear::blockView(sanity::linear::VectorMutableView, unsigned int, unsigned int) [72]
+                0.00    0.00  918729/918729      sanity::linear::blas::dot(sanity::linear::VectorConstView, sanity::linear::VectorConstView) [70]
+                0.00    0.00  918729/918729      sanity::linear::dot(sanity::linear::VectorConstView, sanity::linear::VectorConstView) [69]
+-----------------------------------------------
+                0.00    0.00       1/918729      ieeeCdfModel2ExpModel(sanity::powerflow::IeeeCdfModel const&, double) [52]
+                0.22    0.09  918728/918729      validate(ExpPowerFlowModel&) [10]
+[14]     7.6    0.22    0.09  918729         exp2DCModel(ExpPowerFlowModel const&) [14]
+                0.04    0.00 6431103/6431103     void std::vector<sanity::powerflow::DCTransmissionLine, std::allocator<sanity::powerflow::DCTransmissionLine> >::_M_realloc_insert<sanity::powerflow::DCTransmissionLine>(__gnu_cxx::__normal_iterator<sanity::powerflow::DCTransmissionLine*, std::vector<sanity::powerflow::DCTransmissionLine, std::allocator<sanity::powerflow::DCTransmissionLine> > >, sanity::powerflow::DCTransmissionLine&&) [27]
+                0.02    0.00 5512374/5512374     void std::vector<sanity::powerflow::DCBus, std::allocator<sanity::powerflow::DCBus> >::_M_realloc_insert<sanity::powerflow::DCBus>(__gnu_cxx::__normal_iterator<sanity::powerflow::DCBus*, std::vector<sanity::powerflow::DCBus, std::allocator<sanity::powerflow::DCBus> > >, sanity::powerflow::DCBus&&) [31]
+                0.02    0.00 11943477/18642084     void std::vector<unsigned int, std::allocator<unsigned int> >::_M_realloc_insert<unsigned int const&>(__gnu_cxx::__normal_iterator<unsigned int*, std::vector<unsigned int, std::allocator<unsigned int> > >, unsigned int const&) [29]
+                0.01    0.00 1837458/2756187     sanity::linear::Permutation::Permutation(std::vector<unsigned int, std::allocator<unsigned int> >, bool) [32]
+-----------------------------------------------
+                0.00    0.00     189/274309      sanity::petrinet::genReducedReachGraph(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::Marking const&, double, unsigned int) [3]
+                0.01    0.16  274120/274309      sanity::petrinet::eliminateVanMarking(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::Marking&&, double, unsigned int) [4]
+[15]     4.2    0.01    0.16  274309         sanity::petrinet::PetriNet::firstEanbledTrans(sanity::petrinet::Marking const&) const [15]
+                0.01    0.15 1264639/12796841     sanity::petrinet::PetriNet::isolateEnableCheck(sanity::petrinet::Transition const&, sanity::petrinet::Marking const&) const [6]
+-----------------------------------------------
+                0.02    0.14  918729/918729      sanity::powerflow::solveDC(sanity::powerflow::DCPowerFlowModel const&, std::function<void (sanity::linear::MatrixMutableView, sanity::linear::VectorMutableView)> const&) [13]
+[16]     3.9    0.02    0.14  918729         sanity::graph::decompCc(sanity::graph::Graph const&) [16]
+                0.00    0.14  918846/918846      sanity::graph::depthFirstSearch(sanity::graph::Graph const&, unsigned int, std::function<bool (unsigned int, unsigned int)> const&) [17]
+                0.00    0.00  918846/918846      std::_Function_base::_Base_manager<sanity::graph::decompCc(sanity::graph::Graph const&)::{lambda(unsigned int, unsigned int)#1}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<sanity::graph::decompCc(sanity::graph::Graph const&)::{lambda(unsigned int, unsigned int)#1}> const&, std::_Manager_operation) [66]
+                0.00    0.00  918846/918846      void std::vector<sanity::graph::ConnectedComponent, std::allocator<sanity::graph::ConnectedComponent> >::_M_realloc_insert<sanity::graph::ConnectedComponent>(__gnu_cxx::__normal_iterator<sanity::graph::ConnectedComponent*, std::vector<sanity::graph::ConnectedComponent, std::allocator<sanity::graph::ConnectedComponent> > >, sanity::graph::ConnectedComponent&&) [67]
+-----------------------------------------------
+                0.00    0.14  918846/918846      sanity::graph::decompCc(sanity::graph::Graph const&) [16]
+[17]     3.4    0.00    0.14  918846         sanity::graph::depthFirstSearch(sanity::graph::Graph const&, unsigned int, std::function<bool (unsigned int, unsigned int)> const&) [17]
+                0.09    0.05  918846/918846      sanity::graph::dfsRecursion(sanity::graph::Graph const&, unsigned int, std::vector<bool, std::allocator<bool> >&, std::function<bool (unsigned int, unsigned int)> const&) [18]
+                0.00    0.00  918846/27171115     std::_Function_handler<bool (unsigned int, unsigned int), sanity::graph::decompCc(sanity::graph::Graph const&)::{lambda(unsigned int, unsigned int)#1}>::_M_invoke(std::_Any_data const&, unsigned int&&, std::_Any_data const&) [26]
+-----------------------------------------------
+                             26252269             sanity::graph::dfsRecursion(sanity::graph::Graph const&, unsigned int, std::vector<bool, std::allocator<bool> >&, std::function<bool (unsigned int, unsigned int)> const&) [18]
+                0.09    0.05  918846/918846      sanity::graph::depthFirstSearch(sanity::graph::Graph const&, unsigned int, std::function<bool (unsigned int, unsigned int)> const&) [17]
+[18]     3.4    0.09    0.05  918846+26252269 sanity::graph::dfsRecursion(sanity::graph::Graph const&, unsigned int, std::vector<bool, std::allocator<bool> >&, std::function<bool (unsigned int, unsigned int)> const&) [18]
+                0.04    0.01 26252269/27171115     std::_Function_handler<bool (unsigned int, unsigned int), sanity::graph::decompCc(sanity::graph::Graph const&)::{lambda(unsigned int, unsigned int)#1}>::_M_invoke(std::_Any_data const&, unsigned int&&, std::_Any_data const&) [26]
+                             26252269             sanity::graph::dfsRecursion(sanity::graph::Graph const&, unsigned int, std::vector<bool, std::allocator<bool> >&, std::function<bool (unsigned int, unsigned int)> const&) [18]
+-----------------------------------------------
+                0.13    0.00 64796599/64796599     sanity::powerflow::solveDC(sanity::powerflow::DCPowerFlowModel const&, std::function<void (sanity::linear::MatrixMutableView, sanity::linear::VectorMutableView)> const&) [13]
+[19]     3.2    0.13    0.00 64796599         void std::vector<sanity::graph::Graph::Edge, std::allocator<sanity::graph::Graph::Edge> >::_M_realloc_insert<sanity::graph::Graph::Edge>(__gnu_cxx::__normal_iterator<sanity::graph::Graph::Edge*, std::vector<sanity::graph::Graph::Edge, std::allocator<sanity::graph::Graph::Edge> > >, sanity::graph::Graph::Edge&&) [19]
+-----------------------------------------------
+                0.00    0.00      95/274151      sanity::petrinet::genReducedReachGraph(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::Marking const&, double, unsigned int) [3]
+                0.09    0.04  274056/274151      sanity::petrinet::eliminateVanMarking(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::Marking&&, double, unsigned int) [4]
+[20]     3.1    0.09    0.04  274151         sanity::petrinet::addNewMarking(sanity::graph::DiGraph&, std::map<int const*, unsigned int, sanity::petrinet::CompMarking, std::allocator<std::pair<int const* const, unsigned int> > >&, std::vector<sanity::petrinet::Marking, std::allocator<sanity::petrinet::Marking> >&, sanity::petrinet::Marking&&) [20]
+                0.03    0.00  274151/274151      std::_Rb_tree<int const*, std::pair<int const* const, unsigned int>, std::_Select1st<std::pair<int const* const, unsigned int> >, sanity::petrinet::CompMarking, std::allocator<std::pair<int const* const, unsigned int> > >::_M_get_insert_hint_unique_pos(std::_Rb_tree_const_iterator<std::pair<int const* const, unsigned int> >, int const* const&) [30]
+                0.01    0.00     260/388         void std::vector<sanity::petrinet::Marking, std::allocator<sanity::petrinet::Marking> >::_M_realloc_insert<sanity::petrinet::Marking>(__gnu_cxx::__normal_iterator<sanity::petrinet::Marking*, std::vector<sanity::petrinet::Marking, std::allocator<sanity::petrinet::Marking> > >, sanity::petrinet::Marking&&) [38]
+                0.00    0.00     260/324         void std::vector<sanity::graph::DiGraph::Node, std::allocator<sanity::graph::DiGraph::Node> >::_M_realloc_insert<sanity::graph::DiGraph::Node>(__gnu_cxx::__normal_iterator<sanity::graph::DiGraph::Node*, std::vector<sanity::graph::DiGraph::Node, std::allocator<sanity::graph::DiGraph::Node> > >, sanity::graph::DiGraph::Node&&) [84]
+                0.00    0.00      65/65          std::_Rb_tree<int const*, std::pair<int const* const, unsigned int>, std::_Select1st<std::pair<int const* const, unsigned int> >, sanity::petrinet::CompMarking, std::allocator<std::pair<int const* const, unsigned int> > >::_M_get_insert_unique_pos(int const* const&) [98]
+-----------------------------------------------
+                0.01    0.11      65/65          sanity::splinear::triple2compressed(sanity::splinear::SpmatrixTriple&, sanity::splinear::Spmatrix::Format) [22]
+[21]     3.0    0.01    0.11      65         sanity::splinear::sortTriples(sanity::splinear::SpmatrixTriple&, bool) [21]
+                0.11    0.00      65/65          sanity::splinear::SpmatrixGet(sanity::splinear::Spmatrix const&, unsigned long, unsigned long) [23]
+                0.00    0.00 7947650/7948058     sanity::splinear::compTripleRow(sanity::splinear::SpmatrixTriple::Triple const&, sanity::splinear::SpmatrixTriple::Triple const&) [65]
+-----------------------------------------------
+                0.00    0.00       1/65          sanity::petrinet::srnRateMatrix(sanity::graph::DiGraph const&, std::vector<double, std::allocator<double> > const&) [41]
+                0.00    0.12      64/65          sanity::petrinet::eliminateVanMarking(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::Marking&&, double, unsigned int) [4]
+[22]     3.0    0.00    0.12      65         sanity::splinear::triple2compressed(sanity::splinear::SpmatrixTriple&, sanity::splinear::Spmatrix::Format) [22]
+                0.01    0.11      65/65          sanity::splinear::sortTriples(sanity::splinear::SpmatrixTriple&, bool) [21]
+                0.00    0.00  274280/274280      unsigned int& std::vector<unsigned int, std::allocator<unsigned int> >::emplace_back<unsigned int>(unsigned int&&) [74]
+                0.00    0.00     130/130         std::vector<unsigned int, std::allocator<unsigned int> >::reserve(unsigned long) [92]
+                0.00    0.00      65/65          std::vector<double, std::allocator<double> >::reserve(unsigned long) [97]
+-----------------------------------------------
+                              225148             sanity::splinear::SpmatrixGet(sanity::splinear::Spmatrix const&, unsigned long, unsigned long) [23]
+                0.11    0.00      65/65          sanity::splinear::sortTriples(sanity::splinear::SpmatrixTriple&, bool) [21]
+[23]     2.7    0.11    0.00      65+225148  sanity::splinear::SpmatrixGet(sanity::splinear::Spmatrix const&, unsigned long, unsigned long) [23]
+                0.00    0.00      63/95          void std::__adjust_heap<__gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, long, sanity::splinear::SpmatrixTriple::Triple, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sanity::splinear::SpmatrixTriple::Triple const&, sanity::splinear::SpmatrixTriple::Triple const&)> >(__gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, long, long, sanity::splinear::SpmatrixTriple::Triple, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sanity::splinear::SpmatrixTriple::Triple const&, sanity::splinear::SpmatrixTriple::Triple const&)>) [96]
+                0.00    0.00       1/1           void std::__heap_select<__gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sanity::splinear::SpmatrixTriple::Triple const&, sanity::splinear::SpmatrixTriple::Triple const&)> >(__gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, __gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, __gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sanity::splinear::SpmatrixTriple::Triple const&, sanity::splinear::SpmatrixTriple::Triple const&)>) [151]
+                              225148             sanity::splinear::SpmatrixGet(sanity::splinear::Spmatrix const&, unsigned long, unsigned long) [23]
+-----------------------------------------------
+                0.06    0.00  918729/918729      sanity::powerflow::solveDC(sanity::powerflow::DCPowerFlowModel const&, std::function<void (sanity::linear::MatrixMutableView, sanity::linear::VectorMutableView)> const&) [13]
+[24]     1.6    0.06    0.00  918729         sanity::powerflow::admittanceMatrixB(sanity::powerflow::DCPowerFlowModel const&, std::vector<unsigned int, std::allocator<unsigned int> > const&) [24]
+                0.00    0.00  918729/2756187     sanity::linear::Permutation::Permutation(std::vector<unsigned int, std::allocator<unsigned int> >, bool) [32]
+-----------------------------------------------
+                0.06    0.00 3149120/3149120     validate(ExpPowerFlowModel&) [10]
+[25]     1.5    0.06    0.00 3149120         balance(ExpPowerFlowModel&) [25]
+-----------------------------------------------
+                0.00    0.00  918846/27171115     sanity::graph::depthFirstSearch(sanity::graph::Graph const&, unsigned int, std::function<bool (unsigned int, unsigned int)> const&) [17]
+                0.04    0.01 26252269/27171115     sanity::graph::dfsRecursion(sanity::graph::Graph const&, unsigned int, std::vector<bool, std::allocator<bool> >&, std::function<bool (unsigned int, unsigned int)> const&) [18]
+[26]     1.2    0.04    0.01 27171115         std::_Function_handler<bool (unsigned int, unsigned int), sanity::graph::decompCc(sanity::graph::Graph const&)::{lambda(unsigned int, unsigned int)#1}>::_M_invoke(std::_Any_data const&, unsigned int&&, std::_Any_data const&) [26]
+                0.01    0.00 5512493/18642084     void std::vector<unsigned int, std::allocator<unsigned int> >::_M_realloc_insert<unsigned int const&>(__gnu_cxx::__normal_iterator<unsigned int*, std::vector<unsigned int, std::allocator<unsigned int> > >, unsigned int const&) [29]
+-----------------------------------------------
+                0.04    0.00 6431103/6431103     exp2DCModel(ExpPowerFlowModel const&) [14]
+[27]     1.0    0.04    0.00 6431103         void std::vector<sanity::powerflow::DCTransmissionLine, std::allocator<sanity::powerflow::DCTransmissionLine> >::_M_realloc_insert<sanity::powerflow::DCTransmissionLine>(__gnu_cxx::__normal_iterator<sanity::powerflow::DCTransmissionLine*, std::vector<sanity::powerflow::DCTransmissionLine, std::allocator<sanity::powerflow::DCTransmissionLine> > >, sanity::powerflow::DCTransmissionLine&&) [27]
+-----------------------------------------------
+                0.00    0.00     188/2158536     sanity::petrinet::genReducedReachGraph(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::Marking const&, double, unsigned int) [3]
+                0.04    0.00 2158348/2158536     sanity::petrinet::eliminateVanMarking(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::Marking&&, double, unsigned int) [4]
+[28]     1.0    0.04    0.00 2158536         sanity::petrinet::PetriNet::fireTransition(unsigned int, sanity::petrinet::Marking const&) const [28]
+-----------------------------------------------
+                0.00    0.00       9/18642084     sanity::petrinet::SrnCreator::place(unsigned int) [53]
+                0.00    0.00       9/18642084     exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int) [47]
+                0.00    0.00 1186096/18642084     sanity::petrinet::PetriNet::enabledTransitions(sanity::petrinet::Marking const&) const [7]
+                0.01    0.00 5512493/18642084     std::_Function_handler<bool (unsigned int, unsigned int), sanity::graph::decompCc(sanity::graph::Graph const&)::{lambda(unsigned int, unsigned int)#1}>::_M_invoke(std::_Any_data const&, unsigned int&&, std::_Any_data const&) [26]
+                0.02    0.00 11943477/18642084     exp2DCModel(ExpPowerFlowModel const&) [14]
+[29]     0.7    0.03    0.00 18642084         void std::vector<unsigned int, std::allocator<unsigned int> >::_M_realloc_insert<unsigned int const&>(__gnu_cxx::__normal_iterator<unsigned int*, std::vector<unsigned int, std::allocator<unsigned int> > >, unsigned int const&) [29]
+-----------------------------------------------
+                0.03    0.00  274151/274151      sanity::petrinet::addNewMarking(sanity::graph::DiGraph&, std::map<int const*, unsigned int, sanity::petrinet::CompMarking, std::allocator<std::pair<int const* const, unsigned int> > >&, std::vector<sanity::petrinet::Marking, std::allocator<sanity::petrinet::Marking> >&, sanity::petrinet::Marking&&) [20]
+[30]     0.7    0.03    0.00  274151         std::_Rb_tree<int const*, std::pair<int const* const, unsigned int>, std::_Select1st<std::pair<int const* const, unsigned int> >, sanity::petrinet::CompMarking, std::allocator<std::pair<int const* const, unsigned int> > >::_M_get_insert_hint_unique_pos(std::_Rb_tree_const_iterator<std::pair<int const* const, unsigned int> >, int const* const&) [30]
+-----------------------------------------------
+                0.02    0.00 5512374/5512374     exp2DCModel(ExpPowerFlowModel const&) [14]
+[31]     0.5    0.02    0.00 5512374         void std::vector<sanity::powerflow::DCBus, std::allocator<sanity::powerflow::DCBus> >::_M_realloc_insert<sanity::powerflow::DCBus>(__gnu_cxx::__normal_iterator<sanity::powerflow::DCBus*, std::vector<sanity::powerflow::DCBus, std::allocator<sanity::powerflow::DCBus> > >, sanity::powerflow::DCBus&&) [31]
+-----------------------------------------------
+                0.00    0.00  918729/2756187     sanity::powerflow::admittanceMatrixB(sanity::powerflow::DCPowerFlowModel const&, std::vector<unsigned int, std::allocator<unsigned int> > const&) [24]
+                0.01    0.00 1837458/2756187     exp2DCModel(ExpPowerFlowModel const&) [14]
+[32]     0.2    0.01    0.00 2756187         sanity::linear::Permutation::Permutation(std::vector<unsigned int, std::allocator<unsigned int> >, bool) [32]
+-----------------------------------------------
+                0.00    0.00     102/1186096     sanity::petrinet::genReducedReachGraph(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::Marking const&, double, unsigned int) [3]
+                0.01    0.00 1185994/1186096     sanity::petrinet::eliminateVanMarking(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::Marking&&, double, unsigned int) [4]
+[33]     0.2    0.01    0.00 1186096         void std::vector<sanity::graph::DiGraph::Edge, std::allocator<sanity::graph::DiGraph::Edge> >::_M_realloc_insert<sanity::graph::DiGraph::Edge>(__gnu_cxx::__normal_iterator<sanity::graph::DiGraph::Edge*, std::vector<sanity::graph::DiGraph::Edge, std::allocator<sanity::graph::DiGraph::Edge> > >, sanity::graph::DiGraph::Edge&&) [33]
+-----------------------------------------------
+                0.01    0.00  918729/918729      std::_Function_handler<void (sanity::linear::MatrixMutableView, sanity::linear::VectorMutableView), void (*)(sanity::linear::MatrixMutableView, sanity::linear::VectorMutableView)>::_M_invoke(std::_Any_data const&, sanity::linear::MatrixMutableView&&, sanity::linear::VectorMutableView&&) [36]
+[34]     0.2    0.01    0.00  918729         sanity::linear::solveLU(sanity::linear::MatrixMutableView, sanity::linear::VectorMutableView) [34]
+                0.00    0.00  918729/918729      sanity::linear::lapack::gesv(sanity::linear::MatrixMutableView, sanity::linear::MatrixMutableView, std::vector<int, std::allocator<int> >*) [71]
+-----------------------------------------------
+                0.01    0.00  918729/918729      sanity::powerflow::solveDC(sanity::powerflow::DCPowerFlowModel const&, std::function<void (sanity::linear::MatrixMutableView, sanity::linear::VectorMutableView)> const&) [13]
+[35]     0.2    0.01    0.00  918729         sanity::linear::blockView(sanity::linear::MatrixMutableView, unsigned int, unsigned int, unsigned int, unsigned int) [35]
+-----------------------------------------------
+                0.00    0.01  918729/918729      sanity::powerflow::solveDC(sanity::powerflow::DCPowerFlowModel const&, std::function<void (sanity::linear::MatrixMutableView, sanity::linear::VectorMutableView)> const&) [13]
+[36]     0.2    0.00    0.01  918729         std::_Function_handler<void (sanity::linear::MatrixMutableView, sanity::linear::VectorMutableView), void (*)(sanity::linear::MatrixMutableView, sanity::linear::VectorMutableView)>::_M_invoke(std::_Any_data const&, sanity::linear::MatrixMutableView&&, sanity::linear::VectorMutableView&&) [36]
+                0.01    0.00  918729/918729      sanity::linear::solveLU(sanity::linear::MatrixMutableView, sanity::linear::VectorMutableView) [34]
+-----------------------------------------------
+                0.00    0.00      95/274434      servedLoad(Context&, sanity::petrinet::Marking const&) [50]
+                0.01    0.00  274339/274434      powerflowUpdate(Context&, sanity::petrinet::Marking const*) [8]
+[37]     0.2    0.01    0.00  274434         syncContext(Context&, sanity::petrinet::Marking const*) [37]
+-----------------------------------------------
+                0.00    0.00     128/388         sanity::petrinet::eliminateVanMarking(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::Marking&&, double, unsigned int) [4]
+                0.01    0.00     260/388         sanity::petrinet::addNewMarking(sanity::graph::DiGraph&, std::map<int const*, unsigned int, sanity::petrinet::CompMarking, std::allocator<std::pair<int const* const, unsigned int> > >&, std::vector<sanity::petrinet::Marking, std::allocator<sanity::petrinet::Marking> >&, sanity::petrinet::Marking&&) [20]
+[38]     0.2    0.01    0.00     388         void std::vector<sanity::petrinet::Marking, std::allocator<sanity::petrinet::Marking> >::_M_realloc_insert<sanity::petrinet::Marking>(__gnu_cxx::__normal_iterator<sanity::petrinet::Marking*, std::vector<sanity::petrinet::Marking, std::allocator<sanity::petrinet::Marking> > >, sanity::petrinet::Marking&&) [38]
+-----------------------------------------------
+                0.01    0.00     316/316         sanity::petrinet::srnSteadyStatePower(sanity::splinear::Spmatrix const&, sanity::linear::VectorMutableView, double, unsigned int) [40]
+[39]     0.2    0.01    0.00     316         sanity::splinear::dot(sanity::splinear::Spmatrix const&, sanity::linear::VectorConstView, sanity::linear::VectorMutableView) [39]
+-----------------------------------------------
+                0.00    0.01      64/64          sanity::petrinet::eliminateVanMarking(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::Marking&&, double, unsigned int) [4]
+[40]     0.2    0.00    0.01      64         sanity::petrinet::srnSteadyStatePower(sanity::splinear::Spmatrix const&, sanity::linear::VectorMutableView, double, unsigned int) [40]
+                0.01    0.00     316/316         sanity::splinear::dot(sanity::splinear::Spmatrix const&, sanity::linear::VectorConstView, sanity::linear::VectorMutableView) [39]
+                0.00    0.00     380/389         sanity::linear::blas::asum(sanity::linear::VectorConstView) [78]
+                0.00    0.00     380/389         sanity::linear::norm1(sanity::linear::VectorConstView) [80]
+                0.00    0.00     380/389         sanity::linear::blas::scal(double, sanity::linear::VectorMutableView) [79]
+                0.00    0.00     380/389         sanity::linear::scale(double, sanity::linear::VectorMutableView) [81]
+                0.00    0.00     316/324         sanity::linear::maxDiff(sanity::linear::VectorConstView, sanity::linear::VectorConstView) [83]
+                0.00    0.00     316/324         sanity::linear::copy(sanity::linear::VectorConstView, sanity::linear::VectorMutableView) [82]
+-----------------------------------------------
+                0.00    0.00       1/1           sanity::petrinet::srnSteadyStateSor(sanity::graph::DiGraph const&, std::vector<double, std::allocator<double> > const&, double, double, unsigned int) [42]
+[41]     0.0    0.00    0.00       1         sanity::petrinet::srnRateMatrix(sanity::graph::DiGraph const&, std::vector<double, std::allocator<double> > const&) [41]
+                0.00    0.00       1/65          sanity::splinear::triple2compressed(sanity::splinear::SpmatrixTriple&, sanity::splinear::Spmatrix::Format) [22]
+                0.00    0.00      10/396         void std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> >::_M_realloc_insert<sanity::splinear::SpmatrixTriple::Triple>(__gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, sanity::splinear::SpmatrixTriple::Triple&&) [77]
+-----------------------------------------------
+                0.00    0.00       1/1           power_grid_model_ieee30_flat_Test::TestBody() [1]
+[42]     0.0    0.00    0.00       1         sanity::petrinet::srnSteadyStateSor(sanity::graph::DiGraph const&, std::vector<double, std::allocator<double> > const&, double, double, unsigned int) [42]
+                0.00    0.00       1/1           sanity::petrinet::srnRateMatrix(sanity::graph::DiGraph const&, std::vector<double, std::allocator<double> > const&) [41]
+                0.00    0.00       9/389         sanity::linear::blas::asum(sanity::linear::VectorConstView) [78]
+                0.00    0.00       9/389         sanity::linear::norm1(sanity::linear::VectorConstView) [80]
+                0.00    0.00       9/389         sanity::linear::blas::scal(double, sanity::linear::VectorMutableView) [79]
+                0.00    0.00       9/389         sanity::linear::scale(double, sanity::linear::VectorMutableView) [81]
+                0.00    0.00       8/324         sanity::linear::copy(sanity::linear::VectorConstView, sanity::linear::VectorMutableView) [82]
+                0.00    0.00       8/324         sanity::linear::maxDiff(sanity::linear::VectorConstView, sanity::linear::VectorConstView) [83]
+-----------------------------------------------
+                0.00    0.00    6932/6932        sanity::petrinet::PetriNet::isolateEnableCheck(sanity::petrinet::Transition const&, sanity::petrinet::Marking const&) const [6]
+[43]     0.0    0.00    0.00    6932         std::_Function_handler<bool (sanity::petrinet::PetriNetState), exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#4}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&) [43]
+                0.00    0.00    6932/12783446     powerflowUpdate(Context&, sanity::petrinet::Marking const*) [8]
+-----------------------------------------------
+                0.00    0.00    3866/3866        sanity::petrinet::PetriNet::isolateEnableCheck(sanity::petrinet::Transition const&, sanity::petrinet::Marking const&) const [6]
+[44]     0.0    0.00    0.00    3866         std::_Function_handler<bool (sanity::petrinet::PetriNetState), exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#1}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&) [44]
+                0.00    0.00    3866/12783446     powerflowUpdate(Context&, sanity::petrinet::Marking const*) [8]
+-----------------------------------------------
+                0.00    0.00    2385/2385        sanity::petrinet::PetriNet::isolateEnableCheck(sanity::petrinet::Transition const&, sanity::petrinet::Marking const&) const [6]
+[45]     0.0    0.00    0.00    2385         std::_Function_handler<bool (sanity::petrinet::PetriNetState), exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#2}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&) [45]
+                0.00    0.00    2385/12783446     powerflowUpdate(Context&, sanity::petrinet::Marking const*) [8]
+-----------------------------------------------
+                0.00    0.00     356/356         sanity::petrinet::PetriNet::isolateEnableCheck(sanity::petrinet::Transition const&, sanity::petrinet::Marking const&) const [6]
+[46]     0.0    0.00    0.00     356         std::_Function_handler<bool (sanity::petrinet::PetriNetState), exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#3}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&) [46]
+                0.00    0.00     356/12783446     powerflowUpdate(Context&, sanity::petrinet::Marking const*) [8]
+-----------------------------------------------
+                0.00    0.00       1/1           power_grid_model_ieee30_flat_Test::TestBody() [1]
+[47]     0.0    0.00    0.00       1         exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int) [47]
+                0.00    0.00       1/1           sanity::petrinet::SrnCreator::create() const [49]
+                0.00    0.00       9/18642084     void std::vector<unsigned int, std::allocator<unsigned int> >::_M_realloc_insert<unsigned int const&>(__gnu_cxx::__normal_iterator<unsigned int*, std::vector<unsigned int, std::allocator<unsigned int> > >, unsigned int const&) [29]
+                0.00    0.00      73/73          createTwoStates(sanity::petrinet::SrnCreator&, double, double, sanity::petrinet::MarkingDepBool) [54]
+                0.00    0.00      21/21          createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&) [55]
+                0.00    0.00      82/287         std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#4}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#4}> const&, std::_Manager_operation) [86]
+                0.00    0.00      60/210         std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#1}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#1}> const&, std::_Manager_operation) [89]
+                0.00    0.00      42/147         std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#2}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#2}> const&, std::_Manager_operation) [91]
+                0.00    0.00      21/105         std::_Function_base::_Base_manager<createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#2}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#2}> const&, std::_Manager_operation) [93]
+                0.00    0.00      21/105         std::_Function_base::_Base_manager<createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#1}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#1}> const&, std::_Manager_operation) [94]
+                0.00    0.00       4/14          std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#3}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#3}> const&, std::_Manager_operation) [103]
+-----------------------------------------------
+                0.00    0.00       1/1           sanity::petrinet::SrnCreator::create() const [49]
+[48]     0.0    0.00    0.00       1         sanity::petrinet::PetriNet::PetriNet(unsigned int, sanity::petrinet::MarkingDepBool, std::vector<sanity::petrinet::Transition, std::allocator<sanity::petrinet::Transition> >) [48]
+                0.00    0.00       1/274152      sanity::petrinet::PetriNet::enabledTransitions(sanity::petrinet::Marking const&) const [7]
+                0.00    0.00     214/244         sanity::petrinet::cmpTrans(sanity::petrinet::Transition const&, sanity::petrinet::Transition const&) [88]
+                0.00    0.00       1/1           void std::__insertion_sort<__gnu_cxx::__normal_iterator<sanity::petrinet::Transition*, std::vector<sanity::petrinet::Transition, std::allocator<sanity::petrinet::Transition> > >, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sanity::petrinet::Transition const&, sanity::petrinet::Transition const&)> >(__gnu_cxx::__normal_iterator<sanity::petrinet::Transition*, std::vector<sanity::petrinet::Transition, std::allocator<sanity::petrinet::Transition> > >, __gnu_cxx::__normal_iterator<sanity::petrinet::Transition*, std::vector<sanity::petrinet::Transition, std::allocator<sanity::petrinet::Transition> > >, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sanity::petrinet::Transition const&, sanity::petrinet::Transition const&)>) [152]
+-----------------------------------------------
+                0.00    0.00       1/1           exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int) [47]
+[49]     0.0    0.00    0.00       1         sanity::petrinet::SrnCreator::create() const [49]
+                0.00    0.00       1/1           sanity::petrinet::PetriNet::PetriNet(unsigned int, sanity::petrinet::MarkingDepBool, std::vector<sanity::petrinet::Transition, std::allocator<sanity::petrinet::Transition> >) [48]
+                0.00    0.00      41/287         std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#4}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#4}> const&, std::_Manager_operation) [86]
+                0.00    0.00      24/210         std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#1}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#1}> const&, std::_Manager_operation) [89]
+                0.00    0.00      21/105         std::_Function_base::_Base_manager<createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#2}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#2}> const&, std::_Manager_operation) [93]
+                0.00    0.00      21/105         std::_Function_base::_Base_manager<createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#1}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#1}> const&, std::_Manager_operation) [94]
+                0.00    0.00      19/147         std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#2}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#2}> const&, std::_Manager_operation) [91]
+                0.00    0.00       9/9           void std::vector<sanity::petrinet::Transition, std::allocator<sanity::petrinet::Transition> >::_M_realloc_insert<sanity::petrinet::Transition const&>(__gnu_cxx::__normal_iterator<sanity::petrinet::Transition*, std::vector<sanity::petrinet::Transition, std::allocator<sanity::petrinet::Transition> > >, sanity::petrinet::Transition const&) [104]
+                0.00    0.00       9/9           void std::vector<sanity::petrinet::SrnTransProp, std::allocator<sanity::petrinet::SrnTransProp> >::_M_realloc_insert<sanity::petrinet::SrnTransProp const&>(__gnu_cxx::__normal_iterator<sanity::petrinet::SrnTransProp*, std::vector<sanity::petrinet::SrnTransProp, std::allocator<sanity::petrinet::SrnTransProp> > >, sanity::petrinet::SrnTransProp const&) [105]
+                0.00    0.00       2/14          std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#3}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#3}> const&, std::_Manager_operation) [103]
+-----------------------------------------------
+                0.00    0.00      95/95          sanity::petrinet::srnProbReward(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::IrreducibleSrnSteadyStateSol const&, std::vector<sanity::petrinet::Marking, std::allocator<sanity::petrinet::Marking> > const&, sanity::petrinet::MarkingDepReal const&) [51]
+[50]     0.0    0.00    0.00      95         servedLoad(Context&, sanity::petrinet::Marking const&) [50]
+                0.00    0.00      95/274434      syncContext(Context&, sanity::petrinet::Marking const*) [37]
+-----------------------------------------------
+                0.00    0.00       1/1           power_grid_model_ieee30_flat_Test::TestBody() [1]
+[51]     0.0    0.00    0.00       1         sanity::petrinet::srnProbReward(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::IrreducibleSrnSteadyStateSol const&, std::vector<sanity::petrinet::Marking, std::allocator<sanity::petrinet::Marking> > const&, sanity::petrinet::MarkingDepReal const&) [51]
+                0.00    0.00      95/95          servedLoad(Context&, sanity::petrinet::Marking const&) [50]
+                0.00    0.00      95/96          std::_Function_handler<double (sanity::petrinet::PetriNetState), power_grid_model_ieee30_flat_Test::TestBody()::{lambda(auto:1)#1}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&) [95]
+-----------------------------------------------
+                0.00    0.00       1/1           power_grid_model_ieee30_flat_Test::TestBody() [1]
+[52]     0.0    0.00    0.00       1         ieeeCdfModel2ExpModel(sanity::powerflow::IeeeCdfModel const&, double) [52]
+                0.00    0.00       1/918729      sanity::powerflow::solveDC(sanity::powerflow::DCPowerFlowModel const&, std::function<void (sanity::linear::MatrixMutableView, sanity::linear::VectorMutableView)> const&) [13]
+                0.00    0.00       1/918729      exp2DCModel(ExpPowerFlowModel const&) [14]
+                0.00    0.00       7/7           void std::vector<ExpLine, std::allocator<ExpLine> >::_M_realloc_insert<ExpLine>(__gnu_cxx::__normal_iterator<ExpLine*, std::vector<ExpLine, std::allocator<ExpLine> > >, ExpLine&&) [107]
+                0.00    0.00       6/6           void std::vector<ExpBus, std::allocator<ExpBus> >::_M_realloc_insert<ExpBus>(__gnu_cxx::__normal_iterator<ExpBus*, std::vector<ExpBus, std::allocator<ExpBus> > >, ExpBus&&) [109]
+                0.00    0.00       1/918729      std::_Function_base::_Base_manager<void (*)(sanity::linear::MatrixMutableView, sanity::linear::VectorMutableView)>::_M_manager(std::_Any_data&, std::_Any_data const&, std::_Manager_operation) [73]
+-----------------------------------------------
+                0.00    0.00      63/209         createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&) [55]
+                0.00    0.00     146/209         createTwoStates(sanity::petrinet::SrnCreator&, double, double, sanity::petrinet::MarkingDepBool) [54]
+[53]     0.0    0.00    0.00     209         sanity::petrinet::SrnCreator::place(unsigned int) [53]
+                0.00    0.00       9/18642084     void std::vector<unsigned int, std::allocator<unsigned int> >::_M_realloc_insert<unsigned int const&>(__gnu_cxx::__normal_iterator<unsigned int*, std::vector<unsigned int, std::allocator<unsigned int> > >, unsigned int const&) [29]
+-----------------------------------------------
+                0.00    0.00      73/73          exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int) [47]
+[54]     0.0    0.00    0.00      73         createTwoStates(sanity::petrinet::SrnCreator&, double, double, sanity::petrinet::MarkingDepBool) [54]
+                0.00    0.00     146/209         sanity::petrinet::SrnCreator::place(unsigned int) [53]
+                0.00    0.00     292/460         void std::vector<sanity::petrinet::Arc, std::allocator<sanity::petrinet::Arc> >::_M_realloc_insert<sanity::petrinet::Arc>(__gnu_cxx::__normal_iterator<sanity::petrinet::Arc*, std::vector<sanity::petrinet::Arc, std::allocator<sanity::petrinet::Arc> > >, sanity::petrinet::Arc&&) [75]
+                0.00    0.00     146/188         sanity::petrinet::SrnCreator::expTrans(sanity::petrinet::MarkingDepReal) [90]
+                0.00    0.00     123/287         std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#4}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#4}> const&, std::_Manager_operation) [86]
+                0.00    0.00      90/210         std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#1}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#1}> const&, std::_Manager_operation) [89]
+                0.00    0.00       6/14          std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#3}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#3}> const&, std::_Manager_operation) [103]
+-----------------------------------------------
+                0.00    0.00      21/21          exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int) [47]
+[55]     0.0    0.00    0.00      21         createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&) [55]
+                0.00    0.00      63/209         sanity::petrinet::SrnCreator::place(unsigned int) [53]
+                0.00    0.00     168/460         void std::vector<sanity::petrinet::Arc, std::allocator<sanity::petrinet::Arc> >::_M_realloc_insert<sanity::petrinet::Arc>(__gnu_cxx::__normal_iterator<sanity::petrinet::Arc*, std::vector<sanity::petrinet::Arc, std::allocator<sanity::petrinet::Arc> > >, sanity::petrinet::Arc&&) [75]
+                0.00    0.00      63/147         std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#2}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#2}> const&, std::_Manager_operation) [91]
+                0.00    0.00      42/188         sanity::petrinet::SrnCreator::expTrans(sanity::petrinet::MarkingDepReal) [90]
+                0.00    0.00      42/42          sanity::petrinet::SrnCreator::immTrans(sanity::petrinet::MarkingDepReal) [101]
+                0.00    0.00      42/105         std::_Function_base::_Base_manager<createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#1}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#1}> const&, std::_Manager_operation) [94]
+                0.00    0.00      42/105         std::_Function_base::_Base_manager<createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#2}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#2}> const&, std::_Manager_operation) [93]
+-----------------------------------------------
+                0.00    0.00     408/7948058     void std::__adjust_heap<__gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, long, sanity::splinear::SpmatrixTriple::Triple, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sanity::splinear::SpmatrixTriple::Triple const&, sanity::splinear::SpmatrixTriple::Triple const&)> >(__gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, long, long, sanity::splinear::SpmatrixTriple::Triple, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sanity::splinear::SpmatrixTriple::Triple const&, sanity::splinear::SpmatrixTriple::Triple const&)>) [96]
+                0.00    0.00 7947650/7948058     sanity::splinear::sortTriples(sanity::splinear::SpmatrixTriple&, bool) [21]
+[65]     0.0    0.00    0.00 7948058         sanity::splinear::compTripleRow(sanity::splinear::SpmatrixTriple::Triple const&, sanity::splinear::SpmatrixTriple::Triple const&) [65]
+-----------------------------------------------
+                0.00    0.00  918846/918846      sanity::graph::decompCc(sanity::graph::Graph const&) [16]
+[66]     0.0    0.00    0.00  918846         std::_Function_base::_Base_manager<sanity::graph::decompCc(sanity::graph::Graph const&)::{lambda(unsigned int, unsigned int)#1}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<sanity::graph::decompCc(sanity::graph::Graph const&)::{lambda(unsigned int, unsigned int)#1}> const&, std::_Manager_operation) [66]
+-----------------------------------------------
+                0.00    0.00  918846/918846      sanity::graph::decompCc(sanity::graph::Graph const&) [16]
+[67]     0.0    0.00    0.00  918846         void std::vector<sanity::graph::ConnectedComponent, std::allocator<sanity::graph::ConnectedComponent> >::_M_realloc_insert<sanity::graph::ConnectedComponent>(__gnu_cxx::__normal_iterator<sanity::graph::ConnectedComponent*, std::vector<sanity::graph::ConnectedComponent, std::allocator<sanity::graph::ConnectedComponent> > >, sanity::graph::ConnectedComponent&&) [67]
+-----------------------------------------------
+                0.00    0.00  918846/918846      sanity::powerflow::solveDC(sanity::powerflow::DCPowerFlowModel const&, std::function<void (sanity::linear::MatrixMutableView, sanity::linear::VectorMutableView)> const&) [13]
+[68]     0.0    0.00    0.00  918846         void std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >::_M_realloc_insert<std::vector<unsigned int, std::allocator<unsigned int> > const&>(__gnu_cxx::__normal_iterator<std::vector<unsigned int, std::allocator<unsigned int> >*, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > > >, std::vector<unsigned int, std::allocator<unsigned int> > const&) [68]
+-----------------------------------------------
+                0.00    0.00  918729/918729      sanity::powerflow::solveDC(sanity::powerflow::DCPowerFlowModel const&, std::function<void (sanity::linear::MatrixMutableView, sanity::linear::VectorMutableView)> const&) [13]
+[69]     0.0    0.00    0.00  918729         sanity::linear::dot(sanity::linear::VectorConstView, sanity::linear::VectorConstView) [69]
+-----------------------------------------------
+                0.00    0.00  918729/918729      sanity::powerflow::solveDC(sanity::powerflow::DCPowerFlowModel const&, std::function<void (sanity::linear::MatrixMutableView, sanity::linear::VectorMutableView)> const&) [13]
+[70]     0.0    0.00    0.00  918729         sanity::linear::blas::dot(sanity::linear::VectorConstView, sanity::linear::VectorConstView) [70]
+-----------------------------------------------
+                0.00    0.00  918729/918729      sanity::linear::solveLU(sanity::linear::MatrixMutableView, sanity::linear::VectorMutableView) [34]
+[71]     0.0    0.00    0.00  918729         sanity::linear::lapack::gesv(sanity::linear::MatrixMutableView, sanity::linear::MatrixMutableView, std::vector<int, std::allocator<int> >*) [71]
+-----------------------------------------------
+                0.00    0.00  918729/918729      sanity::powerflow::solveDC(sanity::powerflow::DCPowerFlowModel const&, std::function<void (sanity::linear::MatrixMutableView, sanity::linear::VectorMutableView)> const&) [13]
+[72]     0.0    0.00    0.00  918729         sanity::linear::blockView(sanity::linear::VectorMutableView, unsigned int, unsigned int) [72]
+-----------------------------------------------
+                0.00    0.00       1/918729      ieeeCdfModel2ExpModel(sanity::powerflow::IeeeCdfModel const&, double) [52]
+                0.00    0.00  918728/918729      validate(ExpPowerFlowModel&) [10]
+[73]     0.0    0.00    0.00  918729         std::_Function_base::_Base_manager<void (*)(sanity::linear::MatrixMutableView, sanity::linear::VectorMutableView)>::_M_manager(std::_Any_data&, std::_Any_data const&, std::_Manager_operation) [73]
+-----------------------------------------------
+                0.00    0.00  274280/274280      sanity::splinear::triple2compressed(sanity::splinear::SpmatrixTriple&, sanity::splinear::Spmatrix::Format) [22]
+[74]     0.0    0.00    0.00  274280         unsigned int& std::vector<unsigned int, std::allocator<unsigned int> >::emplace_back<unsigned int>(unsigned int&&) [74]
+-----------------------------------------------
+                0.00    0.00     168/460         createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&) [55]
+                0.00    0.00     292/460         createTwoStates(sanity::petrinet::SrnCreator&, double, double, sanity::petrinet::MarkingDepBool) [54]
+[75]     0.0    0.00    0.00     460         void std::vector<sanity::petrinet::Arc, std::allocator<sanity::petrinet::Arc> >::_M_realloc_insert<sanity::petrinet::Arc>(__gnu_cxx::__normal_iterator<sanity::petrinet::Arc*, std::vector<sanity::petrinet::Arc, std::allocator<sanity::petrinet::Arc> > >, sanity::petrinet::Arc&&) [75]
+-----------------------------------------------
+                0.00    0.00       7/405         sanity::petrinet::genReducedReachGraph(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::Marking const&, double, unsigned int) [3]
+                0.00    0.00     398/405         sanity::petrinet::eliminateVanMarking(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::Marking&&, double, unsigned int) [4]
+[76]     0.0    0.00    0.00     405         void std::vector<double, std::allocator<double> >::_M_realloc_insert<double const&>(__gnu_cxx::__normal_iterator<double*, std::vector<double, std::allocator<double> > >, double const&) [76]
+-----------------------------------------------
+                0.00    0.00      10/396         sanity::petrinet::srnRateMatrix(sanity::graph::DiGraph const&, std::vector<double, std::allocator<double> > const&) [41]
+                0.00    0.00     386/396         sanity::petrinet::eliminateVanMarking(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::Marking&&, double, unsigned int) [4]
+[77]     0.0    0.00    0.00     396         void std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> >::_M_realloc_insert<sanity::splinear::SpmatrixTriple::Triple>(__gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, sanity::splinear::SpmatrixTriple::Triple&&) [77]
+-----------------------------------------------
+                0.00    0.00       9/389         sanity::petrinet::srnSteadyStateSor(sanity::graph::DiGraph const&, std::vector<double, std::allocator<double> > const&, double, double, unsigned int) [42]
+                0.00    0.00     380/389         sanity::petrinet::srnSteadyStatePower(sanity::splinear::Spmatrix const&, sanity::linear::VectorMutableView, double, unsigned int) [40]
+[78]     0.0    0.00    0.00     389         sanity::linear::blas::asum(sanity::linear::VectorConstView) [78]
+-----------------------------------------------
+                0.00    0.00       9/389         sanity::petrinet::srnSteadyStateSor(sanity::graph::DiGraph const&, std::vector<double, std::allocator<double> > const&, double, double, unsigned int) [42]
+                0.00    0.00     380/389         sanity::petrinet::srnSteadyStatePower(sanity::splinear::Spmatrix const&, sanity::linear::VectorMutableView, double, unsigned int) [40]
+[79]     0.0    0.00    0.00     389         sanity::linear::blas::scal(double, sanity::linear::VectorMutableView) [79]
+-----------------------------------------------
+                0.00    0.00       9/389         sanity::petrinet::srnSteadyStateSor(sanity::graph::DiGraph const&, std::vector<double, std::allocator<double> > const&, double, double, unsigned int) [42]
+                0.00    0.00     380/389         sanity::petrinet::srnSteadyStatePower(sanity::splinear::Spmatrix const&, sanity::linear::VectorMutableView, double, unsigned int) [40]
+[80]     0.0    0.00    0.00     389         sanity::linear::norm1(sanity::linear::VectorConstView) [80]
+-----------------------------------------------
+                0.00    0.00       9/389         sanity::petrinet::srnSteadyStateSor(sanity::graph::DiGraph const&, std::vector<double, std::allocator<double> > const&, double, double, unsigned int) [42]
+                0.00    0.00     380/389         sanity::petrinet::srnSteadyStatePower(sanity::splinear::Spmatrix const&, sanity::linear::VectorMutableView, double, unsigned int) [40]
+[81]     0.0    0.00    0.00     389         sanity::linear::scale(double, sanity::linear::VectorMutableView) [81]
+-----------------------------------------------
+                0.00    0.00       8/324         sanity::petrinet::srnSteadyStateSor(sanity::graph::DiGraph const&, std::vector<double, std::allocator<double> > const&, double, double, unsigned int) [42]
+                0.00    0.00     316/324         sanity::petrinet::srnSteadyStatePower(sanity::splinear::Spmatrix const&, sanity::linear::VectorMutableView, double, unsigned int) [40]
+[82]     0.0    0.00    0.00     324         sanity::linear::copy(sanity::linear::VectorConstView, sanity::linear::VectorMutableView) [82]
+-----------------------------------------------
+                0.00    0.00       8/324         sanity::petrinet::srnSteadyStateSor(sanity::graph::DiGraph const&, std::vector<double, std::allocator<double> > const&, double, double, unsigned int) [42]
+                0.00    0.00     316/324         sanity::petrinet::srnSteadyStatePower(sanity::splinear::Spmatrix const&, sanity::linear::VectorMutableView, double, unsigned int) [40]
+[83]     0.0    0.00    0.00     324         sanity::linear::maxDiff(sanity::linear::VectorConstView, sanity::linear::VectorConstView) [83]
+-----------------------------------------------
+                0.00    0.00      64/324         sanity::petrinet::eliminateVanMarking(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::Marking&&, double, unsigned int) [4]
+                0.00    0.00     260/324         sanity::petrinet::addNewMarking(sanity::graph::DiGraph&, std::map<int const*, unsigned int, sanity::petrinet::CompMarking, std::allocator<std::pair<int const* const, unsigned int> > >&, std::vector<sanity::petrinet::Marking, std::allocator<sanity::petrinet::Marking> >&, sanity::petrinet::Marking&&) [20]
+[84]     0.0    0.00    0.00     324         void std::vector<sanity::graph::DiGraph::Node, std::allocator<sanity::graph::DiGraph::Node> >::_M_realloc_insert<sanity::graph::DiGraph::Node>(__gnu_cxx::__normal_iterator<sanity::graph::DiGraph::Node*, std::vector<sanity::graph::DiGraph::Node, std::allocator<sanity::graph::DiGraph::Node> > >, sanity::graph::DiGraph::Node&&) [84]
+-----------------------------------------------
+                0.00    0.00       1/301         testing::TestCase::~TestCase() [528]
+                0.00    0.00       1/301         testing::internal::PrettyUnitTestResultPrinter::OnTestCaseStart(testing::TestCase const&) [936]
+                0.00    0.00       1/301         testing::internal::PrettyUnitTestResultPrinter::OnTestEnd(testing::TestInfo const&) [947]
+                0.00    0.00       1/301         testing::internal::UnitTestImpl::ConfigureXmlOutput() [639]
+                0.00    0.00       1/301         testing::internal::FilePath::GetCurrentDir() [1036]
+                0.00    0.00       1/301         testing::internal::ScopedPrematureExitFile::~ScopedPrematureExitFile() [883]
+                0.00    0.00       1/301         void testing::internal::ParseGoogleTestFlagsOnlyImpl<char>(int*, char**) [951]
+                0.00    0.00       2/301         testing::internal::PrettyUnitTestResultPrinter::OnTestIterationStart(testing::UnitTest const&, int) [942]
+                0.00    0.00       2/301         testing::internal::PrettyUnitTestResultPrinter::OnTestCaseEnd(testing::TestCase const&) [934]
+                0.00    0.00       2/301         testing::internal::FilePath::~FilePath() [1043]
+                0.00    0.00       2/301         void testing::internal::InitGoogleTestImpl<char>(int*, char**) [840]
+                0.00    0.00       3/301         testing::internal::Int32FromGTestEnv(char const*, int) [784]
+                0.00    0.00       4/301         testing::internal::PrettyUnitTestResultPrinter::OnTestIterationEnd(testing::UnitTest const&, int) [940]
+                0.00    0.00       5/301         void std::_Destroy<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*) [2613]
+                0.00    0.00       6/301         testing::internal::StringFromGTestEnv[abi:cxx11](char const*, char const*) [857]
+                0.00    0.00       6/301         testing::internal::GTestFlagSaver::~GTestFlagSaver() [719]
+                0.00    0.00       8/301         testing::internal::BoolFromGTestEnv(char const*, bool) [764]
+                0.00    0.00      10/301         testing::internal::UnitTestImpl::GetTestCase(char const*, char const*, void (*)(), void (*)()) [631]
+                0.00    0.00      10/301         testing::internal::UnitTestImpl::FilterTests(testing::internal::UnitTestImpl::ReactionToSharding) [630]
+                0.00    0.00      14/301         testing::FormatCountableNoun(int, char const*, char const*) [1130]
+                0.00    0.00      17/301         testing::internal::FlagToEnvVar(char const*) [1073]
+                0.00    0.00      18/301         testing::TestInfo::~TestInfo() [533]
+                0.00    0.00      18/301         testing::internal::MakeAndRegisterTestInfo(char const*, char const*, char const*, char const*, testing::internal::CodeLocation, void const*, void (*)(), void (*)(), testing::internal::TestFactoryBase*) [881]
+                0.00    0.00      18/301         testing::internal::CodeLocation::~CodeLocation() [625]
+                0.00    0.00      21/301         testing::internal::ParseFlagValue(char const*, char const*, bool) [1079]
+                0.00    0.00      36/301         testing::internal::UnitTestOptions::FilterMatchesTest(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [761]
+                0.00    0.00      45/301         testing::internal::TestCaseNameIs::~TestCaseNameIs() [729]
+                0.00    0.00      47/301         testing::internal::StringStreamToString(std::__cxx11::basic_stringstream<char, std::char_traits<char>, std::allocator<char> >*) [871]
+[85]     0.0    0.00    0.00     301         std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::~basic_string() [85]
+-----------------------------------------------
+                0.00    0.00      41/287         sanity::petrinet::SrnCreator::create() const [49]
+                0.00    0.00      41/287         power_grid_model_ieee30_flat_Test::TestBody() [1]
+                0.00    0.00      82/287         exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int) [47]
+                0.00    0.00     123/287         createTwoStates(sanity::petrinet::SrnCreator&, double, double, sanity::petrinet::MarkingDepBool) [54]
+[86]     0.0    0.00    0.00     287         std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#4}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#4}> const&, std::_Manager_operation) [86]
+-----------------------------------------------
+                              273883             std::_Rb_tree<int const*, std::pair<int const* const, unsigned int>, std::_Select1st<std::pair<int const* const, unsigned int> >, sanity::petrinet::CompMarking, std::allocator<std::pair<int const* const, unsigned int> > >::_M_erase(std::_Rb_tree_node<std::pair<int const* const, unsigned int> >*) [87]
+                0.00    0.00       6/268         sanity::petrinet::genReducedReachGraph(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::Marking const&, double, unsigned int) [3]
+                0.00    0.00     262/268         sanity::petrinet::eliminateVanMarking(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::Marking&&, double, unsigned int) [4]
+[87]     0.0    0.00    0.00     268+273883  std::_Rb_tree<int const*, std::pair<int const* const, unsigned int>, std::_Select1st<std::pair<int const* const, unsigned int> >, sanity::petrinet::CompMarking, std::allocator<std::pair<int const* const, unsigned int> > >::_M_erase(std::_Rb_tree_node<std::pair<int const* const, unsigned int> >*) [87]
+                              273883             std::_Rb_tree<int const*, std::pair<int const* const, unsigned int>, std::_Select1st<std::pair<int const* const, unsigned int> >, sanity::petrinet::CompMarking, std::allocator<std::pair<int const* const, unsigned int> > >::_M_erase(std::_Rb_tree_node<std::pair<int const* const, unsigned int> >*) [87]
+-----------------------------------------------
+                0.00    0.00      30/244         void std::__insertion_sort<__gnu_cxx::__normal_iterator<sanity::petrinet::Transition*, std::vector<sanity::petrinet::Transition, std::allocator<sanity::petrinet::Transition> > >, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sanity::petrinet::Transition const&, sanity::petrinet::Transition const&)> >(__gnu_cxx::__normal_iterator<sanity::petrinet::Transition*, std::vector<sanity::petrinet::Transition, std::allocator<sanity::petrinet::Transition> > >, __gnu_cxx::__normal_iterator<sanity::petrinet::Transition*, std::vector<sanity::petrinet::Transition, std::allocator<sanity::petrinet::Transition> > >, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sanity::petrinet::Transition const&, sanity::petrinet::Transition const&)>) [152]
+                0.00    0.00     214/244         sanity::petrinet::PetriNet::PetriNet(unsigned int, sanity::petrinet::MarkingDepBool, std::vector<sanity::petrinet::Transition, std::allocator<sanity::petrinet::Transition> >) [48]
+[88]     0.0    0.00    0.00     244         sanity::petrinet::cmpTrans(sanity::petrinet::Transition const&, sanity::petrinet::Transition const&) [88]
+-----------------------------------------------
+                0.00    0.00       6/210         void std::vector<sanity::petrinet::Transition, std::allocator<sanity::petrinet::Transition> >::_M_realloc_insert<sanity::petrinet::Transition const&>(__gnu_cxx::__normal_iterator<sanity::petrinet::Transition*, std::vector<sanity::petrinet::Transition, std::allocator<sanity::petrinet::Transition> > >, sanity::petrinet::Transition const&) [104]
+                0.00    0.00      24/210         sanity::petrinet::SrnCreator::create() const [49]
+                0.00    0.00      30/210         power_grid_model_ieee30_flat_Test::TestBody() [1]
+                0.00    0.00      60/210         exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int) [47]
+                0.00    0.00      90/210         createTwoStates(sanity::petrinet::SrnCreator&, double, double, sanity::petrinet::MarkingDepBool) [54]
+[89]     0.0    0.00    0.00     210         std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#1}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#1}> const&, std::_Manager_operation) [89]
+-----------------------------------------------
+                0.00    0.00      42/188         createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&) [55]
+                0.00    0.00     146/188         createTwoStates(sanity::petrinet::SrnCreator&, double, double, sanity::petrinet::MarkingDepBool) [54]
+[90]     0.0    0.00    0.00     188         sanity::petrinet::SrnCreator::expTrans(sanity::petrinet::MarkingDepReal) [90]
+                0.00    0.00       9/9           void std::vector<sanity::petrinet::SrnTransition, std::allocator<sanity::petrinet::SrnTransition> >::_M_realloc_insert<sanity::petrinet::SrnTransition>(__gnu_cxx::__normal_iterator<sanity::petrinet::SrnTransition*, std::vector<sanity::petrinet::SrnTransition, std::allocator<sanity::petrinet::SrnTransition> > >, sanity::petrinet::SrnTransition&&) [106]
+-----------------------------------------------
+                0.00    0.00       2/147         void std::vector<sanity::petrinet::Transition, std::allocator<sanity::petrinet::Transition> >::_M_realloc_insert<sanity::petrinet::Transition const&>(__gnu_cxx::__normal_iterator<sanity::petrinet::Transition*, std::vector<sanity::petrinet::Transition, std::allocator<sanity::petrinet::Transition> > >, sanity::petrinet::Transition const&) [104]
+                0.00    0.00      19/147         sanity::petrinet::SrnCreator::create() const [49]
+                0.00    0.00      21/147         power_grid_model_ieee30_flat_Test::TestBody() [1]
+                0.00    0.00      42/147         exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int) [47]
+                0.00    0.00      63/147         createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&) [55]
+[91]     0.0    0.00    0.00     147         std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#2}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#2}> const&, std::_Manager_operation) [91]
+-----------------------------------------------
+                0.00    0.00     130/130         sanity::splinear::triple2compressed(sanity::splinear::SpmatrixTriple&, sanity::splinear::Spmatrix::Format) [22]
+[92]     0.0    0.00    0.00     130         std::vector<unsigned int, std::allocator<unsigned int> >::reserve(unsigned long) [92]
+-----------------------------------------------
+                0.00    0.00      21/105         sanity::petrinet::SrnCreator::create() const [49]
+                0.00    0.00      21/105         power_grid_model_ieee30_flat_Test::TestBody() [1]
+                0.00    0.00      21/105         exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int) [47]
+                0.00    0.00      42/105         createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&) [55]
+[93]     0.0    0.00    0.00     105         std::_Function_base::_Base_manager<createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#2}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#2}> const&, std::_Manager_operation) [93]
+-----------------------------------------------
+                0.00    0.00      21/105         sanity::petrinet::SrnCreator::create() const [49]
+                0.00    0.00      21/105         power_grid_model_ieee30_flat_Test::TestBody() [1]
+                0.00    0.00      21/105         exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int) [47]
+                0.00    0.00      42/105         createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&) [55]
+[94]     0.0    0.00    0.00     105         std::_Function_base::_Base_manager<createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#1}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#1}> const&, std::_Manager_operation) [94]
+-----------------------------------------------
+                0.00    0.00       1/96          power_grid_model_ieee30_flat_Test::TestBody() [1]
+                0.00    0.00      95/96          sanity::petrinet::srnProbReward(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::IrreducibleSrnSteadyStateSol const&, std::vector<sanity::petrinet::Marking, std::allocator<sanity::petrinet::Marking> > const&, sanity::petrinet::MarkingDepReal const&) [51]
+[95]     0.0    0.00    0.00      96         std::_Function_handler<double (sanity::petrinet::PetriNetState), power_grid_model_ieee30_flat_Test::TestBody()::{lambda(auto:1)#1}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&) [95]
+-----------------------------------------------
+                0.00    0.00      32/95          void std::__heap_select<__gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sanity::splinear::SpmatrixTriple::Triple const&, sanity::splinear::SpmatrixTriple::Triple const&)> >(__gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, __gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, __gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sanity::splinear::SpmatrixTriple::Triple const&, sanity::splinear::SpmatrixTriple::Triple const&)>) [151]
+                0.00    0.00      63/95          sanity::splinear::SpmatrixGet(sanity::splinear::Spmatrix const&, unsigned long, unsigned long) [23]
+[96]     0.0    0.00    0.00      95         void std::__adjust_heap<__gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, long, sanity::splinear::SpmatrixTriple::Triple, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sanity::splinear::SpmatrixTriple::Triple const&, sanity::splinear::SpmatrixTriple::Triple const&)> >(__gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, long, long, sanity::splinear::SpmatrixTriple::Triple, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sanity::splinear::SpmatrixTriple::Triple const&, sanity::splinear::SpmatrixTriple::Triple const&)>) [96]
+                0.00    0.00     408/7948058     sanity::splinear::compTripleRow(sanity::splinear::SpmatrixTriple::Triple const&, sanity::splinear::SpmatrixTriple::Triple const&) [65]
+-----------------------------------------------
+                0.00    0.00      65/65          sanity::splinear::triple2compressed(sanity::splinear::SpmatrixTriple&, sanity::splinear::Spmatrix::Format) [22]
+[97]     0.0    0.00    0.00      65         std::vector<double, std::allocator<double> >::reserve(unsigned long) [97]
+-----------------------------------------------
+                0.00    0.00      65/65          sanity::petrinet::addNewMarking(sanity::graph::DiGraph&, std::map<int const*, unsigned int, sanity::petrinet::CompMarking, std::allocator<std::pair<int const* const, unsigned int> > >&, std::vector<sanity::petrinet::Marking, std::allocator<sanity::petrinet::Marking> >&, sanity::petrinet::Marking&&) [20]
+[98]     0.0    0.00    0.00      65         std::_Rb_tree<int const*, std::pair<int const* const, unsigned int>, std::_Select1st<std::pair<int const* const, unsigned int> >, sanity::petrinet::CompMarking, std::allocator<std::pair<int const* const, unsigned int> > >::_M_get_insert_unique_pos(int const* const&) [98]
+-----------------------------------------------
+                0.00    0.00      64/64          sanity::petrinet::eliminateVanMarking(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::Marking&&, double, unsigned int) [4]
+[99]     0.0    0.00    0.00      64         void std::vector<unsigned int, std::allocator<unsigned int> >::_M_realloc_insert<unsigned int>(__gnu_cxx::__normal_iterator<unsigned int*, std::vector<unsigned int, std::allocator<unsigned int> > >, unsigned int&&) [99]
+-----------------------------------------------
+                0.00    0.00       9/46          std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > std::operator+<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*) [2693]
+                0.00    0.00      37/46          std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > std::operator+<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&&, char const*) [2688]
+[100]    0.0    0.00    0.00      46         std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_append(char const*, unsigned long) [100]
+-----------------------------------------------
+                0.00    0.00      42/42          createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&) [55]
+[101]    0.0    0.00    0.00      42         sanity::petrinet::SrnCreator::immTrans(sanity::petrinet::MarkingDepReal) [101]
+-----------------------------------------------
+                0.00    0.00       1/20          testing::internal::FilePath::Normalize() [1039]
+                0.00    0.00       1/20          bool testing::internal::ParseStringFlag<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >(char const*, char const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*) [1085]
+                0.00    0.00      18/20          testing::internal::UnitTestOptions::FilterMatchesTest(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [761]
+[102]    0.0    0.00    0.00      20         std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_replace(unsigned long, unsigned long, char const*, unsigned long) [102]
+-----------------------------------------------
+                0.00    0.00       2/14          sanity::petrinet::SrnCreator::create() const [49]
+                0.00    0.00       2/14          power_grid_model_ieee30_flat_Test::TestBody() [1]
+                0.00    0.00       4/14          exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int) [47]
+                0.00    0.00       6/14          createTwoStates(sanity::petrinet::SrnCreator&, double, double, sanity::petrinet::MarkingDepBool) [54]
+[103]    0.0    0.00    0.00      14         std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#3}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#3}> const&, std::_Manager_operation) [103]
+-----------------------------------------------
+                0.00    0.00       9/9           sanity::petrinet::SrnCreator::create() const [49]
+[104]    0.0    0.00    0.00       9         void std::vector<sanity::petrinet::Transition, std::allocator<sanity::petrinet::Transition> >::_M_realloc_insert<sanity::petrinet::Transition const&>(__gnu_cxx::__normal_iterator<sanity::petrinet::Transition*, std::vector<sanity::petrinet::Transition, std::allocator<sanity::petrinet::Transition> > >, sanity::petrinet::Transition const&) [104]
+                0.00    0.00       6/210         std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#1}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#1}> const&, std::_Manager_operation) [89]
+                0.00    0.00       2/147         std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#2}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#2}> const&, std::_Manager_operation) [91]
+-----------------------------------------------
+                0.00    0.00       9/9           sanity::petrinet::SrnCreator::create() const [49]
+[105]    0.0    0.00    0.00       9         void std::vector<sanity::petrinet::SrnTransProp, std::allocator<sanity::petrinet::SrnTransProp> >::_M_realloc_insert<sanity::petrinet::SrnTransProp const&>(__gnu_cxx::__normal_iterator<sanity::petrinet::SrnTransProp*, std::vector<sanity::petrinet::SrnTransProp, std::allocator<sanity::petrinet::SrnTransProp> > >, sanity::petrinet::SrnTransProp const&) [105]
+-----------------------------------------------
+                0.00    0.00       9/9           sanity::petrinet::SrnCreator::expTrans(sanity::petrinet::MarkingDepReal) [90]
+[106]    0.0    0.00    0.00       9         void std::vector<sanity::petrinet::SrnTransition, std::allocator<sanity::petrinet::SrnTransition> >::_M_realloc_insert<sanity::petrinet::SrnTransition>(__gnu_cxx::__normal_iterator<sanity::petrinet::SrnTransition*, std::vector<sanity::petrinet::SrnTransition, std::allocator<sanity::petrinet::SrnTransition> > >, sanity::petrinet::SrnTransition&&) [106]
+-----------------------------------------------
+                0.00    0.00       7/7           ieeeCdfModel2ExpModel(sanity::powerflow::IeeeCdfModel const&, double) [52]
+[107]    0.0    0.00    0.00       7         void std::vector<ExpLine, std::allocator<ExpLine> >::_M_realloc_insert<ExpLine>(__gnu_cxx::__normal_iterator<ExpLine*, std::vector<ExpLine, std::allocator<ExpLine> > >, ExpLine&&) [107]
+-----------------------------------------------
+                0.00    0.00       7/7           sanity::powerflow::readIeeeCdfModel(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [136]
+[108]    0.0    0.00    0.00       7         void std::vector<sanity::powerflow::IeeeCdfBranch, std::allocator<sanity::powerflow::IeeeCdfBranch> >::_M_realloc_insert<sanity::powerflow::IeeeCdfBranch const&>(__gnu_cxx::__normal_iterator<sanity::powerflow::IeeeCdfBranch*, std::vector<sanity::powerflow::IeeeCdfBranch, std::allocator<sanity::powerflow::IeeeCdfBranch> > >, sanity::powerflow::IeeeCdfBranch const&) [108]
+-----------------------------------------------
+                0.00    0.00       6/6           ieeeCdfModel2ExpModel(sanity::powerflow::IeeeCdfModel const&, double) [52]
+[109]    0.0    0.00    0.00       6         void std::vector<ExpBus, std::allocator<ExpBus> >::_M_realloc_insert<ExpBus>(__gnu_cxx::__normal_iterator<ExpBus*, std::vector<ExpBus, std::allocator<ExpBus> > >, ExpBus&&) [109]
+-----------------------------------------------
+                0.00    0.00       6/6           sanity::powerflow::readIeeeCdfModel(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [136]
+[110]    0.0    0.00    0.00       6         void std::vector<sanity::powerflow::IeeeCdfBus, std::allocator<sanity::powerflow::IeeeCdfBus> >::_M_realloc_insert<sanity::powerflow::IeeeCdfBus const&>(__gnu_cxx::__normal_iterator<sanity::powerflow::IeeeCdfBus*, std::vector<sanity::powerflow::IeeeCdfBus, std::allocator<sanity::powerflow::IeeeCdfBus> > >, sanity::powerflow::IeeeCdfBus const&) [110]
+-----------------------------------------------
+                0.00    0.00       3/3           power_grid_model_ieee30_flat_Test::TestBody() [1]
+[111]    0.0    0.00    0.00       3         timed_scope::timed_scope(char const*) [111]
+-----------------------------------------------
+                0.00    0.00       3/3           power_grid_model_ieee30_flat_Test::TestBody() [1]
+[112]    0.0    0.00    0.00       3         timed_scope::~timed_scope() [112]
+-----------------------------------------------
+                0.00    0.00       2/2           sanity::petrinet::genReducedReachGraph(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::Marking const&, double, unsigned int) [3]
+[113]    0.0    0.00    0.00       2         void std::vector<double, std::allocator<double> >::_M_realloc_insert<double>(__gnu_cxx::__normal_iterator<double*, std::vector<double, std::allocator<double> > >, double&&) [113]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [2703]
+[114]    0.0    0.00    0.00       1         _GLOBAL__sub_I__Z11exp2DCModelRK17ExpPowerFlowModel [114]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [2703]
+[115]    0.0    0.00    0.00       1         _GLOBAL__sub_I__Z11syncContextR7ContextPKN6sanity8petrinet7MarkingE [115]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [2703]
+[116]    0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN11timed_scopeC2EPKc [116]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [2703]
+[117]    0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN32power_grid_model_ieee14_sim_Test10test_info_E [117]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [2703]
+[118]    0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN32power_grid_model_ieee30_sim_Test10test_info_E [118]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [2703]
+[119]    0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN33power_grid_model_ieee14_effi_Test10test_info_E [119]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [2703]
+[120]    0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN33power_grid_model_ieee14_grad_Test10test_info_E [120]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [2703]
+[121]    0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN33power_grid_model_ieee30_effi_Test10test_info_E [121]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [2703]
+[122]    0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN33power_grid_model_ieee30_flat_Test10test_info_E [122]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [2703]
+[123]    0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN33power_grid_model_ieee30_grad_Test10test_info_E [123]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [2703]
+[124]    0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN33power_grid_model_three_nodes_Test10test_info_E [124]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [2703]
+[125]    0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN6sanity6linear6maxAbsENS0_15VectorConstViewE [125]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [2703]
+[126]    0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN6sanity6linear8decompQRENS0_17MatrixMutableViewE [126]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [2703]
+[127]    0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN6sanity8petrinet11GpnObserver14eventTriggeredERKNS_8simulate6EventTIjEERKNS0_11GpnSimStateERKNS2_11EventQueueTIjEE [127]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [2703]
+[128]    0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN6sanity8petrinet11findMarkingERSt3mapIPKijNS0_11CompMarkingESaISt4pairIKS3_jEEERKNS0_7MarkingE [128]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [2703]
+[129]    0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN6sanity8petrinet12isVanMarkingERKNS0_19StochasticRewardNetERKNS0_7MarkingE [129]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [2703]
+[130]    0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN6sanity8splinearlsERSoRKNS0_8SpmatrixE [130]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [2703]
+[131]    0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN6sanity9powerflow16readIeeeCdfModelERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE [131]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [2703]
+[132]    0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN6sanity9powerflow17readMatpowerModelERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE [132]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [2703]
+[133]    0.0    0.00    0.00       1         _GLOBAL__sub_I_main [133]
+-----------------------------------------------
+                0.00    0.00       1/1           power_grid_model_ieee30_flat_Test::TestBody() [1]
+[134]    0.0    0.00    0.00       1         createInitMarking(sanity::petrinet::StochasticRewardNet const&, Context const&) [134]
+-----------------------------------------------
+                0.00    0.00       1/1           testing::Test::DeleteSelf_() [431]
+[135]    0.0    0.00    0.00       1         power_grid_model_ieee30_flat_Test::~power_grid_model_ieee30_flat_Test() [135]
+-----------------------------------------------
+                0.00    0.00       1/1           power_grid_model_ieee30_flat_Test::TestBody() [1]
+[136]    0.0    0.00    0.00       1         sanity::powerflow::readIeeeCdfModel(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [136]
+                0.00    0.00       7/7           void std::vector<sanity::powerflow::IeeeCdfBranch, std::allocator<sanity::powerflow::IeeeCdfBranch> >::_M_realloc_insert<sanity::powerflow::IeeeCdfBranch const&>(__gnu_cxx::__normal_iterator<sanity::powerflow::IeeeCdfBranch*, std::vector<sanity::powerflow::IeeeCdfBranch, std::allocator<sanity::powerflow::IeeeCdfBranch> > >, sanity::powerflow::IeeeCdfBranch const&) [108]
+                0.00    0.00       6/6           void std::vector<sanity::powerflow::IeeeCdfBus, std::allocator<sanity::powerflow::IeeeCdfBus> >::_M_realloc_insert<sanity::powerflow::IeeeCdfBus const&>(__gnu_cxx::__normal_iterator<sanity::powerflow::IeeeCdfBus*, std::vector<sanity::powerflow::IeeeCdfBus, std::allocator<sanity::powerflow::IeeeCdfBus> > >, sanity::powerflow::IeeeCdfBus const&) [110]
+-----------------------------------------------
+                0.00    0.00       1/1           testing::TestCase::RunSetUpTestCase() [520]
+[137]    0.0    0.00    0.00       1         testing::Test::SetUpTestCase() [137]
+-----------------------------------------------
+                0.00    0.00       1/1           testing::TestCase::RunTearDownTestCase() [523]
+[138]    0.0    0.00    0.00       1         testing::Test::TearDownTestCase() [138]
+-----------------------------------------------
+                0.00    0.00       1/1           testing::TestInfo::~TestInfo() [533]
+[139]    0.0    0.00    0.00       1         testing::internal::TestFactoryImpl<power_grid_model_ieee14_sim_Test>::~TestFactoryImpl() [139]
+-----------------------------------------------
+                0.00    0.00       1/1           testing::TestInfo::~TestInfo() [533]
+[140]    0.0    0.00    0.00       1         testing::internal::TestFactoryImpl<power_grid_model_ieee30_sim_Test>::~TestFactoryImpl() [140]
+-----------------------------------------------
+                0.00    0.00       1/1           testing::TestInfo::~TestInfo() [533]
+[141]    0.0    0.00    0.00       1         testing::internal::TestFactoryImpl<power_grid_model_ieee14_effi_Test>::~TestFactoryImpl() [141]
+-----------------------------------------------
+                0.00    0.00       1/1           testing::TestInfo::~TestInfo() [533]
+[142]    0.0    0.00    0.00       1         testing::internal::TestFactoryImpl<power_grid_model_ieee14_flat_Test>::~TestFactoryImpl() [142]
+-----------------------------------------------
+                0.00    0.00       1/1           testing::TestInfo::~TestInfo() [533]
+[143]    0.0    0.00    0.00       1         testing::internal::TestFactoryImpl<power_grid_model_ieee14_grad_Test>::~TestFactoryImpl() [143]
+-----------------------------------------------
+                0.00    0.00       1/1           testing::TestInfo::~TestInfo() [533]
+[144]    0.0    0.00    0.00       1         testing::internal::TestFactoryImpl<power_grid_model_ieee30_effi_Test>::~TestFactoryImpl() [144]
+-----------------------------------------------
+                0.00    0.00       1/1           testing::Test* testing::internal::HandleSehExceptionsInMethodIfSupported<testing::internal::TestFactoryBase, testing::Test*>(testing::internal::TestFactoryBase*, testing::Test* (testing::internal::TestFactoryBase::*)(), char const*) [982]
+[145]    0.0    0.00    0.00       1         testing::internal::TestFactoryImpl<power_grid_model_ieee30_flat_Test>::CreateTest() [145]
+-----------------------------------------------
+                0.00    0.00       1/1           testing::TestInfo::~TestInfo() [533]
+[146]    0.0    0.00    0.00       1         testing::internal::TestFactoryImpl<power_grid_model_ieee30_flat_Test>::~TestFactoryImpl() [146]
+-----------------------------------------------
+                0.00    0.00       1/1           testing::TestInfo::~TestInfo() [533]
+[147]    0.0    0.00    0.00       1         testing::internal::TestFactoryImpl<power_grid_model_ieee30_grad_Test>::~TestFactoryImpl() [147]
+-----------------------------------------------
+                0.00    0.00       1/1           testing::TestInfo::~TestInfo() [533]
+[148]    0.0    0.00    0.00       1         testing::internal::TestFactoryImpl<power_grid_model_three_nodes_Test>::~TestFactoryImpl() [148]
+-----------------------------------------------
+                0.00    0.00       1/1           power_grid_model_ieee30_flat_Test::TestBody() [1]
+[149]    0.0    0.00    0.00       1         std::_Function_base::_Base_manager<power_grid_model_ieee30_flat_Test::TestBody()::{lambda(auto:1)#1}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<power_grid_model_ieee30_flat_Test::TestBody()::{lambda(auto:1)#1}> const&, std::_Manager_operation) [149]
+-----------------------------------------------
+                0.00    0.00       1/1           sanity::petrinet::genReducedReachGraph(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::Marking const&, double, unsigned int) [3]
+[150]    0.0    0.00    0.00       1         void std::vector<sanity::petrinet::MarkingInitProb, std::allocator<sanity::petrinet::MarkingInitProb> >::_M_realloc_insert<sanity::petrinet::MarkingInitProb>(__gnu_cxx::__normal_iterator<sanity::petrinet::MarkingInitProb*, std::vector<sanity::petrinet::MarkingInitProb, std::allocator<sanity::petrinet::MarkingInitProb> > >, sanity::petrinet::MarkingInitProb&&) [150]
+-----------------------------------------------
+                0.00    0.00       1/1           sanity::splinear::SpmatrixGet(sanity::splinear::Spmatrix const&, unsigned long, unsigned long) [23]
+[151]    0.0    0.00    0.00       1         void std::__heap_select<__gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sanity::splinear::SpmatrixTriple::Triple const&, sanity::splinear::SpmatrixTriple::Triple const&)> >(__gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, __gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, __gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sanity::splinear::SpmatrixTriple::Triple const&, sanity::splinear::SpmatrixTriple::Triple const&)>) [151]
+                0.00    0.00      32/95          void std::__adjust_heap<__gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, long, sanity::splinear::SpmatrixTriple::Triple, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sanity::splinear::SpmatrixTriple::Triple const&, sanity::splinear::SpmatrixTriple::Triple const&)> >(__gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, long, long, sanity::splinear::SpmatrixTriple::Triple, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sanity::splinear::SpmatrixTriple::Triple const&, sanity::splinear::SpmatrixTriple::Triple const&)>) [96]
+-----------------------------------------------
+                0.00    0.00       1/1           sanity::petrinet::PetriNet::PetriNet(unsigned int, sanity::petrinet::MarkingDepBool, std::vector<sanity::petrinet::Transition, std::allocator<sanity::petrinet::Transition> >) [48]
+[152]    0.0    0.00    0.00       1         void std::__insertion_sort<__gnu_cxx::__normal_iterator<sanity::petrinet::Transition*, std::vector<sanity::petrinet::Transition, std::allocator<sanity::petrinet::Transition> > >, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sanity::petrinet::Transition const&, sanity::petrinet::Transition const&)> >(__gnu_cxx::__normal_iterator<sanity::petrinet::Transition*, std::vector<sanity::petrinet::Transition, std::allocator<sanity::petrinet::Transition> > >, __gnu_cxx::__normal_iterator<sanity::petrinet::Transition*, std::vector<sanity::petrinet::Transition, std::allocator<sanity::petrinet::Transition> > >, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sanity::petrinet::Transition const&, sanity::petrinet::Transition const&)>) [152]
+                0.00    0.00      30/244         sanity::petrinet::cmpTrans(sanity::petrinet::Transition const&, sanity::petrinet::Transition const&) [88]
+-----------------------------------------------
+
+ This table describes the call tree of the program, and was sorted by
+ the total amount of time spent in each function and its children.
+
+ Each entry in this table consists of several lines.  The line with the
+ index number at the left hand margin lists the current function.
+ The lines above it list the functions that called this function,
+ and the lines below it list the functions this one called.
+ This line lists:
+     index	A unique number given to each element of the table.
+		Index numbers are sorted numerically.
+		The index number is printed next to every function name so
+		it is easier to look up where the function is in the table.
+
+     % time	This is the percentage of the `total' time that was spent
+		in this function and its children.  Note that due to
+		different viewpoints, functions excluded by options, etc,
+		these numbers will NOT add up to 100%.
+
+     self	This is the total amount of time spent in this function.
+
+     children	This is the total amount of time propagated into this
+		function by its children.
+
+     called	This is the number of times the function was called.
+		If the function called itself recursively, the number
+		only includes non-recursive calls, and is followed by
+		a `+' and the number of recursive calls.
+
+     name	The name of the current function.  The index number is
+		printed after it.  If the function is a member of a
+		cycle, the cycle number is printed between the
+		function's name and the index number.
+
+
+ For the function's parents, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the function into this parent.
+
+     children	This is the amount of time that was propagated from
+		the function's children into this parent.
+
+     called	This is the number of times this parent called the
+		function `/' the total number of times the function
+		was called.  Recursive calls to the function are not
+		included in the number after the `/'.
+
+     name	This is the name of the parent.  The parent's index
+		number is printed after it.  If the parent is a
+		member of a cycle, the cycle number is printed between
+		the name and the index number.
+
+ If the parents of the function cannot be determined, the word
+ `<spontaneous>' is printed in the `name' field, and all the other
+ fields are blank.
+
+ For the function's children, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the child into the function.
+
+     children	This is the amount of time that was propagated from the
+		child's children to the function.
+
+     called	This is the number of times the function called
+		this child `/' the total number of times the child
+		was called.  Recursive calls by the child are not
+		listed in the number after the `/'.
+
+     name	This is the name of the child.  The child's index
+		number is printed after it.  If the child is a
+		member of a cycle, the cycle number is printed
+		between the name and the index number.
+
+ If there are any cycles (circles) in the call graph, there is an
+ entry for the cycle-as-a-whole.  This entry shows who called the
+ cycle (as parents) and the members of the cycle (as children.)
+ The `+' recursive calls entry shows the number of function calls that
+ were internal to the cycle, and the calls entry for each member shows,
+ for that member, how many times it was called from other members of
+ the cycle.
+
+Copyright (C) 2012-2018 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+Index by function name
+
+ [114] _GLOBAL__sub_I__Z11exp2DCModelRK17ExpPowerFlowModel (model.cpp) [83] sanity::linear::maxDiff(sanity::linear::VectorConstView, sanity::linear::VectorConstView) [89] std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#1}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#1}> const&, std::_Manager_operation) (std_function.h)
+ [115] _GLOBAL__sub_I__Z11syncContextR7ContextPKN6sanity8petrinet7MarkingE (common.cpp) [34] sanity::linear::solveLU(sanity::linear::MatrixMutableView, sanity::linear::VectorMutableView) [149] std::_Function_base::_Base_manager<power_grid_model_ieee30_flat_Test::TestBody()::{lambda(auto:1)#1}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<power_grid_model_ieee30_flat_Test::TestBody()::{lambda(auto:1)#1}> const&, std::_Manager_operation) (std_function.h)
+ [116] _GLOBAL__sub_I__ZN11timed_scopeC2EPKc (timer.cpp) [35] sanity::linear::blockView(sanity::linear::MatrixMutableView, unsigned int, unsigned int, unsigned int, unsigned int) [66] std::_Function_base::_Base_manager<sanity::graph::decompCc(sanity::graph::Graph const&)::{lambda(unsigned int, unsigned int)#1}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<sanity::graph::decompCc(sanity::graph::Graph const&)::{lambda(unsigned int, unsigned int)#1}> const&, std::_Manager_operation) (std_function.h)
+ [117] _GLOBAL__sub_I__ZN32power_grid_model_ieee14_sim_Test10test_info_E (sim_ieee14.cpp) [72] sanity::linear::blockView(sanity::linear::VectorMutableView, unsigned int, unsigned int) [12] std::_Function_handler<bool (sanity::petrinet::PetriNetState), createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#2}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&) (std_function.h)
+ [118] _GLOBAL__sub_I__ZN32power_grid_model_ieee30_sim_Test10test_info_E (sim_ieee30.cpp) [53] sanity::petrinet::SrnCreator::place(unsigned int) [11] std::_Function_handler<bool (sanity::petrinet::PetriNetState), createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#1}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&) (std_function.h)
+ [119] _GLOBAL__sub_I__ZN33power_grid_model_ieee14_effi_Test10test_info_E (effi_ieee14.cpp) [90] sanity::petrinet::SrnCreator::expTrans(sanity::petrinet::MarkingDepReal) [45] std::_Function_handler<bool (sanity::petrinet::PetriNetState), exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#2}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&) (std_function.h)
+ [120] _GLOBAL__sub_I__ZN33power_grid_model_ieee14_grad_Test10test_info_E (grad_ieee14.cpp) [101] sanity::petrinet::SrnCreator::immTrans(sanity::petrinet::MarkingDepReal) [46] std::_Function_handler<bool (sanity::petrinet::PetriNetState), exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#3}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&) (std_function.h)
+ [121] _GLOBAL__sub_I__ZN33power_grid_model_ieee30_effi_Test10test_info_E (effi_ieee30.cpp) [5] sanity::petrinet::findMarking(std::map<int const*, unsigned int, sanity::petrinet::CompMarking, std::allocator<std::pair<int const* const, unsigned int> > >&, sanity::petrinet::Marking const&) [43] std::_Function_handler<bool (sanity::petrinet::PetriNetState), exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#4}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&) (std_function.h)
+ [122] _GLOBAL__sub_I__ZN33power_grid_model_ieee30_flat_Test10test_info_E (flat_ieee30.cpp) [20] sanity::petrinet::addNewMarking(sanity::graph::DiGraph&, std::map<int const*, unsigned int, sanity::petrinet::CompMarking, std::allocator<std::pair<int const* const, unsigned int> > >&, std::vector<sanity::petrinet::Marking, std::allocator<sanity::petrinet::Marking> >&, sanity::petrinet::Marking&&) [44] std::_Function_handler<bool (sanity::petrinet::PetriNetState), exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#1}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&) (std_function.h)
+ [123] _GLOBAL__sub_I__ZN33power_grid_model_ieee30_grad_Test10test_info_E (grad_ieee30.cpp) [51] sanity::petrinet::srnProbReward(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::IrreducibleSrnSteadyStateSol const&, std::vector<sanity::petrinet::Marking, std::allocator<sanity::petrinet::Marking> > const&, sanity::petrinet::MarkingDepReal const&) [26] std::_Function_handler<bool (unsigned int, unsigned int), sanity::graph::decompCc(sanity::graph::Graph const&)::{lambda(unsigned int, unsigned int)#1}>::_M_invoke(std::_Any_data const&, unsigned int&&, std::_Any_data const&) (std_function.h)
+ [124] _GLOBAL__sub_I__ZN33power_grid_model_three_nodes_Test10test_info_E (flat_ieee14.cpp) [41] sanity::petrinet::srnRateMatrix(sanity::graph::DiGraph const&, std::vector<double, std::allocator<double> > const&) [95] std::_Function_handler<double (sanity::petrinet::PetriNetState), power_grid_model_ieee30_flat_Test::TestBody()::{lambda(auto:1)#1}>::_M_invoke(std::_Any_data const&, sanity::petrinet::PetriNetState&&) (std_function.h)
+ [125] _GLOBAL__sub_I__ZN6sanity6linear6maxAbsENS0_15VectorConstViewE (utils.cpp) [42] sanity::petrinet::srnSteadyStateSor(sanity::graph::DiGraph const&, std::vector<double, std::allocator<double> > const&, double, double, unsigned int) [36] std::_Function_handler<void (sanity::linear::MatrixMutableView, sanity::linear::VectorMutableView), void (*)(sanity::linear::MatrixMutableView, sanity::linear::VectorMutableView)>::_M_invoke(std::_Any_data const&, sanity::linear::MatrixMutableView&&, sanity::linear::VectorMutableView&&)
+ [126] _GLOBAL__sub_I__ZN6sanity6linear8decompQRENS0_17MatrixMutableViewE (decomp.cpp) [4] sanity::petrinet::eliminateVanMarking(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::Marking&&, double, unsigned int) [109] void std::vector<ExpBus, std::allocator<ExpBus> >::_M_realloc_insert<ExpBus>(__gnu_cxx::__normal_iterator<ExpBus*, std::vector<ExpBus, std::allocator<ExpBus> > >, ExpBus&&)
+ [127] _GLOBAL__sub_I__ZN6sanity8petrinet11GpnObserver14eventTriggeredERKNS_8simulate6EventTIjEERKNS0_11GpnSimStateERKNS2_11EventQueueTIjEE (gpn_ob.cpp) [40] sanity::petrinet::srnSteadyStatePower(sanity::splinear::Spmatrix const&, sanity::linear::VectorMutableView, double, unsigned int) [107] void std::vector<ExpLine, std::allocator<ExpLine> >::_M_realloc_insert<ExpLine>(__gnu_cxx::__normal_iterator<ExpLine*, std::vector<ExpLine, std::allocator<ExpLine> > >, ExpLine&&)
+ [128] _GLOBAL__sub_I__ZN6sanity8petrinet11findMarkingERSt3mapIPKijNS0_11CompMarkingESaISt4pairIKS3_jEEERKNS0_7MarkingE (mkutils.cpp) [3] sanity::petrinet::genReducedReachGraph(sanity::petrinet::StochasticRewardNet const&, sanity::petrinet::Marking const&, double, unsigned int) [67] void std::vector<sanity::graph::ConnectedComponent, std::allocator<sanity::graph::ConnectedComponent> >::_M_realloc_insert<sanity::graph::ConnectedComponent>(__gnu_cxx::__normal_iterator<sanity::graph::ConnectedComponent*, std::vector<sanity::graph::ConnectedComponent, std::allocator<sanity::graph::ConnectedComponent> > >, sanity::graph::ConnectedComponent&&)
+ [129] _GLOBAL__sub_I__ZN6sanity8petrinet12isVanMarkingERKNS0_19StochasticRewardNetERKNS0_7MarkingE (srnreach.cpp) [48] sanity::petrinet::PetriNet::PetriNet(unsigned int, sanity::petrinet::MarkingDepBool, std::vector<sanity::petrinet::Transition, std::allocator<sanity::petrinet::Transition> >) [19] void std::vector<sanity::graph::Graph::Edge, std::allocator<sanity::graph::Graph::Edge> >::_M_realloc_insert<sanity::graph::Graph::Edge>(__gnu_cxx::__normal_iterator<sanity::graph::Graph::Edge*, std::vector<sanity::graph::Graph::Edge, std::allocator<sanity::graph::Graph::Edge> > >, sanity::graph::Graph::Edge&&)
+ [130] _GLOBAL__sub_I__ZN6sanity8splinearlsERSoRKNS0_8SpmatrixE (utils.cpp) [88] sanity::petrinet::cmpTrans(sanity::petrinet::Transition const&, sanity::petrinet::Transition const&) (petrinet.cpp) [33] void std::vector<sanity::graph::DiGraph::Edge, std::allocator<sanity::graph::DiGraph::Edge> >::_M_realloc_insert<sanity::graph::DiGraph::Edge>(__gnu_cxx::__normal_iterator<sanity::graph::DiGraph::Edge*, std::vector<sanity::graph::DiGraph::Edge, std::allocator<sanity::graph::DiGraph::Edge> > >, sanity::graph::DiGraph::Edge&&)
+ [131] _GLOBAL__sub_I__ZN6sanity9powerflow16readIeeeCdfModelERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE (ieee_cdf.cpp) [23] sanity::splinear::SpmatrixGet(sanity::splinear::Spmatrix const&, unsigned long, unsigned long) [84] void std::vector<sanity::graph::DiGraph::Node, std::allocator<sanity::graph::DiGraph::Node> >::_M_realloc_insert<sanity::graph::DiGraph::Node>(__gnu_cxx::__normal_iterator<sanity::graph::DiGraph::Node*, std::vector<sanity::graph::DiGraph::Node, std::allocator<sanity::graph::DiGraph::Node> > >, sanity::graph::DiGraph::Node&&)
+ [132] _GLOBAL__sub_I__ZN6sanity9powerflow17readMatpowerModelERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE (matpower_format.cpp) [21] sanity::splinear::sortTriples(sanity::splinear::SpmatrixTriple&, bool) [104] void std::vector<sanity::petrinet::Transition, std::allocator<sanity::petrinet::Transition> >::_M_realloc_insert<sanity::petrinet::Transition const&>(__gnu_cxx::__normal_iterator<sanity::petrinet::Transition*, std::vector<sanity::petrinet::Transition, std::allocator<sanity::petrinet::Transition> > >, sanity::petrinet::Transition const&)
+ [133] _GLOBAL__sub_I_main (main.cpp) [22] sanity::splinear::triple2compressed(sanity::splinear::SpmatrixTriple&, sanity::splinear::Spmatrix::Format) [105] void std::vector<sanity::petrinet::SrnTransProp, std::allocator<sanity::petrinet::SrnTransProp> >::_M_realloc_insert<sanity::petrinet::SrnTransProp const&>(__gnu_cxx::__normal_iterator<sanity::petrinet::SrnTransProp*, std::vector<sanity::petrinet::SrnTransProp, std::allocator<sanity::petrinet::SrnTransProp> > >, sanity::petrinet::SrnTransProp const&)
+  [55] createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&) [39] sanity::splinear::dot(sanity::splinear::Spmatrix const&, sanity::linear::VectorConstView, sanity::linear::VectorMutableView) [106] void std::vector<sanity::petrinet::SrnTransition, std::allocator<sanity::petrinet::SrnTransition> >::_M_realloc_insert<sanity::petrinet::SrnTransition>(__gnu_cxx::__normal_iterator<sanity::petrinet::SrnTransition*, std::vector<sanity::petrinet::SrnTransition, std::allocator<sanity::petrinet::SrnTransition> > >, sanity::petrinet::SrnTransition&&)
+  [50] servedLoad(Context&, sanity::petrinet::Marking const&) [65] sanity::splinear::compTripleRow(sanity::splinear::SpmatrixTriple::Triple const&, sanity::splinear::SpmatrixTriple::Triple const&) (matrix.cpp) [150] void std::vector<sanity::petrinet::MarkingInitProb, std::allocator<sanity::petrinet::MarkingInitProb> >::_M_realloc_insert<sanity::petrinet::MarkingInitProb>(__gnu_cxx::__normal_iterator<sanity::petrinet::MarkingInitProb*, std::vector<sanity::petrinet::MarkingInitProb, std::allocator<sanity::petrinet::MarkingInitProb> > >, sanity::petrinet::MarkingInitProb&&)
+  [14] exp2DCModel(ExpPowerFlowModel const&) [136] sanity::powerflow::readIeeeCdfModel(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) [75] void std::vector<sanity::petrinet::Arc, std::allocator<sanity::petrinet::Arc> >::_M_realloc_insert<sanity::petrinet::Arc>(__gnu_cxx::__normal_iterator<sanity::petrinet::Arc*, std::vector<sanity::petrinet::Arc, std::allocator<sanity::petrinet::Arc> > >, sanity::petrinet::Arc&&)
+  [37] syncContext(Context&, sanity::petrinet::Marking const*) [24] sanity::powerflow::admittanceMatrixB(sanity::powerflow::DCPowerFlowModel const&, std::vector<unsigned int, std::allocator<unsigned int> > const&) [38] void std::vector<sanity::petrinet::Marking, std::allocator<sanity::petrinet::Marking> >::_M_realloc_insert<sanity::petrinet::Marking>(__gnu_cxx::__normal_iterator<sanity::petrinet::Marking*, std::vector<sanity::petrinet::Marking, std::allocator<sanity::petrinet::Marking> > >, sanity::petrinet::Marking&&)
+  [47] exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int) [13] sanity::powerflow::solveDC(sanity::powerflow::DCPowerFlowModel const&, std::function<void (sanity::linear::MatrixMutableView, sanity::linear::VectorMutableView)> const&) [77] void std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> >::_M_realloc_insert<sanity::splinear::SpmatrixTriple::Triple>(__gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, sanity::splinear::SpmatrixTriple::Triple&&)
+  [54] createTwoStates(sanity::petrinet::SrnCreator&, double, double, sanity::petrinet::MarkingDepBool) [137] testing::Test::SetUpTestCase() [110] void std::vector<sanity::powerflow::IeeeCdfBus, std::allocator<sanity::powerflow::IeeeCdfBus> >::_M_realloc_insert<sanity::powerflow::IeeeCdfBus const&>(__gnu_cxx::__normal_iterator<sanity::powerflow::IeeeCdfBus*, std::vector<sanity::powerflow::IeeeCdfBus, std::allocator<sanity::powerflow::IeeeCdfBus> > >, sanity::powerflow::IeeeCdfBus const&)
+   [8] powerflowUpdate(Context&, sanity::petrinet::Marking const*) [138] testing::Test::TearDownTestCase() [108] void std::vector<sanity::powerflow::IeeeCdfBranch, std::allocator<sanity::powerflow::IeeeCdfBranch> >::_M_realloc_insert<sanity::powerflow::IeeeCdfBranch const&>(__gnu_cxx::__normal_iterator<sanity::powerflow::IeeeCdfBranch*, std::vector<sanity::powerflow::IeeeCdfBranch, std::allocator<sanity::powerflow::IeeeCdfBranch> > >, sanity::powerflow::IeeeCdfBranch const&)
+ [134] createInitMarking(sanity::petrinet::StochasticRewardNet const&, Context const&) [139] testing::internal::TestFactoryImpl<power_grid_model_ieee14_sim_Test>::~TestFactoryImpl() [27] void std::vector<sanity::powerflow::DCTransmissionLine, std::allocator<sanity::powerflow::DCTransmissionLine> >::_M_realloc_insert<sanity::powerflow::DCTransmissionLine>(__gnu_cxx::__normal_iterator<sanity::powerflow::DCTransmissionLine*, std::vector<sanity::powerflow::DCTransmissionLine, std::allocator<sanity::powerflow::DCTransmissionLine> > >, sanity::powerflow::DCTransmissionLine&&)
+  [52] ieeeCdfModel2ExpModel(sanity::powerflow::IeeeCdfModel const&, double) [140] testing::internal::TestFactoryImpl<power_grid_model_ieee30_sim_Test>::~TestFactoryImpl() [31] void std::vector<sanity::powerflow::DCBus, std::allocator<sanity::powerflow::DCBus> >::_M_realloc_insert<sanity::powerflow::DCBus>(__gnu_cxx::__normal_iterator<sanity::powerflow::DCBus*, std::vector<sanity::powerflow::DCBus, std::allocator<sanity::powerflow::DCBus> > >, sanity::powerflow::DCBus&&)
+  [25] balance(ExpPowerFlowModel&) [141] testing::internal::TestFactoryImpl<power_grid_model_ieee14_effi_Test>::~TestFactoryImpl() [68] void std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >::_M_realloc_insert<std::vector<unsigned int, std::allocator<unsigned int> > const&>(__gnu_cxx::__normal_iterator<std::vector<unsigned int, std::allocator<unsigned int> >*, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > > >, std::vector<unsigned int, std::allocator<unsigned int> > const&)
+   [9] shedload(ExpPowerFlowModel&) [142] testing::internal::TestFactoryImpl<power_grid_model_ieee14_flat_Test>::~TestFactoryImpl() [76] void std::vector<double, std::allocator<double> >::_M_realloc_insert<double const&>(__gnu_cxx::__normal_iterator<double*, std::vector<double, std::allocator<double> > >, double const&)
+  [10] validate(ExpPowerFlowModel&) [143] testing::internal::TestFactoryImpl<power_grid_model_ieee14_grad_Test>::~TestFactoryImpl() [113] void std::vector<double, std::allocator<double> >::_M_realloc_insert<double>(__gnu_cxx::__normal_iterator<double*, std::vector<double, std::allocator<double> > >, double&&)
+ [111] timed_scope::timed_scope(char const*) [144] testing::internal::TestFactoryImpl<power_grid_model_ieee30_effi_Test>::~TestFactoryImpl() [97] std::vector<double, std::allocator<double> >::reserve(unsigned long)
+ [112] timed_scope::~timed_scope() [145] testing::internal::TestFactoryImpl<power_grid_model_ieee30_flat_Test>::CreateTest() [74] unsigned int& std::vector<unsigned int, std::allocator<unsigned int> >::emplace_back<unsigned int>(unsigned int&&)
+   [1] power_grid_model_ieee30_flat_Test::TestBody() [146] testing::internal::TestFactoryImpl<power_grid_model_ieee30_flat_Test>::~TestFactoryImpl() [29] void std::vector<unsigned int, std::allocator<unsigned int> >::_M_realloc_insert<unsigned int const&>(__gnu_cxx::__normal_iterator<unsigned int*, std::vector<unsigned int, std::allocator<unsigned int> > >, unsigned int const&)
+ [135] power_grid_model_ieee30_flat_Test::~power_grid_model_ieee30_flat_Test() [147] testing::internal::TestFactoryImpl<power_grid_model_ieee30_grad_Test>::~TestFactoryImpl() [99] void std::vector<unsigned int, std::allocator<unsigned int> >::_M_realloc_insert<unsigned int>(__gnu_cxx::__normal_iterator<unsigned int*, std::vector<unsigned int, std::allocator<unsigned int> > >, unsigned int&&)
+  [17] sanity::graph::depthFirstSearch(sanity::graph::Graph const&, unsigned int, std::function<bool (unsigned int, unsigned int)> const&) [148] testing::internal::TestFactoryImpl<power_grid_model_three_nodes_Test>::~TestFactoryImpl() [92] std::vector<unsigned int, std::allocator<unsigned int> >::reserve(unsigned long)
+  [16] sanity::graph::decompCc(sanity::graph::Graph const&) [49] sanity::petrinet::SrnCreator::create() const [102] std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_replace(unsigned long, unsigned long, char const*, unsigned long)
+  [18] sanity::graph::dfsRecursion(sanity::graph::Graph const&, unsigned int, std::vector<bool, std::allocator<bool> >&, std::function<bool (unsigned int, unsigned int)> const&) (search.cpp) [28] sanity::petrinet::PetriNet::fireTransition(unsigned int, sanity::petrinet::Marking const&) const [100] std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_append(char const*, unsigned long)
+  [32] sanity::linear::Permutation::Permutation(std::vector<unsigned int, std::allocator<unsigned int> >, bool) [15] sanity::petrinet::PetriNet::firstEanbledTrans(sanity::petrinet::Marking const&) const [85] std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::~basic_string()
+  [69] sanity::linear::dot(sanity::linear::VectorConstView, sanity::linear::VectorConstView) [7] sanity::petrinet::PetriNet::enabledTransitions(sanity::petrinet::Marking const&) const [98] std::_Rb_tree<int const*, std::pair<int const* const, unsigned int>, std::_Select1st<std::pair<int const* const, unsigned int> >, sanity::petrinet::CompMarking, std::allocator<std::pair<int const* const, unsigned int> > >::_M_get_insert_unique_pos(int const* const&)
+  [70] sanity::linear::blas::dot(sanity::linear::VectorConstView, sanity::linear::VectorConstView) [6] sanity::petrinet::PetriNet::isolateEnableCheck(sanity::petrinet::Transition const&, sanity::petrinet::Marking const&) const [30] std::_Rb_tree<int const*, std::pair<int const* const, unsigned int>, std::_Select1st<std::pair<int const* const, unsigned int> >, sanity::petrinet::CompMarking, std::allocator<std::pair<int const* const, unsigned int> > >::_M_get_insert_hint_unique_pos(std::_Rb_tree_const_iterator<std::pair<int const* const, unsigned int> >, int const* const&)
+  [78] sanity::linear::blas::asum(sanity::linear::VectorConstView) [73] std::_Function_base::_Base_manager<void (*)(sanity::linear::MatrixMutableView, sanity::linear::VectorMutableView)>::_M_manager(std::_Any_data&, std::_Any_data const&, std::_Manager_operation) [87] std::_Rb_tree<int const*, std::pair<int const* const, unsigned int>, std::_Select1st<std::pair<int const* const, unsigned int> >, sanity::petrinet::CompMarking, std::allocator<std::pair<int const* const, unsigned int> > >::_M_erase(std::_Rb_tree_node<std::pair<int const* const, unsigned int> >*)
+  [79] sanity::linear::blas::scal(double, sanity::linear::VectorMutableView) [93] std::_Function_base::_Base_manager<createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#2}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#2}> const&, std::_Manager_operation) (std_function.h) [96] void std::__adjust_heap<__gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, long, sanity::splinear::SpmatrixTriple::Triple, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sanity::splinear::SpmatrixTriple::Triple const&, sanity::splinear::SpmatrixTriple::Triple const&)> >(__gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, long, long, sanity::splinear::SpmatrixTriple::Triple, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sanity::splinear::SpmatrixTriple::Triple const&, sanity::splinear::SpmatrixTriple::Triple const&)>)
+  [82] sanity::linear::copy(sanity::linear::VectorConstView, sanity::linear::VectorMutableView) [94] std::_Function_base::_Base_manager<createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#1}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<createLoad(sanity::petrinet::SrnCreator&, double, double, unsigned int, sanity::petrinet::MarkingDepBool, Context&)::{lambda(sanity::petrinet::PetriNetState)#1}> const&, std::_Manager_operation) (std_function.h) [151] void std::__heap_select<__gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sanity::splinear::SpmatrixTriple::Triple const&, sanity::splinear::SpmatrixTriple::Triple const&)> >(__gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, __gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, __gnu_cxx::__normal_iterator<sanity::splinear::SpmatrixTriple::Triple*, std::vector<sanity::splinear::SpmatrixTriple::Triple, std::allocator<sanity::splinear::SpmatrixTriple::Triple> > >, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sanity::splinear::SpmatrixTriple::Triple const&, sanity::splinear::SpmatrixTriple::Triple const&)>)
+  [80] sanity::linear::norm1(sanity::linear::VectorConstView) [91] std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#2}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#2}> const&, std::_Manager_operation) (std_function.h) [152] void std::__insertion_sort<__gnu_cxx::__normal_iterator<sanity::petrinet::Transition*, std::vector<sanity::petrinet::Transition, std::allocator<sanity::petrinet::Transition> > >, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sanity::petrinet::Transition const&, sanity::petrinet::Transition const&)> >(__gnu_cxx::__normal_iterator<sanity::petrinet::Transition*, std::vector<sanity::petrinet::Transition, std::allocator<sanity::petrinet::Transition> > >, __gnu_cxx::__normal_iterator<sanity::petrinet::Transition*, std::vector<sanity::petrinet::Transition, std::allocator<sanity::petrinet::Transition> > >, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sanity::petrinet::Transition const&, sanity::petrinet::Transition const&)>)
+  [81] sanity::linear::scale(double, sanity::linear::VectorMutableView) [103] std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#3}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#3}> const&, std::_Manager_operation) (std_function.h)
+  [71] sanity::linear::lapack::gesv(sanity::linear::MatrixMutableView, sanity::linear::MatrixMutableView, std::vector<int, std::allocator<int> >*) [86] std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#4}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<exp2srn_flat(Context&, double, double, double, double, double, double, double, double, unsigned int)::{lambda(auto:1)#4}> const&, std::_Manager_operation) (std_function.h)
