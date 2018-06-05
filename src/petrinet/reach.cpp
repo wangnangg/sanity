@@ -14,8 +14,10 @@ ReachGraph genReachGraph(const PetriNet& net, const Marking& mk)
     std::vector<Marking> markings;
     std::vector<uint> edge2trans;
     uint nplace = mk.size();
-    std::map<const Token*, uint, CompMarking> mk_map(CompMarking{
-        nplace});  // map from a marking to its position in markings
+    MarkingMap mk_map(
+        1000, HashMarking{nplace},
+        MarkingEqual{
+            nplace});  // map from a marking to its position in markings
 
     auto init_mk = mk.clone();
     addNewMarking(graph, mk_map, markings, std::move(init_mk));

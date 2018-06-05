@@ -73,8 +73,10 @@ MarkingListProb eliminateVanMarking(const StochasticRewardNet& srn,
     std::vector<Real> edge_probs;
     std::vector<uint> tan_mk_ids;
     uint nplace = vanmk.size();
-    std::map<const Token*, uint, CompMarking> mk_map(CompMarking{
-        nplace});  // map from a marking to its position in markings
+    MarkingMap mk_map(
+        1000, HashMarking{nplace},
+        MarkingEqual{
+            nplace});  // map from a marking to its position in markings
 
     node_markings.push_back(std::move(vanmk));
     graph.addNode();
@@ -149,8 +151,10 @@ ReducedReachGenResult genReducedReachGraph(const StochasticRewardNet& srn,
     std::vector<Real> edge_rates;
     std::vector<MarkingInitProb> init_probs;
     uint nplace = mk.size();
-    std::map<const Token*, uint, CompMarking> mk_map(CompMarking{
-        nplace});  // map from a marking to its position in markings
+    MarkingMap mk_map(
+        1000, HashMarking{nplace},
+        MarkingEqual{
+            nplace});  // map from a marking to its position in markings
 
     auto init_mk = mk.clone();
     if (isVanMarking(srn, init_mk))
