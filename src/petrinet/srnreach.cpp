@@ -177,7 +177,6 @@ ReducedReachGenResult genReducedReachGraph(const StochasticRewardNet& srn,
     }
 
     uint curr_nid = 0;
-    uint nc = 1;
     while (curr_nid < node_markings.size())
     {
         for (uint tid : srn.pnet.enabledTransitions(node_markings[curr_nid]))
@@ -218,12 +217,6 @@ ReducedReachGenResult genReducedReachGraph(const StochasticRewardNet& srn,
             }
         }
         curr_nid += 1;
-        if (node_markings.size() > nc * 1000000)
-        {
-            std::cout << node_markings.size() / 1000000.0 << "M markings"
-                      << std::endl;
-            nc += 1;
-        }
     }
 
     return {.graph = std::move(graph),
