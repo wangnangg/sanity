@@ -101,6 +101,6 @@ DiffRes solveDiff(Context& context, DiffTrunc tr);
 
 Marking createInitMarking(const StochasticRewardNet& srn,
                           const Context& context);
-Real servedLoad(Context& context, const Marking& mk);
+Real servedLoad(Context& context, const MarkingIntf* mk);
 
 static const std::string data_base = "./data/powerflow/";

@@ -58,7 +58,7 @@ TEST(power_grid_model, three_nodes)
 
         auto reward_load = srnProbReward(
             srn, sol, rg.nodeMarkings,
-            [&ct](auto state) { return servedLoad(ct, *state.marking); });
+            [&ct](auto state) { return servedLoad(ct, state.marking); });
 
         std::cout << "load severed in average: " << reward_load << std::endl;
     }
@@ -113,7 +113,7 @@ TEST(power_grid_model, ieee14_flat)
             sol = srnSteadyStateSor(rg.graph, rg.edgeRates, w, tol, max_iter);
             auto reward_load = srnProbReward(
                 srn, sol, rg.nodeMarkings,
-                [&ct](auto state) { return servedLoad(ct, *state.marking); });
+                [&ct](auto state) { return servedLoad(ct, state.marking); });
 
             std::cout << "load severed in average: " << reward_load
                       << std::endl;

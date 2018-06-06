@@ -14,7 +14,7 @@ using namespace linear;
 using namespace splinear;
 using namespace graph;
 
-bool isVanMarking(const StochasticRewardNet& srn, const Marking& mk)
+bool isVanMarking(const StochasticRewardNet& srn, const MarkingIntf* mk)
 {
     int tid = srn.pnet.firstEanbledTrans(mk);
     if (tid < 0)
@@ -36,7 +36,7 @@ bool isVanMarking(const StochasticRewardNet& srn, const Marking& mk)
 
 struct MarkingListProb
 {
-    std::vector<Marking> markings;
+    std::vector<std::unique_ptr<MarkingIntf>> markings;
     std::vector<Real> prob;
 };
 
@@ -66,17 +66,14 @@ static Spmatrix srnProbMatrix(const DiGraph& reach_graph,
 }
 
 MarkingListProb eliminateVanMarking(const StochasticRewardNet& srn,
-                                    Marking&& vanmk, Real tol, uint max_iter)
+                                    std::unique_ptr<MarkingIntf> vanmk,
+                                    Real tol, uint max_iter)
 {
     DiGraph graph;
-    std::vector<Marking> node_markings;
+    std::vector<std::unique_ptr<MarkingIntf>> node_markings;
     std::vector<Real> edge_probs;
     std::vector<uint> tan_mk_ids;
-    uint nplace = vanmk.size();
-    MarkingMap mk_map(
-        1000, HashMarking{nplace},
-        MarkingEqual{
-            nplace});  // map from a marking to its position in markings
+    MarkingMap mk_map;
 
     node_markings.push_back(std::move(vanmk));
     graph.addNode();
@@ -84,18 +81,18 @@ MarkingListProb eliminateVanMarking(const StochasticRewardNet& srn,
     size_t curr_nid = 0;
     while (curr_nid < node_markings.size())
     {
-        if (isVanMarking(srn, node_markings[curr_nid]))
+        if (isVanMarking(srn, node_markings[curr_nid].get()))
         {
             Real prob_sum = 0.0;
             for (uint tid :
-                 srn.pnet.enabledTransitions(node_markings[curr_nid]))
+                 srn.pnet.enabledTransitions(node_markings[curr_nid].get()))
             {
                 assert(srn.transProps[tid].type == SrnTransType::Immediate);
-                Real p_weight =
-                    srn.transProps[tid].val({&srn, &node_markings[curr_nid]});
-                Marking newmk =
-                    srn.pnet.fireTransition(tid, node_markings[curr_nid]);
-                int dst = findMarking(mk_map, newmk);
+                Real p_weight = srn.transProps[tid].val(
+                    {&srn, node_markings[curr_nid].get()});
+                auto newmk = srn.pnet.fireTransition(
+                    tid, node_markings[curr_nid].get());
+                int dst = findMarking(mk_map, newmk.get());
                 if (dst < 0)
                 {
                     dst = (int)addNewMarking(graph, mk_map, node_markings,
@@ -143,28 +140,24 @@ MarkingListProb eliminateVanMarking(const StochasticRewardNet& srn,
 }
 
 ReducedReachGenResult genReducedReachGraph(const StochasticRewardNet& srn,
-                                           const Marking& mk, Real tol,
+                                           const MarkingIntf& mk, Real tol,
                                            uint max_iter)
 {
     DiGraph graph;
-    std::vector<Marking> node_markings;
+    std::vector<std::unique_ptr<MarkingIntf>> node_markings;
     std::vector<Real> edge_rates;
     std::vector<MarkingInitProb> init_probs;
-    uint nplace = mk.size();
-    MarkingMap mk_map(
-        1000, HashMarking{nplace},
-        MarkingEqual{
-            nplace});  // map from a marking to its position in markings
+    MarkingMap mk_map;  // map from a marking to its position in markings
 
     auto init_mk = mk.clone();
-    if (isVanMarking(srn, init_mk))
+    if (isVanMarking(srn, init_mk.get()))
     {
         auto mark_prob_list =
             eliminateVanMarking(srn, std::move(init_mk), tol, max_iter);
         uint n = mark_prob_list.markings.size();
         for (uint i = 0; i < n; i++)
         {
-            int dst = findMarking(mk_map, mark_prob_list.markings[i]);
+            int dst = findMarking(mk_map, mark_prob_list.markings[i].get());
             if (dst < 0)
             {
                 dst =
@@ -183,21 +176,23 @@ ReducedReachGenResult genReducedReachGraph(const StochasticRewardNet& srn,
     uint curr_nid = 0;
     while (curr_nid < node_markings.size())
     {
-        for (uint tid : srn.pnet.enabledTransitions(node_markings[curr_nid]))
+        for (uint tid :
+             srn.pnet.enabledTransitions(node_markings[curr_nid].get()))
         {
             assert(srn.transProps[tid].type == SrnTransType::Exponetial);
-            Real t_rate =
-                srn.transProps[tid].val({&srn, &node_markings[curr_nid]});
-            Marking newmk =
-                srn.pnet.fireTransition(tid, node_markings[curr_nid]);
-            if (isVanMarking(srn, newmk))
+            Real t_rate = srn.transProps[tid].val(
+                {&srn, node_markings[curr_nid].get()});
+            auto newmk =
+                srn.pnet.fireTransition(tid, node_markings[curr_nid].get());
+            if (isVanMarking(srn, newmk.get()))
             {
                 auto mark_prob_list =
                     eliminateVanMarking(srn, std::move(newmk), tol, max_iter);
                 uint n = mark_prob_list.markings.size();
                 for (uint i = 0; i < n; i++)
                 {
-                    int dst = findMarking(mk_map, mark_prob_list.markings[i]);
+                    int dst =
+                        findMarking(mk_map, mark_prob_list.markings[i].get());
                     if (dst < 0)
                     {
                         dst = (int)addNewMarking(
@@ -210,7 +205,7 @@ ReducedReachGenResult genReducedReachGraph(const StochasticRewardNet& srn,
             }
             else
             {
-                int dst = findMarking(mk_map, newmk);
+                int dst = findMarking(mk_map, newmk.get());
                 if (dst < 0)
                 {
                     dst = (int)addNewMarking(graph, mk_map, node_markings,

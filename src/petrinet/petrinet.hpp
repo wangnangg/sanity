@@ -1,38 +1,56 @@
 #pragma once
 #include <cassert>
 #include <functional>
+#include <memory>
 #include <vector>
 #include "type.hpp"
 namespace sanity::petrinet
 {
-using Token = int;
+using Token = uint;
 
-class Marking
+class MarkingIntf
 {
-    // make sure the address of this buffer doesn't change
-    std::vector<Token> _tokens;
+public:
+    virtual ~MarkingIntf() = default;
+    virtual Token nToken(uint pid) const = 0;
+    virtual uint size() const = 0;
+    virtual void setToken(uint pid, Token num) = 0;
+    virtual std::unique_ptr<MarkingIntf> clone() const = 0;
+    virtual std::size_t hash() const = 0;
+    virtual bool equal(const MarkingIntf* other) const = 0;
+};
 
-    Marking(const Marking&) = default;
-    Marking& operator=(const Marking&) = default;
+class Marking : public MarkingIntf
+{
+    std::vector<Token> _tokens;
+    static std::hash<std::string_view> hasher;
 
 public:
     Marking() = default;
-    Marking(uint nplace, int ntoken = 0) : _tokens(nplace, ntoken) {}
-    Marking& operator=(Marking&& mk) = default;
-    Marking(Marking&& mk) = default;
-    ~Marking() = default;
-    uint size() const { return _tokens.size(); }
-    const Token& nToken(uint pid) const { return _tokens[pid]; }
-    void setToken(uint pid, Token num) { _tokens[pid] = num; }
-    void deposit(uint pid, Token num) { _tokens[pid] += num; }
-    void remove(uint pid, Token num)
-    {
-        assert(_tokens[pid] >= num);
-        _tokens[pid] -= num;
-    }
+    Marking(uint nplace, uint ntoken = 0) : _tokens(nplace, ntoken) {}
 
-    // make it explicit
-    Marking clone() const { return *this; }
+    virtual ~Marking() = default;
+    virtual Token nToken(uint pid) const override { return _tokens[pid]; }
+    virtual uint size() const override { return _tokens.size(); }
+    virtual void setToken(uint pid, Token num) override
+    {
+        _tokens[pid] = num;
+    }
+    virtual std::unique_ptr<MarkingIntf> clone() const override
+    {
+        return std::make_unique<Marking>(*this);
+    }
+    virtual std::size_t hash() const override
+    {
+        std::string_view sview((const char*)&_tokens[0],
+                               sizeof(Token) * _tokens.size());
+        return hasher(sview);
+    }
+    virtual bool equal(const MarkingIntf* other) const override
+    {
+        auto mk = dynamic_cast<const Marking*>(other);
+        return mk->_tokens == this->_tokens;
+    }
 };
 
 class PetriNet;
@@ -40,7 +58,7 @@ class PetriNet;
 struct PetriNetState
 {
     const void* net;
-    const Marking* marking;
+    const MarkingIntf* marking;
 };
 
 class MarkingDepBool
@@ -163,13 +181,15 @@ public:
     }
     uint transCount() const { return _transitions.size(); }
     uint placeCount() const { return _place_count; }
-    std::vector<uint> enabledTransitions(const Marking& mk) const;
-    int firstEanbledTrans(const Marking& mk) const;
-    bool isTransitionEnabled(uint tid, const Marking& mk) const;
-    Marking fireTransition(uint tid, const Marking& mk) const;
+    std::vector<uint> enabledTransitions(const MarkingIntf* mk) const;
+    int firstEanbledTrans(const MarkingIntf* mk) const;
+    bool isTransitionEnabled(uint tid, const MarkingIntf* mk) const;
+    std::unique_ptr<MarkingIntf> fireTransition(uint tid,
+                                                const MarkingIntf* mk) const;
 
 private:
-    bool isolateEnableCheck(const Transition& tr, const Marking& mk) const;
+    bool isolateEnableCheck(const Transition& tr,
+                            const MarkingIntf* mk) const;
 };
 
 }  // namespace sanity::petrinet

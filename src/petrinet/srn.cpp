@@ -47,7 +47,7 @@ Marking SrnCreator::marking() const
     Marking init(_init_token.size());
     for (uint i = 0; i < _init_token.size(); i++)
     {
-        init.setToken(i, (int)_init_token[i]);
+        init.setToken(i, _init_token[i]);
     }
     return init;
 }

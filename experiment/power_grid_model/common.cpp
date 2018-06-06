@@ -1,6 +1,6 @@
 #include "common.hpp"
 
-void syncContext(Context& ct, const Marking* mk)
+void syncContext(Context& ct, const MarkingIntf* mk)
 {
     // bus
     ct.nBusFailure = 0;
@@ -240,25 +240,9 @@ void shedload(ExpPowerFlowModel& model)
     }
 }
 
-bool markingEqual(const Marking& m1, const Marking& m2)
+void powerflowUpdate(Context& ct, const MarkingIntf* mk)
 {
-    if (m1.size() != m2.size())
-    {
-        return false;
-    }
-    for (uint i = 0; i < m1.size(); i++)
-    {
-        if (m1.nToken(i) != m2.nToken(i))
-        {
-            return false;
-        }
-    }
-    return true;
-}
-
-void powerflowUpdate(Context& ct, const Marking* mk)
-{
-    if (markingEqual(ct.last_marking, *mk))
+    if (ct.last_marking.equal(mk))
     {
         return;
     }
@@ -272,7 +256,7 @@ void powerflowUpdate(Context& ct, const Marking* mk)
             ct.load_connected[i] =
                 ct.model.buses[ct.marking_map[pid]].loadConnected;
         }
-        ct.last_marking = mk->clone();
+        ct.last_marking = *dynamic_cast<Marking*>(mk->clone().get());
         return;
     }
 }
@@ -581,10 +565,10 @@ Marking createInitMarking(const StochasticRewardNet& srn,
     return mk;
 }
 
-Real servedLoad(Context& context, const Marking& mk)
+Real servedLoad(Context& context, const MarkingIntf* mk)
 {
     Real load = 0.0;
-    syncContext(context, &mk);
+    syncContext(context, mk);
     for (const auto& bus : context.model.buses)
     {
         if (bus.busOk && bus.loadOk && bus.loadConnected)
@@ -636,7 +620,7 @@ DiffRes solveDiff(Context& context, DiffTrunc tr)
     }
     auto reward_load =
         srnProbReward(srn, sol, rg.nodeMarkings, [&context](auto state) {
-            return servedLoad(context, *state.marking);
+            return servedLoad(context, state.marking);
         });
 
     std::cout << "load severed in average: " << reward_load << std::endl;

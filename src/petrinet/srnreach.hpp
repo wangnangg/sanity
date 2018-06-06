@@ -16,13 +16,13 @@ struct MarkingInitProb
 struct ReducedReachGenResult
 {
     graph::DiGraph graph;
-    std::vector<Marking> nodeMarkings;
+    std::vector<std::unique_ptr<MarkingIntf>> nodeMarkings;
     std::vector<Real> edgeRates;
     std::vector<MarkingInitProb> initProbs;
 };
 // not dealing with vanishing loops, yet
 ReducedReachGenResult genReducedReachGraph(const StochasticRewardNet& srn,
-                                           const Marking& mk, Real tol,
+                                           const MarkingIntf& mk, Real tol,
                                            uint max_iter);
 
 }  // namespace sanity::petrinet

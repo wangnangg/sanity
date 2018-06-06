@@ -96,7 +96,7 @@ TEST(petrinet, gspn_simulate_two_server_queue)
         for (uint i = 0; i < rg.nodeMarkings.size(); i++)
         {
             const auto& mk = rg.nodeMarkings[i];
-            avg_queue += mk.nToken(queue) * prob(i);
+            avg_queue += mk->nToken(queue) * prob(i);
         }
         std::cout << "queue avg token in srn: " << avg_queue << std::endl;
 
@@ -104,7 +104,7 @@ TEST(petrinet, gspn_simulate_two_server_queue)
         for (uint i = 0; i < rg.nodeMarkings.size(); i++)
         {
             const auto& mk = rg.nodeMarkings[i];
-            avg_done += mk.nToken(done) * prob(i);
+            avg_done += mk->nToken(done) * prob(i);
         }
         std::cout << "done avg token in srn: " << avg_done << std::endl;
     }
@@ -173,7 +173,7 @@ TEST(petrinet, gspn_simulate_two_server_queue_confidence)
         for (uint i = 0; i < rg.nodeMarkings.size(); i++)
         {
             const auto& mk = rg.nodeMarkings[i];
-            avg_queue += mk.nToken(queue) * prob(i);
+            avg_queue += mk->nToken(queue) * prob(i);
         }
         std::cout << "queue avg token in srn: " << avg_queue << std::endl;
         ASSERT_LT(queue_itv.begin, avg_queue);
@@ -236,7 +236,7 @@ TEST(petrinet, gspn_simulate_two_server_queue_conversion)
         for (uint i = 0; i < rg.nodeMarkings.size(); i++)
         {
             const auto& mk = rg.nodeMarkings[i];
-            avg_queue += mk.nToken(queue) * prob(i);
+            avg_queue += mk->nToken(queue) * prob(i);
         }
         std::cout << "queue avg token in srn: " << avg_queue << std::endl;
         ASSERT_LT(queue_itv.begin, avg_queue);

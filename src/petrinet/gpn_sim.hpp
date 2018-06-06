@@ -19,7 +19,7 @@ struct GpnSimState
     GpnSimState(GeneralPetriNet net, const Marking& marking,
                 std::function<Real()> usampler)
         : net(std::move(net)),
-          initMarking(marking.clone()),
+          initMarking(marking),
           uniformSampler(std::move(usampler)),
           currMarking(),
           remainingTime()

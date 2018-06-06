@@ -10,41 +10,24 @@ namespace sanity::petrinet
 {
 struct HashMarking
 {
-    uint nplace;
-    std::hash<std::string_view> hasher;
-    HashMarking(uint nplace) : nplace(nplace) {}
-
-    std::size_t operator()(const Token* m1) const
-    {
-        std::string_view sview((const char*)m1, sizeof(Token) * nplace);
-        return hasher(sview);
-    }
+    std::size_t operator()(const MarkingIntf* m1) const { return m1->hash(); }
 };
 
 struct MarkingEqual
 {
-    uint nplace;
-    MarkingEqual(uint nplace) : nplace(nplace) {}
-
-    bool operator()(const Token* m1, const Token* m2) const
+    bool operator()(const MarkingIntf* m1, const MarkingIntf* m2) const
     {
-        for (uint i = 0; i < nplace; i++)
-        {
-            if (m1[i] != m2[i])
-            {
-                return false;
-            }
-        }
-        return true;
+        return m1->equal(m2);
     }
 };
 
 using MarkingMap =
-    std::unordered_map<const Token*, uint, HashMarking, MarkingEqual>;
+    std::unordered_map<const MarkingIntf*, uint, HashMarking, MarkingEqual>;
 
-int findMarking(MarkingMap& mk_map, const Marking& newmk);
+int findMarking(MarkingMap& mk_map, const MarkingIntf* newmk);
 
 uint addNewMarking(graph::DiGraph& graph, MarkingMap& mk_map,
-                   std::vector<Marking>& markings, Marking&& newmk);
+                   std::vector<std::unique_ptr<MarkingIntf>>& markings,
+                   std::unique_ptr<MarkingIntf> newmk);
 
 }  // namespace sanity::petrinet

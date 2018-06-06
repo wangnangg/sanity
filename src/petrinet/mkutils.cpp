@@ -4,9 +4,9 @@ namespace sanity::petrinet
 {
 using namespace graph;
 
-int findMarking(MarkingMap& mk_map, const Marking& newmk)
+int findMarking(MarkingMap& mk_map, const MarkingIntf* newmk)
 {
-    auto res = mk_map.find(&newmk.nToken(0));
+    auto res = mk_map.find(newmk);
     if (res == mk_map.end())
     {  // new token
         return -1;
@@ -17,11 +17,12 @@ int findMarking(MarkingMap& mk_map, const Marking& newmk)
     }
 }
 
-uint addNewMarking(DiGraph& graph, MarkingMap& mk_map,
-                   std::vector<Marking>& markings, Marking&& newmk)
+uint addNewMarking(graph::DiGraph& graph, MarkingMap& mk_map,
+                   std::vector<std::unique_ptr<MarkingIntf>>& markings,
+                   std::unique_ptr<MarkingIntf> newmk)
 {
     uint idx = graph.addNode();
-    mk_map[&newmk.nToken(0)] = idx;
+    mk_map[newmk.get()] = idx;
     markings.push_back(std::move(newmk));
     return idx;
 }

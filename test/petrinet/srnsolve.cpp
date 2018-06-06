@@ -138,18 +138,18 @@ TEST(petrinet, srn_two_absoring_decomp)
     ASSERT_NEAR(sol.solution((uint)sol.matrix2node.backward(2)), 0.75, 1e-6);
 }
 
-static void printSrnSol(const std::vector<Marking>& markings,
-                        const Permutation& mat2node, uint ntan,
-                        VectorConstView solution)
+static void printSrnSol(
+    const std::vector<std::unique_ptr<MarkingIntf>>& markings,
+    const Permutation& mat2node, uint ntan, VectorConstView solution)
 {
     std::cout << "tangibles (" << ntan << "):" << std::endl;
     for (uint i = 0; i < ntan; i++)
     {
         const auto& mk = markings[(uint)mat2node.forward(i)];
         std::cout << "( ";
-        for (uint j = 0; j < mk.size(); j++)
+        for (uint j = 0; j < mk->size(); j++)
         {
-            std::cout << mk.nToken(j) << ' ';
+            std::cout << mk->nToken(j) << ' ';
         }
         std::cout << ")";
         std::cout << " tau:" << solution(i) << std::endl;
@@ -160,9 +160,9 @@ static void printSrnSol(const std::vector<Marking>& markings,
     {
         const auto& mk = markings[(uint)mat2node.forward(i)];
         std::cout << "( ";
-        for (uint j = 0; j < mk.size(); j++)
+        for (uint j = 0; j < mk->size(); j++)
         {
-            std::cout << mk.nToken(j) << ' ';
+            std::cout << mk->nToken(j) << ' ';
         }
         std::cout << ") ";
         std::cout << " prob:" << solution(i) << std::endl;
