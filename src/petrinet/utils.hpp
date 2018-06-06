@@ -4,5 +4,5 @@
 
 namespace sanity::petrinet
 {
-std::ostream& operator<<(std::ostream& os, const Marking& mk);
+std::ostream& operator<<(std::ostream& os, const MarkingIntf& mk);
 }

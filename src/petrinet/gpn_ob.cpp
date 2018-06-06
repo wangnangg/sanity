@@ -56,7 +56,7 @@ void GpnObPlaceToken::houseKeeping(const GpnSimulator::Event& evt,
                                    const GpnSimulator::State& state,
                                    const GpnSimulator::EventQueue& queue)
 {
-    _last_token = state.currMarking.nToken(_pid);
+    _last_token = state.currMarking->nToken(_pid);
     _last_time = evt.time;
 }
 void GpnObPlaceToken::updateReward(const GpnSimulator::Event& evt,
@@ -92,7 +92,7 @@ void GpnObLog::eventTriggered(const GpnSimulator::Event& evt,
     }
     if (_log_marking)
     {
-        std::cout << "marking " << state.currMarking << std::endl;
+        std::cout << "marking " << *state.currMarking << std::endl;
     }
     if (_log_queue)
     {

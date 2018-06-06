@@ -43,7 +43,7 @@ static uint whichSlot(const std::vector<Real>& weights, Real rand_val)
 }
 
 static uint chooseFiringImmeTrans(const GeneralPetriNet& net,
-                                  const Marking& marking,
+                                  const MarkingIntf* marking,
                                   const std::vector<uint>& enabled_tids,
                                   Real uniform_val)
 {
@@ -54,7 +54,7 @@ static uint chooseFiringImmeTrans(const GeneralPetriNet& net,
     {
         uint tid = enabled_tids[i];
         weights[i] = net.transProps[tid].immediate.weight(
-            PetriNetState{&net, &marking});
+            PetriNetState{&net, marking});
         weight_sum += weights[i];
     }
     return enabled_tids[whichSlot(weights, uniform_val * weight_sum)];
@@ -103,7 +103,7 @@ static std::vector<uint> setSub(std::vector<uint>& a, std::vector<uint>& b)
 }
 
 using namespace simulate;
-GpnSimulator gpnSimulator(GeneralPetriNet net, const Marking& init_mk,
+GpnSimulator gpnSimulator(GeneralPetriNet net, const MarkingIntf& init_mk,
                           std::function<Real()> uniform_sampler)
 {
     GpnSimulator sim(
@@ -111,16 +111,16 @@ GpnSimulator gpnSimulator(GeneralPetriNet net, const Marking& init_mk,
     sim.handler(EventType::Begin, [](GpnSimulator::Event evt,
                                      GpnSimulator::State& state,
                                      GpnSimulator::EventQueue& queue) {
-        state.currMarking = state.initMarking;
+        state.currMarking = state.initMarking->clone();
         state.remainingTime =
             std::vector<Real>(state.net.pnet.transCount(), -1.0);
         auto enabled_tids =
-            state.net.pnet.enabledTransitions(&state.currMarking);
+            state.net.pnet.enabledTransitions(state.currMarking.get());
         bool van = isVanMarking(state.net, enabled_tids);
         if (van)
         {
             uint next_tid =
-                chooseFiringImmeTrans(state.net, state.currMarking,
+                chooseFiringImmeTrans(state.net, state.currMarking.get(),
                                       enabled_tids, state.uniformSampler());
             queue.schedule(evt.time, next_tid);
         }
@@ -130,7 +130,7 @@ GpnSimulator gpnSimulator(GeneralPetriNet net, const Marking& init_mk,
             {
                 Real evt_time =
                     evt.time + state.net.transProps[tid].timed.sampler(
-                                   {&state.net, &state.currMarking},
+                                   {&state.net, state.currMarking.get()},
                                    state.uniformSampler);
                 queue.schedule(evt_time, tid);
             }
@@ -141,14 +141,13 @@ GpnSimulator gpnSimulator(GeneralPetriNet net, const Marking& init_mk,
                                     GpnSimulator::State& state,
                                     GpnSimulator::EventQueue& queue) {
         auto prev_enabled =
-            state.net.pnet.enabledTransitions(&state.currMarking);
+            state.net.pnet.enabledTransitions(state.currMarking.get());
         uint firing_tid = evt.data;
-        state.currMarking = *dynamic_cast<Marking*>(
-            state.net.pnet.fireTransition(firing_tid, &state.currMarking)
-                .get());
+        state.currMarking = state.net.pnet.fireTransition(
+            firing_tid, state.currMarking.get());
         state.remainingTime[firing_tid] = -1.0;
         auto curr_enabled =
-            state.net.pnet.enabledTransitions(&state.currMarking);
+            state.net.pnet.enabledTransitions(state.currMarking.get());
 
         bool prev_van = isVanMarking(state.net, prev_enabled);
         bool curr_van = isVanMarking(state.net, curr_enabled);
@@ -159,7 +158,7 @@ GpnSimulator gpnSimulator(GeneralPetriNet net, const Marking& init_mk,
             {
                 // van -> van
                 uint next_tid = chooseFiringImmeTrans(
-                    state.net, state.currMarking, curr_enabled,
+                    state.net, state.currMarking.get(), curr_enabled,
                     state.uniformSampler());
                 queue.schedule(evt.time, next_tid);
             }
@@ -185,10 +184,10 @@ GpnSimulator gpnSimulator(GeneralPetriNet net, const Marking& init_mk,
                     }
                     if (evt_time < 0)
                     {
-                        evt_time =
-                            evt.time +
-                            tp.timed.sampler({&state.net, &state.currMarking},
-                                             state.uniformSampler);
+                        evt_time = evt.time +
+                                   tp.timed.sampler(
+                                       {&state.net, state.currMarking.get()},
+                                       state.uniformSampler);
                     }
                     queue.schedule(evt_time, tid);
                 }
@@ -231,7 +230,7 @@ GpnSimulator gpnSimulator(GeneralPetriNet net, const Marking& init_mk,
                     }
                 }
                 uint next_tid = chooseFiringImmeTrans(
-                    state.net, state.currMarking, curr_enabled,
+                    state.net, state.currMarking.get(), curr_enabled,
                     state.uniformSampler());
                 queue.schedule(evt.time, next_tid);
             }
@@ -283,10 +282,10 @@ GpnSimulator gpnSimulator(GeneralPetriNet net, const Marking& init_mk,
                     }
                     if (evt_time < 0)
                     {
-                        evt_time =
-                            evt.time +
-                            tp.timed.sampler({&state.net, &state.currMarking},
-                                             state.uniformSampler);
+                        evt_time = evt.time +
+                                   tp.timed.sampler(
+                                       {&state.net, state.currMarking.get()},
+                                       state.uniformSampler);
                     }
                     queue.schedule(evt_time, tid);
                 }
