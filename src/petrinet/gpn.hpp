@@ -68,17 +68,17 @@ public:
                         GpnSamplePolicy(), weight)
     {
     }
-    GpnImmeTransition& iarc(uint place, MarkingDepInt multi = 1)
+    GpnImmeTransition& iarc(uint place, MarkingDepUint multi = 1)
     {
         _trans.inputArcs.push_back({place, multi});
         return *this;
     }
-    GpnImmeTransition& harc(uint place, MarkingDepInt multi = 1)
+    GpnImmeTransition& harc(uint place, MarkingDepUint multi = 1)
     {
         _trans.inhibitorArcs.push_back({place, multi});
         return *this;
     }
-    GpnImmeTransition& oarc(uint place, MarkingDepInt multi = 1)
+    GpnImmeTransition& oarc(uint place, MarkingDepUint multi = 1)
     {
         _trans.outputArcs.push_back({place, multi});
         return *this;
@@ -111,17 +111,17 @@ public:
                         0.0)
     {
     }
-    GpnTimedTransition& iarc(uint place, MarkingDepInt multi = 1)
+    GpnTimedTransition& iarc(uint place, MarkingDepUint multi = 1)
     {
         _trans.inputArcs.push_back({place, multi});
         return *this;
     }
-    GpnTimedTransition& harc(uint place, MarkingDepInt multi = 1)
+    GpnTimedTransition& harc(uint place, MarkingDepUint multi = 1)
     {
         _trans.inhibitorArcs.push_back({place, multi});
         return *this;
     }
-    GpnTimedTransition& oarc(uint place, MarkingDepInt multi = 1)
+    GpnTimedTransition& oarc(uint place, MarkingDepUint multi = 1)
     {
         _trans.outputArcs.push_back({place, multi});
         return *this;

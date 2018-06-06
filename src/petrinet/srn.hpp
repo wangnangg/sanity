@@ -34,17 +34,17 @@ public:
         }
         _trans.enablingFunc = true;
     }
-    SrnTransition& iarc(uint place, MarkingDepInt multi = 1)
+    SrnTransition& iarc(uint place, MarkingDepUint multi = 1)
     {
         _trans.inputArcs.push_back({place, multi});
         return *this;
     }
-    SrnTransition& harc(uint place, MarkingDepInt multi = 1)
+    SrnTransition& harc(uint place, MarkingDepUint multi = 1)
     {
         _trans.inhibitorArcs.push_back({place, multi});
         return *this;
     }
-    SrnTransition& oarc(uint place, MarkingDepInt multi = 1)
+    SrnTransition& oarc(uint place, MarkingDepUint multi = 1)
     {
         _trans.outputArcs.push_back({place, multi});
         return *this;

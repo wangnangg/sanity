@@ -36,14 +36,14 @@ bool PetriNet::isolateEnableCheck(const Transition& tr,
     }
     for (const auto& arc : tr.inputArcs)
     {
-        if (mk->nToken(arc.pid) < (uint)arc.multi(state))
+        if (mk->nToken(arc.pid) < arc.multi(state))
         {
             return false;
         }
     }
     for (const auto& arc : tr.inhibitorArcs)
     {
-        if (mk->nToken(arc.pid) >= (uint)arc.multi(state))
+        if (mk->nToken(arc.pid) >= arc.multi(state))
         {
             return false;
         }
@@ -93,13 +93,13 @@ std::unique_ptr<MarkingIntf> PetriNet::fireTransition(
     for (const auto& arc : tr.inputArcs)
     {
         auto multi = arc.multi(state);
-        assert(newmk->nToken(arc.pid) >= (uint)multi);
-        newmk->setToken(arc.pid, newmk->nToken(arc.pid) - (uint)multi);
+        assert(newmk->nToken(arc.pid) >= multi);
+        newmk->setToken(arc.pid, newmk->nToken(arc.pid) - multi);
     }
     for (const auto& arc : tr.outputArcs)
     {
         auto multi = arc.multi(state);
-        newmk->setToken(arc.pid, newmk->nToken(arc.pid) + (uint)multi);
+        newmk->setToken(arc.pid, newmk->nToken(arc.pid) + multi);
     }
     return newmk;
 }

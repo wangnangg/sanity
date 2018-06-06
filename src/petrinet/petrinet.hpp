@@ -91,18 +91,18 @@ private:
     QueryFunc _func;
 };
 
-class MarkingDepInt
+class MarkingDepUint
 {
 public:
-    using ReturnType = int;
+    using ReturnType = uint;
     using QueryFunc = std::function<ReturnType(PetriNetState)>;
-    MarkingDepInt() : _val(), _func(nullptr) {}
+    MarkingDepUint() : _val(), _func(nullptr) {}
     template <typename QueryFunc,
               std::enable_if_t<!std::is_integral<QueryFunc>::value, int> = 0>
-    MarkingDepInt(QueryFunc func) : _val(), _func(func)
+    MarkingDepUint(QueryFunc func) : _val(), _func(func)
     {
     }
-    MarkingDepInt(ReturnType value) : _val(value), _func(nullptr) {}
+    MarkingDepUint(ReturnType value) : _val(value), _func(nullptr) {}
     ReturnType operator()(PetriNetState st) const
     {
         if (_func)
@@ -152,7 +152,7 @@ private:
 struct Arc
 {
     uint pid;
-    MarkingDepInt multi;
+    MarkingDepUint multi;
 };
 
 struct Transition
