@@ -22,7 +22,7 @@ protected:
                               const GpnSimulator::State& state,
                               const GpnSimulator::EventQueue& queue)
     {
-        _last_load = servedLoad(*_ct, &state.currMarking);
+        _last_load = servedLoad(*_ct, state.currMarking.get());
         _last_time = evt.time;
     }
     virtual void updateReward(const GpnSimulator::Event& evt,

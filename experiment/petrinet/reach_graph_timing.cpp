@@ -32,7 +32,7 @@ TEST(reach_graph_timing, multi_stage)
 {
     SrnCreator crt;
     uint site_count = 5;
-    int max_job = 24;
+    uint max_job = 24;
     crt.expTrans(1.0).oarc(0).harc(0, max_job);
     crt.place(0);
     for (uint i = 1; i < site_count; i++)
