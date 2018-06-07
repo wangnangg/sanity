@@ -46,20 +46,20 @@ void GpnObserver::eventTriggered(const GpnSimulator::Event& evt,
     houseKeeping(evt, state, queue);
 }
 
-void GpnObPlaceToken::reset(const GpnSimulator::Event& evt,
+void GpnObProbReward::reset(const GpnSimulator::Event& evt,
                             const GpnSimulator::State& state,
                             const GpnSimulator::EventQueue& queue)
 {
     _acc_reward = 0;
 }
-void GpnObPlaceToken::houseKeeping(const GpnSimulator::Event& evt,
+void GpnObProbReward::houseKeeping(const GpnSimulator::Event& evt,
                                    const GpnSimulator::State& state,
                                    const GpnSimulator::EventQueue& queue)
 {
-    _last_token = state.currMarking->nToken(_pid);
+    _last_reward = _reward({&state.net, state.currMarking.get()});
     _last_time = evt.time;
 }
-void GpnObPlaceToken::updateReward(const GpnSimulator::Event& evt,
+void GpnObProbReward::updateReward(const GpnSimulator::Event& evt,
                                    const GpnSimulator::State& state,
                                    const GpnSimulator::EventQueue& queue)
 {
@@ -72,13 +72,48 @@ void GpnObPlaceToken::updateReward(const GpnSimulator::Event& evt,
     {
         time = evt.time;
     }
-    _acc_reward += (time - _last_time) * _last_token;
+    _acc_reward += (time - _last_time) * _last_reward;
 }
-void GpnObPlaceToken::end(const GpnSimulator::Event& evt,
+void GpnObProbReward::end(const GpnSimulator::Event& evt,
                           const GpnSimulator::State& state,
                           const GpnSimulator::EventQueue& queue)
 {
     _samples.push_back(_acc_reward / timeSpan());
+}
+
+void GpnObCumReward::reset(const GpnSimulator::Event& evt,
+                           const GpnSimulator::State& state,
+                           const GpnSimulator::EventQueue& queue)
+{
+    _acc_reward = 0;
+}
+void GpnObCumReward::houseKeeping(const GpnSimulator::Event& evt,
+                                  const GpnSimulator::State& state,
+                                  const GpnSimulator::EventQueue& queue)
+{
+    _last_reward = _reward({&state.net, state.currMarking.get()});
+    _last_time = evt.time;
+}
+void GpnObCumReward::updateReward(const GpnSimulator::Event& evt,
+                                  const GpnSimulator::State& state,
+                                  const GpnSimulator::EventQueue& queue)
+{
+    Real time;
+    if (evt.time >= _end_time)
+    {
+        time = _end_time;
+    }
+    else
+    {
+        time = evt.time;
+    }
+    _acc_reward += (time - _last_time) * _last_reward;
+}
+void GpnObCumReward::end(const GpnSimulator::Event& evt,
+                         const GpnSimulator::State& state,
+                         const GpnSimulator::EventQueue& queue)
+{
+    _samples.push_back(_acc_reward);
 }
 
 void GpnObLog::eventTriggered(const GpnSimulator::Event& evt,

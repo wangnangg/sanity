@@ -29,8 +29,13 @@ TEST(petrinet, gspn_simulate_2place)
     auto gpn = creator.create();
     Marking init = creator.marking();
     auto sim = gpnSimulator(gpn, init, UniformSampler());
-    auto p0 = GpnObPlaceToken(0, 0, 1000.0);
-    auto p1 = GpnObPlaceToken(1, 0, 1000.0);
+    auto p0 = GpnObProbReward(0, 1000.0, [](PetriNetState state) {
+        return state.marking->nToken(0);
+    });
+    auto p1 = GpnObProbReward(0, 1000.0, [](PetriNetState state) {
+        return state.marking->nToken(1);
+    });
+
     sim.addObserver(p0);
     sim.addObserver(p1);
     sim.begin();
@@ -58,8 +63,12 @@ TEST(petrinet, gspn_simulate_two_server_queue)
 
         Real start = 0;
         Real end = 10000;
-        auto ob_queue = GpnObPlaceToken(queue, start, end);
-        auto ob_done = GpnObPlaceToken(done, start, end);
+        auto ob_queue = GpnObProbReward(start, end, [queue](auto state) {
+            return state.marking->nToken(queue);
+        });
+        auto ob_done = GpnObProbReward(start, end, [done](auto state) {
+            return state.marking->nToken(done);
+        });
         auto log = GpnObLog(false);
         sim.addObserver(ob_queue);
         sim.addObserver(ob_done);
@@ -129,7 +138,10 @@ TEST(petrinet, gspn_simulate_two_server_queue_confidence)
         Real start = 100;
         Real end = 200;
         uint nSample = 100;
-        auto ob_queue = GpnObPlaceToken(queue, start, end);
+        auto ob_queue = GpnObProbReward(start, end, [queue](auto state) {
+            return state.marking->nToken(queue);
+        });
+
         auto log = GpnObLog(false);
         sim.addObserver(ob_queue);
         sim.addObserver(log);
@@ -202,7 +214,10 @@ TEST(petrinet, gspn_simulate_two_server_queue_conversion)
         Real start = 100;
         Real end = 200;
         uint nSample = 100;
-        auto ob_queue = GpnObPlaceToken(queue, start, end);
+        auto ob_queue = GpnObProbReward(start, end, [queue](auto state) {
+            return state.marking->nToken(queue);
+        });
+
         auto log = GpnObLog(false);
         sim.addObserver(ob_queue);
         sim.addObserver(log);

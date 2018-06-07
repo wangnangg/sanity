@@ -31,13 +31,12 @@ public:
     Real timeSpan() const { return _end_time - _begin_time; }
 };
 
-class GpnObPlaceToken : public GpnObserver
+class GpnObProbReward : public GpnObserver
 {
-    uint _pid;
-
     Real _acc_reward;
-    Token _last_token;
+    Real _last_reward;
     Real _last_time;
+    MarkingDepReal _reward;
 
     std::vector<Real> _samples;
 
@@ -56,8 +55,39 @@ protected:
                      const GpnSimulator::EventQueue& queue);
 
 public:
-    GpnObPlaceToken(uint pid, Real begin_time, Real end_time)
-        : GpnObserver(begin_time, end_time), _pid(pid)
+    GpnObProbReward(Real begin_time, Real end_time, MarkingDepReal reward)
+        : GpnObserver(begin_time, end_time), _reward(reward)
+    {
+    }
+    const std::vector<Real>& samples() const { return _samples; }
+};
+
+class GpnObCumReward : public GpnObserver
+{
+    Real _acc_reward;
+    Real _last_reward;
+    Real _last_time;
+    MarkingDepReal _reward;
+
+    std::vector<Real> _samples;
+
+protected:
+    virtual void reset(const GpnSimulator::Event& evt,
+                       const GpnSimulator::State& state,
+                       const GpnSimulator::EventQueue& queue);
+    virtual void houseKeeping(const GpnSimulator::Event& evt,
+                              const GpnSimulator::State& state,
+                              const GpnSimulator::EventQueue& queue);
+    virtual void updateReward(const GpnSimulator::Event& evt,
+                              const GpnSimulator::State& state,
+                              const GpnSimulator::EventQueue& queue);
+    virtual void end(const GpnSimulator::Event& evt,
+                     const GpnSimulator::State& state,
+                     const GpnSimulator::EventQueue& queue);
+
+public:
+    GpnObCumReward(Real begin_time, Real end_time, MarkingDepReal reward)
+        : GpnObserver(begin_time, end_time), _reward(reward)
     {
     }
     const std::vector<Real>& samples() const { return _samples; }
