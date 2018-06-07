@@ -100,6 +100,8 @@ public:
     void globalEnable(MarkingDepBool g_enable);
     StochasticRewardNet create() const;
     Marking marking() const;
+    BitMarking bitMarking() const;
+    ByteMarking byteMarking() const;
 };
 
 }  // namespace sanity::petrinet

@@ -104,6 +104,4 @@ std::unique_ptr<MarkingIntf> PetriNet::fireTransition(
     return newmk;
 }
 
-std::hash<std::string_view> Marking::hasher = std::hash<std::string_view>();
-
 }  // namespace sanity::petrinet

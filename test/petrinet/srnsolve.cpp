@@ -277,3 +277,48 @@ TEST(petrinet, srn_two_absoring_groups_decomp2)
     }
     ASSERT_NEAR(prob, 1.0, tol);
 }
+
+TEST(petrinet, srn_trivial_irreducible_bit)
+{
+    SrnCreator ct;
+    auto p0 = ct.place(1);
+    auto p1 = ct.place();
+    ct.expTrans(1.0).iarc(p0).oarc(p1);
+    ct.expTrans(2.0).iarc(p1).oarc(p0);
+    auto srn = ct.create();
+    auto mk = ct.bitMarking();
+
+    auto rg = genReducedReachGraph(srn, mk, 1e-6, 100);
+    ASSERT_EQ(rg.graph.nodeCount(), 2);
+
+    uint max_iter = 100;
+    Real tol = 1e-6;
+    Real w = 1;
+    auto sol = srnSteadyStateDecomp(
+        rg.graph, rg.edgeRates, rg.initProbs,
+        [=](const Spmatrix& A, VectorMutableView x, VectorConstView b) {
+            auto res = solveSor(A, x, b, w, tol, max_iter);
+            if (res.error > tol || std::isnan(res.error))
+            {
+                std::cout << "Sor. nIter: " << res.nIter;
+                std::cout << ", error: " << res.error << std::endl;
+                throw std::invalid_argument("Sor failed to converge.");
+            }
+        });
+    printSrnSol(rg.nodeMarkings, sol.matrix2node, sol.nTransient,
+                sol.solution);
+    Real prob = 0.0;
+    for (uint i = sol.nTransient; i < rg.nodeMarkings.size(); i++)
+    {
+        prob += sol.solution(i);
+        if (rg.nodeMarkings[(uint)sol.matrix2node.forward(i)]->nToken(0) == 1)
+        {
+            ASSERT_NEAR(sol.solution(i), 0.666, 0.001);
+        }
+        else
+        {
+            ASSERT_NEAR(sol.solution(i), 0.333, 0.001);
+        }
+    }
+    ASSERT_NEAR(prob, 1.0, tol);
+}

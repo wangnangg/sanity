@@ -1,58 +1,12 @@
 #pragma once
 #include <cassert>
 #include <functional>
-#include <memory>
 #include <vector>
+#include "marking.hpp"
 #include "type.hpp"
+
 namespace sanity::petrinet
 {
-using Token = uint;
-
-class MarkingIntf
-{
-public:
-    virtual ~MarkingIntf() = default;
-    virtual Token nToken(uint pid) const = 0;
-    virtual uint size() const = 0;
-    virtual void setToken(uint pid, Token num) = 0;
-    virtual std::unique_ptr<MarkingIntf> clone() const = 0;
-    virtual std::size_t hash() const = 0;
-    virtual bool equal(const MarkingIntf* other) const = 0;
-};
-
-class Marking : public MarkingIntf
-{
-    std::vector<Token> _tokens;
-    static std::hash<std::string_view> hasher;
-
-public:
-    Marking() = default;
-    Marking(uint nplace, uint ntoken = 0) : _tokens(nplace, ntoken) {}
-
-    virtual ~Marking() = default;
-    virtual Token nToken(uint pid) const override { return _tokens[pid]; }
-    virtual uint size() const override { return _tokens.size(); }
-    virtual void setToken(uint pid, Token num) override
-    {
-        _tokens[pid] = num;
-    }
-    virtual std::unique_ptr<MarkingIntf> clone() const override
-    {
-        return std::make_unique<Marking>(*this);
-    }
-    virtual std::size_t hash() const override
-    {
-        std::string_view sview((const char*)&_tokens[0],
-                               sizeof(Token) * _tokens.size());
-        return hasher(sview);
-    }
-    virtual bool equal(const MarkingIntf* other) const override
-    {
-        auto mk = dynamic_cast<const Marking*>(other);
-        return mk->_tokens == this->_tokens;
-    }
-};
-
 class PetriNet;
 
 struct PetriNetState

@@ -173,6 +173,8 @@ public:
     void globalEnable(MarkingDepBool g_enable);
     GeneralPetriNet create() const;
     Marking marking() const;
+    BitMarking bitMarking() const;
+    ByteMarking byteMarking() const;
 };
 
 GeneralPetriNet srn2gpn(const StochasticRewardNet& srn);

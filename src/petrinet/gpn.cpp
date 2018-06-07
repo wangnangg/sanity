@@ -45,6 +45,25 @@ Marking GpnCreator::marking() const
     return init;
 }
 
+BitMarking GpnCreator::bitMarking() const
+{
+    BitMarking init(_init_token.size());
+    for (uint i = 0; i < _init_token.size(); i++)
+    {
+        init.setToken(i, _init_token[i]);
+    }
+    return init;
+}
+
+ByteMarking GpnCreator::byteMarking() const
+{
+    ByteMarking init(_init_token.size());
+    for (uint i = 0; i < _init_token.size(); i++)
+    {
+        init.setToken(i, _init_token[i]);
+    }
+    return init;
+}
 GeneralPetriNet GpnCreator::create() const
 {
     std::vector<Transition> trans;

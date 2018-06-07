@@ -52,4 +52,24 @@ Marking SrnCreator::marking() const
     return init;
 }
 
+BitMarking SrnCreator::bitMarking() const
+{
+    BitMarking init(_init_token.size());
+    for (uint i = 0; i < _init_token.size(); i++)
+    {
+        init.setToken(i, _init_token[i]);
+    }
+    return init;
+}
+
+ByteMarking SrnCreator::byteMarking() const
+{
+    ByteMarking init(_init_token.size());
+    for (uint i = 0; i < _init_token.size(); i++)
+    {
+        init.setToken(i, _init_token[i]);
+    }
+    return init;
+}
+
 }  // namespace sanity::petrinet

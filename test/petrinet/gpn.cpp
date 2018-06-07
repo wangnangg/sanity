@@ -6,7 +6,7 @@
 using namespace sanity::petrinet;
 using namespace sanity::simulate;
 using namespace sanity::linear;
-TEST(petrinet, gspn_create)
+TEST(petrinet, gpn_create)
 {
     GpnCreator creator;
     creator.place(1);
@@ -19,7 +19,7 @@ TEST(petrinet, gspn_create)
     ASSERT_EQ(gpn.transProps.size(), 2);
 }
 
-TEST(petrinet, gspn_simulate_2place)
+TEST(petrinet, gpn_simulate_2place)
 {
     GpnCreator creator;
     creator.place(1);
@@ -46,7 +46,7 @@ TEST(petrinet, gspn_simulate_2place)
     std::cout << "place 1 avg token: " << p1.samples()[0] << std::endl;
 }
 
-TEST(petrinet, gspn_simulate_two_server_queue)
+TEST(petrinet, gpn_simulate_two_server_queue)
 {
     {
         GpnCreator creator;
@@ -119,7 +119,7 @@ TEST(petrinet, gspn_simulate_two_server_queue)
     }
 }
 
-TEST(petrinet, gspn_simulate_two_server_queue_confidence)
+TEST(petrinet, gpn_simulate_two_server_queue_confidence)
 {
     Interval queue_itv;
     {
@@ -193,7 +193,7 @@ TEST(petrinet, gspn_simulate_two_server_queue_confidence)
     }
 }
 
-TEST(petrinet, gspn_simulate_two_server_queue_conversion)
+TEST(petrinet, gpn_simulate_two_server_queue_conversion)
 {
     SrnCreator creator;
     auto queue = creator.place(4);
