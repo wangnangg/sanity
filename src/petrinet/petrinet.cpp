@@ -66,6 +66,7 @@ int PetriNet::firstEanbledTrans(const MarkingIntf* mk) const
 std::vector<uint> PetriNet::enabledTransitions(const MarkingIntf* mk) const
 {
     auto etrans = std::vector<uint>();
+    etrans.reserve(transCount());
     bool found_enabled = false;
     uint64_t enabled_prio;
     for (const auto& tr : _transitions)

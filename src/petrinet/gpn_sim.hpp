@@ -14,6 +14,7 @@ struct GpnSimState
     std::function<Real()> uniformSampler;
 
     std::unique_ptr<MarkingIntf> currMarking;
+    std::vector<uint> enabledTrans;
     std::vector<Real> remainingTime;  // for transitions with resume policy
 
     GpnSimState(GeneralPetriNet net, const MarkingIntf& marking,
@@ -22,6 +23,7 @@ struct GpnSimState
           initMarking(marking.clone()),
           uniformSampler(std::move(usampler)),
           currMarking(),
+          enabledTrans(),
           remainingTime()
     {
     }
