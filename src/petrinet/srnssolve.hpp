@@ -34,7 +34,7 @@ IrreducibleSrnSteadyStateSol srnSteadyStateSor(
 struct GeneralSrnSteadyStateSol
 {
     linear::Permutation
-        matrix2node;  // the first n in the matrix are tangibles and the
+        matrix2node;  // the first n in the matrix are transients and the
     // rest are absorbing components.
     uint nTransient;
     linear::Vector solution;  // the solution is in matrix order. for

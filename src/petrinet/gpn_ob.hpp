@@ -108,4 +108,21 @@ public:
         const GpnSimulator::Event& evt, const GpnSimulator::State& state,
         const GpnSimulator::EventQueue& queue) override;
 };
+
+class GpnObEventCounter : public GpnSimulator::Observer
+{
+    std::vector<Real> _samples;
+    uint _counter;
+
+public:
+    virtual void eventTriggered(
+        const GpnSimulator::Event& evt, const GpnSimulator::State& state,
+        const GpnSimulator::EventQueue& queue) override;
+    const std::vector<Real>& samples() const { return _samples; }
+    GpnObEventCounter() = default;
+};
+
+uint gpnPlaceToken(PetriNetState state, uint pid);
+MarkingDepReal gpnPlaceTokenFunc(uint pid);
+
 }  // namespace sanity::petrinet

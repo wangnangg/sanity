@@ -29,4 +29,33 @@ Real srnProbReward(const StochasticRewardNet& srn,
     }
     return r;
 }
+
+uint srnPlaceToken(PetriNetState state, uint pid)
+{
+    return state.marking->nToken(pid);
+}
+Real srnTransRate(PetriNetState state, uint tid)
+{
+    auto net = (const StochasticRewardNet*)state.net;
+    assert(net->transProps[tid].type == SrnTransType::Exponetial);
+    if (net->pnet.isTransitionEnabled(tid, state.marking))
+    {
+        return net->transProps[tid].val(state);
+    }
+    else
+    {
+        return 0.0;
+    }
+}
+
+MarkingDepReal srnPlaceTokenFunc(uint pid)
+{
+    return [pid](PetriNetState state) { return srnPlaceToken(state, pid); };
+}
+
+MarkingDepReal srnTransRateFunc(uint tid)
+{
+    return [tid](PetriNetState state) { return srnTransRate(state, tid); };
+}
+
 }  // namespace sanity::petrinet

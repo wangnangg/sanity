@@ -3,6 +3,7 @@
 #include "linear.hpp"
 #include "petrinet.hpp"
 #include "splinear.hpp"
+
 using namespace sanity::petrinet;
 using namespace sanity::linear;
 using namespace sanity::splinear;
@@ -142,7 +143,7 @@ static void printSrnSol(
     const std::vector<std::unique_ptr<MarkingIntf>>& markings,
     const Permutation& mat2node, uint ntan, VectorConstView solution)
 {
-    std::cout << "tangibles (" << ntan << "):" << std::endl;
+    std::cout << "transients (" << ntan << "):" << std::endl;
     for (uint i = 0; i < ntan; i++)
     {
         const auto& mk = markings[(uint)mat2node.forward(i)];
@@ -321,4 +322,62 @@ TEST(petrinet, srn_trivial_irreducible_bit)
         }
     }
     ASSERT_NEAR(prob, 1.0, tol);
+}
+
+TEST(petrinet, srn_molloy_thesis)
+{
+    SrnCreator ct;
+    auto p0 = ct.place(1);
+    auto p1 = ct.place();
+    auto p2 = ct.place();
+    auto p3 = ct.place();
+    auto p4 = ct.place();
+
+    auto t0 = ct.expTrans(1.0).iarc(p0).oarc(p1).oarc(p2).idx();
+    auto t1 = ct.expTrans(3.0).iarc(p1).oarc(p3).idx();
+    auto t2 = ct.expTrans(7.0).iarc(p2).oarc(p4).idx();
+    auto t3 = ct.expTrans(9.0).iarc(p3).oarc(p1).idx();
+    auto t4 = ct.expTrans(5.0).iarc(p3).iarc(p4).oarc(p0).idx();
+
+    auto srn = ct.create();
+    auto mk = ct.byteMarking();
+
+    auto rg = genReducedReachGraph(srn, mk, 1e-6, 100);
+    ASSERT_EQ(rg.graph.nodeCount(), 5);
+
+    uint max_iter = 100;
+    Real tol = 1e-6;
+    Real w = 1;
+    auto sol = srnSteadyStateDecomp(
+        rg.graph, rg.edgeRates, rg.initProbs,
+        [=](const Spmatrix& A, VectorMutableView x, VectorConstView b) {
+            auto res = solveSor(A, x, b, w, tol, max_iter);
+            if (res.error > tol || std::isnan(res.error))
+            {
+                std::cout << "Sor. nIter: " << res.nIter;
+                std::cout << ", error: " << res.error << std::endl;
+                throw std::invalid_argument("Sor failed to converge.");
+            }
+        });
+
+    printSrnSol(rg.nodeMarkings, sol.matrix2node, sol.nTransient,
+                sol.solution);
+
+    auto mk_p0 = srnProbReward(
+        srn, sol, rg.nodeMarkings,
+        [p0](PetriNetState state) { return srnPlaceToken(state, p0); });
+    auto mk_p1 =
+        srnProbReward(srn, sol, rg.nodeMarkings, srnPlaceTokenFunc(p1));
+    auto mk_p3 =
+        srnProbReward(srn, sol, rg.nodeMarkings, srnPlaceTokenFunc(p3));
+    auto rate_t0 = srnProbReward(
+        srn, sol, rg.nodeMarkings,
+        [t0](PetriNetState state) { return srnTransRate(state, t0); });
+    auto rate_t3 =
+        srnProbReward(srn, sol, rg.nodeMarkings, srnTransRateFunc(t3));
+    ASSERT_NEAR(mk_p0, 0.4497, 0.0001);
+    ASSERT_NEAR(mk_p1, 0.4502, 0.0001);
+    ASSERT_NEAR(mk_p3, 0.1, 0.0001);
+    ASSERT_NEAR(rate_t0, 0.4497, 0.0001);
+    ASSERT_NEAR(rate_t3, 0.9008, 0.0001);
 }

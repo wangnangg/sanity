@@ -15,4 +15,10 @@ Real srnProbReward(const StochasticRewardNet& srn,
                    const std::vector<std::unique_ptr<MarkingIntf>>& markings,
                    const MarkingDepReal& reward_func);
 
+uint srnPlaceToken(PetriNetState state, uint pid);
+Real srnTransRate(PetriNetState state, uint tid);
+
+MarkingDepReal srnPlaceTokenFunc(uint pid);
+MarkingDepReal srnTransRateFunc(uint tid);
+
 }  // namespace sanity::petrinet

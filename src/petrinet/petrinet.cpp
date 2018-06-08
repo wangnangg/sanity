@@ -104,4 +104,27 @@ std::unique_ptr<MarkingIntf> PetriNet::fireTransition(
     return newmk;
 }
 
+bool PetriNet::isTransitionEnabled(uint tid, const MarkingIntf* mk) const
+{
+    bool found_enabled = false;
+    uint64_t enabled_prio;
+    for (const auto& tr : _transitions)
+    {
+        if (found_enabled && enabled_prio > tr.prio)
+        {
+            return false;
+        }
+        if (tr.tid == tid)
+        {
+            return isolateEnableCheck(tr, mk);
+        }
+        if (isolateEnableCheck(tr, mk))
+        {
+            enabled_prio = tr.prio;
+            found_enabled = true;
+        }
+    }
+    return false;
+}
+
 }  // namespace sanity::petrinet

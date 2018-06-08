@@ -142,4 +142,32 @@ void GpnObLog::eventTriggered(const GpnSimulator::Event& evt,
     }
 }
 
+void GpnObEventCounter::eventTriggered(const GpnSimulator::Event& evt,
+                                       const GpnSimulator::State& state,
+                                       const GpnSimulator::EventQueue& queue)
+{
+    switch (evt.type)
+    {
+        case EventType::Begin:
+            _counter = 1;
+            break;
+        case EventType::User:
+            _counter += 1;
+            break;
+        case EventType::End:
+            _counter += 1;
+            _samples.push_back(_counter);
+            break;
+    }
+}
+
+uint gpnPlaceToken(PetriNetState state, uint pid)
+{
+    return state.marking->nToken(pid);
+}
+MarkingDepReal gpnPlaceTokenFunc(uint pid)
+{
+    return [pid](PetriNetState state) { return gpnPlaceToken(state, pid); };
+}
+
 }  // namespace sanity::petrinet
