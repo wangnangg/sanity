@@ -270,7 +270,7 @@ TEST(petrinet, gpn_molloy_thesis)
     auto sim = gpnSimulator(gpn, mk, UniformSampler());
 
     Real start = 0;
-    Real end = 1000;
+    Real end = 100;
     auto mk_p0 = GpnObProbReward(start, end, gpnPlaceTokenFunc(p0));
     auto mk_p3 = GpnObProbReward(start, end, gpnPlaceTokenFunc(p3));
     auto evt_counter = GpnObEventCounter();
