@@ -22,7 +22,6 @@ struct ReducedReachGenResult
 };
 // not dealing with vanishing loops, yet
 ReducedReachGenResult genReducedReachGraph(const StochasticRewardNet& srn,
-                                           const MarkingIntf& mk, Real tol,
-                                           uint max_iter);
+                                           const MarkingIntf& mk);
 
 }  // namespace sanity::petrinet

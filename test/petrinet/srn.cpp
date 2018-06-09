@@ -48,7 +48,7 @@ TEST(petrinet, srn_ratemat)
 
     Marking initmk(srn.pnet.placeCount());
     initmk.setToken(p1, 2);
-    auto rg = genReducedReachGraph(srn, initmk, 1e-6, 1000);
+    auto rg = genReducedReachGraph(srn, initmk);
 
     auto spmat = srnRateMatrix(rg.graph, rg.edgeRates);
     std::cout << spmat << std::endl;
@@ -65,7 +65,7 @@ TEST(petrinet, srn_sor)
 
     Marking initmk(srn.pnet.placeCount());
     initmk.setToken(p1, 2);
-    auto rg = genReducedReachGraph(srn, initmk, 1e-6, 1000);
+    auto rg = genReducedReachGraph(srn, initmk);
 
     auto Q = srnRateMatrix(rg.graph, rg.edgeRates);
     auto prob = Vector(rg.nodeMarkings.size(), 1.0);
@@ -91,7 +91,7 @@ TEST(petrinet, srn_imme_reach_gen1)
 
     Marking initmk(srn.pnet.placeCount());
     initmk.setToken(p1, 1);
-    auto rg = genReducedReachGraph(srn, initmk, 1e-6, 10);
+    auto rg = genReducedReachGraph(srn, initmk);
     ASSERT_EQ(rg.graph.nodeCount(), 1);
     ASSERT_EQ(rg.graph.edgeCount(), 0);
     ASSERT_EQ(rg.initProbs[0].prob, 1.0);
@@ -110,7 +110,7 @@ TEST(petrinet, srn_imme_reach_gen2)
 
     Marking initmk(srn.pnet.placeCount());
     initmk.setToken(p1, 1);
-    auto rg = genReducedReachGraph(srn, initmk, 1e-6, 10);
+    auto rg = genReducedReachGraph(srn, initmk);
     ASSERT_EQ(rg.graph.nodeCount(), 2);
     ASSERT_EQ(rg.graph.edgeCount(), 0);
     ASSERT_EQ(rg.initProbs[0].prob, 0.25);
@@ -132,7 +132,7 @@ TEST(petrinet, srn_imme_reach_gen3)
 
     Marking initmk(srn.pnet.placeCount());
     initmk.setToken(p0, 1);
-    auto rg = genReducedReachGraph(srn, initmk, 1e-6, 10);
+    auto rg = genReducedReachGraph(srn, initmk);
     ASSERT_EQ(rg.graph.nodeCount(), 3);
     ASSERT_EQ(rg.graph.edgeCount(), 2);
     ASSERT_EQ(rg.initProbs[0].prob, 1.0);

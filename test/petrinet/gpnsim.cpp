@@ -82,7 +82,7 @@ TEST(petrinet, gpn_simulate_two_server_queue)
         auto srn = creator.create();
         Marking init = creator.marking();
 
-        auto rg = genReducedReachGraph(srn, init, 1e-6, 100);
+        auto rg = genReducedReachGraph(srn, init);
         auto Q = srnRateMatrix(rg.graph, rg.edgeRates);
         auto prob = Vector(rg.nodeMarkings.size(), 1.0);
         auto iter = srnSteadyStateSor(Q, mutableView(prob), 1.0, 1e-6, 1000);
@@ -162,7 +162,7 @@ TEST(petrinet, gpn_simulate_two_server_queue_confidence)
         auto srn = creator.create();
         Marking init = creator.marking();
 
-        auto rg = genReducedReachGraph(srn, init, 1e-6, 100);
+        auto rg = genReducedReachGraph(srn, init);
         auto Q = srnRateMatrix(rg.graph, rg.edgeRates);
         auto prob = Vector(rg.nodeMarkings.size(), 1.0);
         auto iter = srnSteadyStateSor(Q, mutableView(prob), 1.0, 1e-6, 1000);
@@ -228,7 +228,7 @@ TEST(petrinet, gpn_simulate_two_server_queue_conversion)
         std::cout << "place queue avg token: " << queue_itv << std::endl;
     }
     {
-        auto rg = genReducedReachGraph(srn, init, 1e-6, 100);
+        auto rg = genReducedReachGraph(srn, init);
         auto Q = srnRateMatrix(rg.graph, rg.edgeRates);
         auto prob = Vector(rg.nodeMarkings.size(), 1.0);
         auto iter = srnSteadyStateSor(Q, mutableView(prob), 1.0, 1e-6, 1000);

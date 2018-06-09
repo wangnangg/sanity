@@ -18,7 +18,7 @@ TEST(petrinet, srn_birthdeath_sor)
     auto srn = ct.create();
     Marking mk(2);
     mk.setToken(p_live, 10);
-    auto rg = genReducedReachGraph(srn, mk, 1e-6, 100);
+    auto rg = genReducedReachGraph(srn, mk);
     ASSERT_EQ(rg.graph.nodeCount(), 11);
     ASSERT_EQ(rg.graph.edgeCount(), 20);
     auto Q = srnRateMatrix(rg.graph, rg.edgeRates);
@@ -42,7 +42,7 @@ TEST(petrinet, srn_birthdeath_decomp)
     auto srn = ct.create();
     Marking mk(2);
     mk.setToken(p_live, 10);
-    auto rg = genReducedReachGraph(srn, mk, 1e-6, 100);
+    auto rg = genReducedReachGraph(srn, mk);
     ASSERT_EQ(rg.graph.nodeCount(), 11);
     ASSERT_EQ(rg.graph.edgeCount(), 20);
 
@@ -77,7 +77,7 @@ TEST(petrinet, srn_trivial_absoring_decomp)
     Marking mk(2);
     mk.setToken(p_start, 1);
 
-    auto rg = genReducedReachGraph(srn, mk, 1e-6, 100);
+    auto rg = genReducedReachGraph(srn, mk);
     ASSERT_EQ(rg.graph.nodeCount(), 2);
     ASSERT_EQ(rg.graph.edgeCount(), 1);
 
@@ -114,7 +114,7 @@ TEST(petrinet, srn_two_absoring_decomp)
     Marking mk(srn.pnet.placeCount());
     mk.setToken(p_start, 1);
 
-    auto rg = genReducedReachGraph(srn, mk, 1e-6, 100);
+    auto rg = genReducedReachGraph(srn, mk);
     ASSERT_EQ(rg.graph.nodeCount(), 3);
     ASSERT_EQ(rg.graph.edgeCount(), 2);
 
@@ -195,7 +195,7 @@ TEST(petrinet, srn_two_absoring_groups_decomp)
     Marking mk(srn.pnet.placeCount());
     mk.setToken(p_tan1, 1);
 
-    auto rg = genReducedReachGraph(srn, mk, 1e-6, 100);
+    auto rg = genReducedReachGraph(srn, mk);
     ASSERT_EQ(rg.graph.nodeCount(), 7);
 
     uint max_iter = 100;
@@ -252,7 +252,7 @@ TEST(petrinet, srn_two_absoring_groups_decomp2)
     Marking mk(srn.pnet.placeCount());
     mk.setToken(p_tan1, 1);
 
-    auto rg = genReducedReachGraph(srn, mk, 1e-6, 100);
+    auto rg = genReducedReachGraph(srn, mk);
     ASSERT_EQ(rg.graph.nodeCount(), 7);
 
     uint max_iter = 100;
@@ -289,7 +289,7 @@ TEST(petrinet, srn_trivial_irreducible_bit)
     auto srn = ct.create();
     auto mk = ct.bitMarking();
 
-    auto rg = genReducedReachGraph(srn, mk, 1e-6, 100);
+    auto rg = genReducedReachGraph(srn, mk);
     ASSERT_EQ(rg.graph.nodeCount(), 2);
 
     uint max_iter = 100;
@@ -342,7 +342,7 @@ TEST(petrinet, srn_molloy_thesis)
     auto srn = ct.create();
     auto mk = ct.byteMarking();
 
-    auto rg = genReducedReachGraph(srn, mk, 1e-6, 100);
+    auto rg = genReducedReachGraph(srn, mk);
     ASSERT_EQ(rg.graph.nodeCount(), 5);
 
     uint max_iter = 100;
@@ -422,7 +422,7 @@ TEST(petrinet, srn_software_mtta)
     auto srn = ct.create();
     auto mk = ct.byteMarking();
 
-    auto rg = genReducedReachGraph(srn, mk, 1e-6, 100);
+    auto rg = genReducedReachGraph(srn, mk);
     ASSERT_EQ(rg.graph.nodeCount(), 140);
 
     uint max_iter = 100;

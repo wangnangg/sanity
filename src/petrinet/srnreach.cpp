@@ -140,9 +140,11 @@ MarkingListProb eliminateVanMarking(const StochasticRewardNet& srn,
 }
 
 ReducedReachGenResult genReducedReachGraph(const StochasticRewardNet& srn,
-                                           const MarkingIntf& mk, Real tol,
-                                           uint max_iter)
+                                           const MarkingIntf& mk)
 {
+    uint max_iter = 1000;
+    Real tol = 1e-6;
+
     DiGraph graph;
     std::vector<std::unique_ptr<MarkingIntf>> node_markings;
     std::vector<Real> edge_rates;
