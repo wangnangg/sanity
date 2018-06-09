@@ -43,7 +43,7 @@ TEST(power_grid_model, ieee30_flat)
         uint max_iter = 1000;
         Real tol = 1e-6;
         Real w = 0.8;
-        IrreducibleSrnSteadyStateSol sol;
+        SrnSteadyStateSol sol;
         {
             timed_scope t2("solution");
             sol = srnSteadyStateSor(rg.graph, rg.edgeRates, w, tol, max_iter);

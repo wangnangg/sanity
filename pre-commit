@@ -1,4 +1,6 @@
 #!/bin/bash
 ./format.sh
 git add -u
+make utest
+make exp
 ./test.sh debug "-*__*"

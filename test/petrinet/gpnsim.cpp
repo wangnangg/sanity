@@ -287,9 +287,16 @@ TEST(petrinet, gpn_molloy_thesis)
     }
 
     std::cout << "avg # events: "
-              << confidenceInterval(evt_counter.samples(), 0.95) << std::endl;
-    std::cout << confidenceInterval(mk_p0.samples(), 0.95) << std::endl;
-    std::cout << confidenceInterval(mk_p3.samples(), 0.95) << std::endl;
+              << confidenceInterval(evt_counter.samples(), 0.99) << std::endl;
+    auto mk_p0_itv = confidenceInterval(mk_p0.samples(), 0.99);
+    std::cout << "token in p0: " << mk_p0_itv << std::endl;
+    ASSERT_LT(mk_p0_itv.begin, 0.4497);
+    ASSERT_GT(mk_p0_itv.end, 0.4497);
+
+    auto mk_p3_itv = confidenceInterval(mk_p3.samples(), 0.99);
+    std::cout << "token in p3: " << mk_p3_itv << std::endl;
+    ASSERT_LT(mk_p3_itv.begin, 0.1);
+    ASSERT_GT(mk_p3_itv.end, 0.1);
 }
 
 /*
