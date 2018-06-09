@@ -156,6 +156,15 @@ public:
             }
         }
     }
+    void runTillEnd()
+    {
+        while (_queue.size() > 0)
+        {
+            auto evt = _queue.pop();
+            _time = evt.time;
+            processEvent(evt);
+        }
+    }
     void end()
     {
         auto evt = Event(EventType::End, _time);

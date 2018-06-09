@@ -48,7 +48,7 @@ Token ByteMarking::nToken(uint pid) const { return _tokens[pid]; }
 uint ByteMarking::size() const { return _tokens.size(); }
 void ByteMarking::setToken(uint pid, Token num)
 {
-    assert(num <= 1);
+    assert(num <= 255);
     _tokens[pid] = num;
 }
 std::unique_ptr<MarkingIntf> ByteMarking::clone() const

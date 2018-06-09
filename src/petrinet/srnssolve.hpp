@@ -22,28 +22,24 @@ IterationResult srnSteadyStateSor(const splinear::Spmatrix& Q,
                                   linear::VectorMutableView prob, Real w,
                                   Real tol, uint max_iter);
 
-struct IrreducibleSrnSteadyStateSol
-{
-    linear::Vector prob;
-};
-
-IrreducibleSrnSteadyStateSol srnSteadyStateSor(
-    const graph::DiGraph& rg, const std::vector<Real>& edge_rates, Real w,
-    Real tol, uint max_iter);
-
-struct GeneralSrnSteadyStateSol
+struct SrnSteadyStateSol
 {
     linear::Permutation
         matrix2node;  // the first n in the matrix are transients and the
     // rest are absorbing components.
     uint nTransient;
+    std::vector<uint> absGroupSizes;
     linear::Vector solution;  // the solution is in matrix order. for
-                              // tangibles, the values are cumulative times.
+                              // transients, the values are cumulative times.
                               // for absorbings, the values are probabilities.
 };
 
+SrnSteadyStateSol srnSteadyStateSor(const graph::DiGraph& rg,
+                                    const std::vector<Real>& edge_rates,
+                                    Real w, Real tol, uint max_iter);
+
 // decomposition method
-GeneralSrnSteadyStateSol srnSteadyStateDecomp(
+SrnSteadyStateSol srnSteadyStateDecomp(
     const graph::DiGraph& rg, const std::vector<Real>& edge_rates,
     const std::vector<MarkingInitProb>& init_probs,
     const std::function<void(const splinear::Spmatrix& A,

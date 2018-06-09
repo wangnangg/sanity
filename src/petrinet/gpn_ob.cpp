@@ -116,6 +116,16 @@ void GpnObCumReward::end(const GpnSimulator::Event& evt,
     _samples.push_back(_acc_reward);
 }
 
+void GpnObMtta::eventTriggered(const GpnSimulator::Event& evt,
+                               const GpnSimulator::State& state,
+                               const GpnSimulator::EventQueue& queue)
+{
+    if (evt.type == EventType::End)
+    {
+        _samples.push_back(evt.time);
+    }
+}
+
 void GpnObLog::eventTriggered(const GpnSimulator::Event& evt,
                               const GpnSimulator::State& state,
                               const GpnSimulator::EventQueue& queue)

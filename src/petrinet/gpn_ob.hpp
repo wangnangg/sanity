@@ -93,6 +93,18 @@ public:
     const std::vector<Real>& samples() const { return _samples; }
 };
 
+class GpnObMtta : public GpnSimulator::Observer
+{
+    std::vector<Real> _samples;
+
+public:
+    virtual void eventTriggered(
+        const GpnSimulator::Event& evt, const GpnSimulator::State& state,
+        const GpnSimulator::EventQueue& queue) override;
+
+    const std::vector<Real>& samples() const { return _samples; }
+};
+
 class GpnObLog : public GpnSimulator::Observer
 {
     bool _log_event;

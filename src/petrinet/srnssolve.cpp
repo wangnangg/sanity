@@ -69,15 +69,19 @@ IterationResult srnSteadyStateSor(const Spmatrix& Q, VectorMutableView prob,
     return {.error = error, .nIter = iter};
 }
 
-IrreducibleSrnSteadyStateSol srnSteadyStateSor(
-    const graph::DiGraph& rg, const std::vector<Real>& edge_rates, Real w,
-    Real tol, uint max_iter)
+SrnSteadyStateSol srnSteadyStateSor(const graph::DiGraph& rg,
+                                    const std::vector<Real>& edge_rates,
+                                    Real w, Real tol, uint max_iter)
 {
     auto Q = srnRateMatrix(rg, edge_rates);
+    uint n = rg.nodeCount();
     Vector prob(rg.nodeCount(), 1.0);
+    std::vector<uint> groupCount;
+    groupCount.push_back(n);
     if (rg.nodeCount() == 1)
     {
-        return IrreducibleSrnSteadyStateSol{std::move(prob)};
+        return SrnSteadyStateSol{Permutation(n), 0, std::move(groupCount),
+                                 std::move(prob)};
     }
     auto res = srnSteadyStateSor(Q, mutableView(prob), w, tol, max_iter);
     if (res.error > tol || std::isnan(res.error))
@@ -87,7 +91,8 @@ IrreducibleSrnSteadyStateSol srnSteadyStateSor(
            << res.error << ", nIter = " << res.nIter << ".";
         throw std::invalid_argument(os.str());
     }
-    return IrreducibleSrnSteadyStateSol{std::move(prob)};
+    return SrnSteadyStateSol{Permutation(n), 0, std::move(groupCount),
+                             std::move(prob)};
 }
 
 IterationResult srnSteadyStatePower(const splinear::Spmatrix& P,
@@ -245,7 +250,7 @@ static Spmatrix aaRateMatrix(const DiGraph& rg,
     return spmat.create(Spmatrix::RowCompressed);
 }
 
-GeneralSrnSteadyStateSol srnSteadyStateDecomp(
+SrnSteadyStateSol srnSteadyStateDecomp(
     const graph::DiGraph& rg, const std::vector<Real>& edge_rates,
     const std::vector<MarkingInitProb>& init_probs,
     const std::function<void(const splinear::Spmatrix& A,
@@ -319,6 +324,7 @@ GeneralSrnSteadyStateSol srnSteadyStateDecomp(
 
     return {.matrix2node = std::move(reorder.mat2node),
             .nTransient = reorder.ntan,
+            .absGroupSizes = std::move(reorder.nstatesList),
             .solution = std::move(solution)};
 }
 }  // namespace sanity::petrinet

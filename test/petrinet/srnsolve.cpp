@@ -381,3 +381,66 @@ TEST(petrinet, srn_molloy_thesis)
     ASSERT_NEAR(rate_t0, 0.4497, 0.0001);
     ASSERT_NEAR(rate_t3, 0.9008, 0.0001);
 }
+
+/*
+  This example corresponds to the following piece of software:
+
+  A:  statements;
+  PARBEGIN
+  B1:  statements;    B2:  IF cond THEN
+  C:  statements;
+  ELSE
+  DO
+  D:  statements
+  WHILE cond;
+  IFEND
+  PAREND
+*/
+TEST(petrinet, srn_software_mtta)
+{
+    SrnCreator ct;
+    uint p0 = ct.place(4);
+    uint p1 = ct.place();
+    uint p2 = ct.place();
+    uint p3 = ct.place();
+    uint p4 = ct.place();
+    uint p5 = ct.place();
+    uint p6 = ct.place();
+    uint p7 = ct.place();
+    uint p8 = ct.place();
+
+    uint t2 = ct.immTrans(0.4).iarc(p3).oarc(p4).idx();
+    uint t3 = ct.immTrans(0.6).iarc(p3).oarc(p5).idx();
+    uint t6 = ct.immTrans(0.05).iarc(p7).oarc(p6).idx();
+    uint t7 = ct.immTrans(0.95).iarc(p7).oarc(p5).idx();
+    uint t8 = ct.immTrans(1.0).iarc(p2).iarc(p6).oarc(p8).idx();
+    uint A = ct.expTrans(1.0).iarc(p0).oarc(p1).oarc(p3).idx();
+    uint B1 = ct.expTrans(0.3).iarc(p1).oarc(p2).idx();
+    uint C = ct.expTrans(0.2).iarc(p4).oarc(p6).idx();
+    uint D = ct.expTrans(7.0).iarc(p5).oarc(p7).idx();
+
+    auto srn = ct.create();
+    auto mk = ct.byteMarking();
+
+    auto rg = genReducedReachGraph(srn, mk, 1e-6, 100);
+    ASSERT_EQ(rg.graph.nodeCount(), 140);
+
+    uint max_iter = 100;
+    Real tol = 1e-6;
+    Real w = 1;
+    auto sol = srnSteadyStateDecomp(
+        rg.graph, rg.edgeRates, rg.initProbs,
+        [=](const Spmatrix& A, VectorMutableView x, VectorConstView b) {
+            auto res = solveSor(A, x, b, w, tol, max_iter);
+            if (res.error > tol || std::isnan(res.error))
+            {
+                std::cout << "Sor. nIter: " << res.nIter;
+                std::cout << ", error: " << res.error << std::endl;
+                throw std::invalid_argument("Sor failed to converge.");
+            }
+        });
+
+    auto mtta = srnMtta(srn, sol, rg.nodeMarkings);
+    std::cout << "mtta: " << mtta << std::endl;
+    ASSERT_NEAR(mtta, 17.67, 0.01);
+}
