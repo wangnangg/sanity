@@ -22,7 +22,7 @@ TEST(reach_graph_timing, many_parallel)
 
     timer gent("gen_reach");
     gent.start();
-    auto rg = genReducedReachGraph(srn, init_marking, 1e-6, 100);
+    auto rg = genReducedReachGraph(srn, init_marking);
     gent.whatTime();
     std::cout << "# of markings: " << rg.graph.nodeCount() << std::endl;
     ASSERT_EQ(rg.graph.nodeCount(), std::pow(2, site_count));
@@ -47,7 +47,7 @@ TEST(reach_graph_timing, multi_stage)
 
     timer gent("gen_reach");
     gent.start();
-    auto rg = genReducedReachGraph(srn, init_marking, 1e-6, 100);
+    auto rg = genReducedReachGraph(srn, init_marking);
     gent.whatTime();
     std::cout << "# of markings: " << rg.graph.nodeCount() << std::endl;
     ASSERT_EQ(rg.graph.nodeCount(), std::pow(max_job + 1, site_count));
@@ -69,7 +69,7 @@ TEST(reach_graph_timing, many_parallel_bit)
 
     timer gent("gen_reach");
     gent.start();
-    auto rg = genReducedReachGraph(srn, init_marking, 1e-6, 100);
+    auto rg = genReducedReachGraph(srn, init_marking);
     gent.whatTime();
     std::cout << "# of markings: " << rg.graph.nodeCount() << std::endl;
     ASSERT_EQ(rg.graph.nodeCount(), std::pow(2, site_count));
@@ -91,7 +91,7 @@ TEST(reach_graph_timing, many_parallel_byte)
 
     timer gent("gen_reach");
     gent.start();
-    auto rg = genReducedReachGraph(srn, init_marking, 1e-6, 100);
+    auto rg = genReducedReachGraph(srn, init_marking);
     gent.whatTime();
     std::cout << "# of markings: " << rg.graph.nodeCount() << std::endl;
     ASSERT_EQ(rg.graph.nodeCount(), std::pow(2, site_count));

@@ -606,7 +606,7 @@ DiffRes solveDiff(Context& context, DiffTrunc tr)
     ReducedReachGenResult rg;
     {
         timed_scope t2("generation");
-        rg = genReducedReachGraph(srn, init_mk, 1e-6, 100);
+        rg = genReducedReachGraph(srn, init_mk);
     }
     std::cout << "# markings: " << rg.nodeMarkings.size() << std::endl;
 

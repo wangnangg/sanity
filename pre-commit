@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 ./format.sh
 git add -u
 make utest

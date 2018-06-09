@@ -30,7 +30,7 @@ TEST(power_grid_model, three_nodes)
                          gen_fail, gen_repair, line_fail, line_repair, f);
         auto init_mk = createInitMarking(srn, ct);
 
-        auto rg = genReducedReachGraph(srn, init_mk, 1e-6, 100);
+        auto rg = genReducedReachGraph(srn, init_mk);
 
         uint max_iter = 1000;
         Real tol = 1e-6;
@@ -100,7 +100,7 @@ TEST(power_grid_model, ieee14_flat)
         ReducedReachGenResult rg;
         {
             timed_scope t2("generation");
-            rg = genReducedReachGraph(srn, init_mk, 1e-6, 100);
+            rg = genReducedReachGraph(srn, init_mk);
         }
         std::cout << "# markings: " << rg.nodeMarkings.size() << std::endl;
 
