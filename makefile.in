@@ -16,7 +16,7 @@ else
   else
     ifeq ($(config), coverage)
       flags += -g -ftest-coverage -fprofile-arcs
-      link_flags += -g -fprofile-arcs
+      link_flags += -g -lgcov
     else
       ifeq ($(config), debug)
         flags += -g
