@@ -92,36 +92,36 @@ src_files = find_files('src', '.cpp')
 obj_files = transform_src_files(src_files, "${build_dir}")
 for i in range(0, len(src_files)):
     makefile_body.append(
-        compile_rule(cpp_compiler, "${flags}", src_files[i], obj_files[i]))
+        compile_rule(cpp_compiler, "${src_cflags}", src_files[i], obj_files[i]))
 
 test_src_files = find_files('test', 'cpp')
 test_obj_files = transform_src_files(test_src_files, "${build_dir}")
 for i in range(0, len(test_src_files)):
     makefile_body.append(
-        compile_rule(cpp_compiler, "${gtest_flags} ${flags}",
+        compile_rule(cpp_compiler, "${utest_cflags}",
                      test_src_files[i], test_obj_files[i]))
 
 exp_src_files = find_files('experiment', 'cpp')
 exp_obj_files = transform_src_files(exp_src_files, "${build_dir}")
 for i in range(0, len(exp_src_files)):
     makefile_body.append(
-        compile_rule(cpp_compiler, "${gtest_flags} ${flags}",
+        compile_rule(cpp_compiler, "${exp_cflags}",
                      exp_src_files[i], exp_obj_files[i]))
 
 gtest_src_files = ["${gtest_dir}/src/gtest-all.cc"]
 gtest_obj_files = transform_src_files(gtest_src_files, "${build_dir}")
 for i in range(0, len(gtest_src_files)):
     makefile_body.append(
-        compile_rule(cpp_compiler, "${gtest_flags}", gtest_src_files[i],
+        compile_rule(cpp_compiler, "${gtest_cflags}", gtest_src_files[i],
                      gtest_obj_files[i]))
 
 makefile_body.append(
-    link_rule(linker, "${link_flags}",
+    link_rule(linker, "${utest_lflags}",
               obj_files + test_obj_files + gtest_obj_files,
               '${build_dir}/utest'))
 
 makefile_body.append(
-    link_rule(linker, "${link_flags}",
+    link_rule(linker, "${exp_lflags}",
               obj_files + exp_obj_files + gtest_obj_files,
               '${build_dir}/exp'))
 

@@ -2,25 +2,53 @@ cpp_compiler?=gcc
 linker?=gcc
 config?=debug
 build_dir:=build/${config}
-flags:= -Isrc -std=c++1z -Wall -Wno-error=unused-function -Wno-error=unused-variable -Wno-error=unused-but-set-variable -Wfloat-conversion -Wsign-conversion -Wimplicit-fallthrough -Werror -MMD -MP
+
+src_cflags:= -Isrc -std=c++1z -Wall -Wno-error=unused-function -Wno-error=unused-variable -Wno-error=unused-but-set-variable -Wfloat-conversion -Wsign-conversion -Wimplicit-fallthrough -Werror -MMD -MP
+
 gtest_dir:= googletest/googletest
-gtest_flags:=-isystem ${gtest_dir}/include -I${gtest_dir}
-link_flags:=-lstdc++ -lm -pthread -lblas -llapacke
+gtest_cflags:= -isystem ${gtest_dir}/include -I${gtest_dir}
+
+utest_cflags:= ${gtest_cflags} ${src_cflags}
+utest_lflags:= -lstdc++ -lm -pthread -lblas -llapacke
+
+exp_cflags:= ${gtest_cflags} ${src_cflags}
+exp_lflags:= -lstdc++ -lm -pthread -lblas -llapacke
+
 ifeq ($(config), release)
-  flags += -g -O3 -DNDEBUG
-  link_flags += -g -O3
+  src_cflags += -g -O3 -DNDEBUG
+  gtest_cflags += -g -O3 -DNDEBUG
+  utest_cflags += -g -O3 -DNDEBUG
+  exp_cflags += -g -O3 -DNDEBUG
+
+  utest_lflags += -g -O3
+  exp_lflags += -g -O3
 else
   ifeq ($(config), profile)
-    flags += -g -O3 -pg -no-pie -DNDEBUG
-    link_flags += -g -O3 -pg -no-pie
+	src_cflags += -g -O3 -DNDEBUG -pg -no-pie
+	gtest_cflags += -g -O3 -DNDEBUG
+	utest_cflags += -g -O3 -DNDEBUG -pg -no-pie
+	exp_cflags += -g -O3 -DNDEBUG -pg -no-pie
+
+    utest_lflags += -g -O3 -pg -no-pie
+    exp_lflags += -g -O3 -pg -no-pie
   else
     ifeq ($(config), coverage)
-      flags += -g -ftest-coverage -fprofile-arcs
-      link_flags += -g -lgcov
+	  src_cflags += -g -ftest-coverage -fprofile-arcs
+	  gtest_cflags += -g -O -DNDEBUG
+	  utest_cflags += -g -O -DNDEBUG
+	  exp_cflags += -g -O -DNDEBUG
+
+      utest_lflags += -g -lgcov
+      exp_lflags += -g -lgcov
     else
       ifeq ($(config), debug)
-        flags += -g
-        link_flags += -g
+		src_cflags += -g
+		gtest_cflags += -g
+		utest_cflags += -g
+		exp_cflags += -g
+
+		utest_lflags += -g
+		exp_lflags += -g
       else
 $(error Unknown config: $(config))
       endif
@@ -36,6 +64,7 @@ exp: ${build_dir}/exp
 lib: ${build_dir}/libsanity.a
 clean:
 	rm -rf build
+	rm -rf covhtml
 
 #body
 
