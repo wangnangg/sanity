@@ -48,4 +48,29 @@ A filenamed callgrind.out.pid will be generated. This file can be inspected visu
 kcachegrind callgrind.out.pid
 ```
 
+## Coverage
+
+To instrument the binary for collecting coverage data, c/c++ source files must be compiled with `-ftest-coverage -fprofile-arcs` or `--coverage`, and the objects must be linked with `-lgcov` or `--coverage`. When compilation is done, files named `*.gcno` will be generated alone with the object files. This can be done by:
+
+```
+make config=coverage utest
+```
+
+Then, the generated binary must be executed:
+
+```
+build/coverage/utest --gtest_filter="your-filter"
+```
+
+After its execution, files named `*.gcda` will be generated in the same folder as the corresponding objects. Finally, the data can be visualized by `lcov`:
+
+```
+lcov -c -d ${dir_to_search_gcda_files} -b ${base_dir_of_src_files} --no-external -o ${output_folder}
+```
+
+All of these steps can be done by:
+
+```
+./coverage.sh
+```
 

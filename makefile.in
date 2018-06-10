@@ -30,10 +30,10 @@ endif
 
 
 .PHONY: all lib utest exp clean
+all: lib utest exp
 utest: ${build_dir}/utest
 exp: ${build_dir}/exp
 lib: ${build_dir}/libsanity.a
-all: lib utest exp
 clean:
 	rm -rf build
 

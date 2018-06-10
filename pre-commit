@@ -2,6 +2,5 @@
 set -e
 ./format.sh
 git add -u
-make utest
-make exp
-./test.sh debug "-*__*"
+make
+./test.sh "*" debug
