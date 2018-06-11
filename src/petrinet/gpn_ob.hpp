@@ -116,6 +116,18 @@ public:
     void logEvent(bool log_event) { _log_event = log_event; }
     void logMarking(bool log_marking) { _log_marking = log_marking; }
     void logQueue(bool log_queue) { _log_queue = log_queue; }
+    void on()
+    {
+        _log_event = true;
+        _log_marking = true;
+        _log_queue = true;
+    }
+    void off()
+    {
+        _log_event = false;
+        _log_marking = false;
+        _log_queue = false;
+    }
     virtual void eventTriggered(
         const GpnSimulator::Event& evt, const GpnSimulator::State& state,
         const GpnSimulator::EventQueue& queue) override;

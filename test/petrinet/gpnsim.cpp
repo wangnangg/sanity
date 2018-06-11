@@ -26,12 +26,92 @@ TEST(petrinet, gpn_simulate_2place)
 
     sim.addObserver(p0);
     sim.addObserver(p1);
-    sim.begin();
-    sim.runFor(1000.0);
-    sim.end();
-    ASSERT_GT(p0.samples()[0], p1.samples()[0]);
-    std::cout << "place 0 avg token: " << p0.samples()[0] << std::endl;
-    std::cout << "place 1 avg token: " << p1.samples()[0] << std::endl;
+
+    for (uint i = 0; i < 100; i++)
+    {
+        sim.begin();
+        sim.runFor(1000.0);
+        sim.end();
+    }
+    auto p0_itv = confidenceInterval(p0.samples(), 0.95);
+    auto p1_itv = confidenceInterval(p1.samples(), 0.95);
+    ASSERT_GT(p0_itv.center(), p1_itv.center());
+    std::cout << "place 0 token: " << p0_itv << std::endl;
+    std::cout << "place 1 token: " << p1_itv << std::endl;
+}
+
+TEST(petrinet, gpn_simulate_2place_g_enable)
+{
+    GpnCreator creator;
+    creator.place(1);
+    creator.place();
+    creator.expTrans(1.0).iarc(0).oarc(1);
+    creator.expTrans(2.0).iarc(1).oarc(0);
+    creator.globalEnable(
+        [](auto state) { return gpnPlaceToken(state, 0) == 1; });
+    auto gpn = creator.create();
+    Marking init = creator.marking();
+    auto sim = gpnSimulator(gpn, init, UniformSampler());
+    auto p0 = GpnObProbReward(0, 1000.0, [](PetriNetState state) {
+        return state.marking->nToken(0);
+    });
+    auto p1 = GpnObProbReward(0, 1000.0, [](PetriNetState state) {
+        return state.marking->nToken(1);
+    });
+
+    auto evt_log = GpnObLog(true);
+    auto evt_counter = GpnObEventCounter();
+
+    sim.addObserver(p0);
+    sim.addObserver(p1);
+    sim.addObserver(evt_log);
+    sim.addObserver(evt_counter);
+    for (uint i = 0; i < 100; i++)
+    {
+        sim.begin();
+        sim.runFor(1000.0);
+        sim.end();
+        evt_log.off();
+    }
+    ASSERT_EQ(evt_counter.samples()[0], 3);
+    auto p0_itv = confidenceInterval(p0.samples(), 0.95);
+    auto p1_itv = confidenceInterval(p1.samples(), 0.95);
+    ASSERT_LT(p0_itv.center(), p1_itv.center());
+    std::cout << "place 0 token: " << p0_itv << std::endl;
+    std::cout << "place 1 token: " << p1_itv << std::endl;
+}
+
+TEST(petrinet, gpn_simulate_2place_bitmarking)
+{
+    GpnCreator creator;
+    creator.place(1);
+    creator.place();
+    creator.expTrans(1.0).iarc(0).oarc(1);
+    creator.expTrans(2.0).iarc(1).oarc(0);
+    auto gpn = creator.create();
+    auto init = creator.bitMarking();
+    auto sim = gpnSimulator(gpn, init, UniformSampler());
+    auto p0 = GpnObProbReward(0, 1000.0, [](PetriNetState state) {
+        return state.marking->nToken(0);
+    });
+    auto p1 = GpnObProbReward(0, 1000.0, [](PetriNetState state) {
+        return state.marking->nToken(1);
+    });
+
+    sim.addObserver(p0);
+    sim.addObserver(p1);
+
+    for (uint i = 0; i < 100; i++)
+    {
+        sim.begin();
+        sim.runFor(1000.0);
+        sim.end();
+    }
+    auto p0_itv = confidenceInterval(p0.samples(), 0.95);
+    auto p1_itv = confidenceInterval(p1.samples(), 0.95);
+    ASSERT_GT(p0_itv.center(), p1_itv.center());
+    std::cout << "place 0 token: " << p0_itv << std::endl;
+    std::cout << "place 1 token: " << p1_itv << std::endl;
 }
 
 TEST(petrinet, gpn_simulate_two_server_queue)
@@ -337,6 +417,51 @@ TEST(petrinet, gpn_software_mtta)
     uint D = ct.expTrans(7.0).iarc(p5).oarc(p7).idx();
 
     auto gpn = ct.create();
+    auto mk = ct.byteMarking();
+
+    auto sim = gpnSimulator(gpn, mk, UniformSampler());
+
+    auto mtta_ob = GpnObMtta();
+    sim.addObserver(mtta_ob);
+
+    uint nSample = 1000;
+    for (uint i = 0; i < nSample; i++)
+    {
+        sim.begin();
+        sim.runTillEnd();
+        sim.end();
+    }
+
+    auto itv = confidenceInterval(mtta_ob.samples(), 0.99);
+    std::cout << "mtta: " << itv << std::endl;
+    ASSERT_LT(itv.begin, 17.6701);
+    ASSERT_GT(itv.end, 17.6701);
+}
+
+TEST(petrinet, converted_gpn_software_mtta)
+{
+    SrnCreator ct;
+    uint p0 = ct.place(4);
+    uint p1 = ct.place();
+    uint p2 = ct.place();
+    uint p3 = ct.place();
+    uint p4 = ct.place();
+    uint p5 = ct.place();
+    uint p6 = ct.place();
+    uint p7 = ct.place();
+    uint p8 = ct.place();
+
+    uint t2 = ct.immTrans(0.4).iarc(p3).oarc(p4).idx();
+    uint t3 = ct.immTrans(0.6).iarc(p3).oarc(p5).idx();
+    uint t6 = ct.immTrans(0.05).iarc(p7).oarc(p6).idx();
+    uint t7 = ct.immTrans(0.95).iarc(p7).oarc(p5).idx();
+    uint t8 = ct.immTrans(1.0).iarc(p2).iarc(p6).oarc(p8).idx();
+    uint A = ct.expTrans(1.0).iarc(p0).oarc(p1).oarc(p3).idx();
+    uint B1 = ct.expTrans(0.3).iarc(p1).oarc(p2).idx();
+    uint C = ct.expTrans(0.2).iarc(p4).oarc(p6).idx();
+    uint D = ct.expTrans(7.0).iarc(p5).oarc(p7).idx();
+
+    auto gpn = srn2gpn(ct.create());
     auto mk = ct.byteMarking();
 
     auto sim = gpnSimulator(gpn, mk, UniformSampler());
