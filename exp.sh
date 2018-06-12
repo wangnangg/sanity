@@ -1,6 +1,6 @@
 #!/bin/bash
-config=${1:-debug}
-filter=${2:-*}
+filter=${1:-*}
+config=${2:-debug}
 
 python ./configure.py
 echo make exp config=${config}
