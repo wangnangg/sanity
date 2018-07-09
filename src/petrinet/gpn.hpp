@@ -152,10 +152,15 @@ public:
     friend class GpnCreator;
 };
 
-struct GeneralPetriNet
+class GeneralPetriNet : public PetriNet
 {
-    PetriNet pnet;
+public:
     std::vector<GpnTransProp> transProps;
+    GeneralPetriNet() = default;
+    GeneralPetriNet(const PetriNet& net, std::vector<GpnTransProp> props)
+        : PetriNet(net), transProps(std::move(props))
+    {
+    }
 };
 
 class GpnCreator
@@ -176,7 +181,5 @@ public:
     BitMarking bitMarking() const;
     ByteMarking byteMarking() const;
 };
-
-GeneralPetriNet srn2gpn(const StochasticRewardNet& srn);
 
 }  // namespace sanity::petrinet

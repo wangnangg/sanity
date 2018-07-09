@@ -111,7 +111,7 @@ TEST(petrinet, srn_two_absoring_decomp)
     ct.expTrans(7.5).iarc(p_start).oarc(p_end2);
     auto srn = ct.create();
 
-    Marking mk(srn.pnet.placeCount());
+    Marking mk(srn.placeCount());
     mk.setToken(p_start, 1);
 
     auto rg = genReducedReachGraph(srn, mk);
@@ -192,7 +192,7 @@ TEST(petrinet, srn_two_absoring_groups_decomp)
     ct.expTrans(3).iarc(p_right3).oarc(p_right1);
     auto srn = ct.create();
 
-    Marking mk(srn.pnet.placeCount());
+    Marking mk(srn.placeCount());
     mk.setToken(p_tan1, 1);
 
     auto rg = genReducedReachGraph(srn, mk);
@@ -249,7 +249,7 @@ TEST(petrinet, srn_two_absoring_groups_decomp2)
     ct.expTrans(3).iarc(p_right3).oarc(p_right1);
     auto srn = ct.create();
 
-    Marking mk(srn.pnet.placeCount());
+    Marking mk(srn.placeCount());
     mk.setToken(p_tan1, 1);
 
     auto rg = genReducedReachGraph(srn, mk);

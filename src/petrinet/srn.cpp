@@ -14,8 +14,8 @@ StochasticRewardNet SrnCreator::create() const
         trans.push_back(t._trans);
         props.push_back(t._prop);
     }
-    return {.pnet = PetriNet(_init_token.size(), _g_enable, std::move(trans)),
-            .transProps = std::move(props)};
+    return {PetriNet(_init_token.size(), _g_enable, std::move(trans)),
+            std::move(props)};
 }
 
 uint SrnCreator::place(uint token)

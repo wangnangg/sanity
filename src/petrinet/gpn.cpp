@@ -77,30 +77,4 @@ GeneralPetriNet GpnCreator::create() const
             .transProps = std::move(props)};
 }
 
-GeneralPetriNet srn2gpn(const StochasticRewardNet& srn)
-{
-    uint tcount = srn.transProps.size();
-    std::vector<GpnTransProp> transProps;
-    for (uint i = 0; i < tcount; i++)
-    {
-        const auto& srn_trans = srn.transProps[i];
-        auto gpn_trans = GpnTransProp();
-        switch (srn_trans.type)
-        {
-            case SrnTransType::Immediate:
-                gpn_trans.type = GpnTransType::Immediate;
-                gpn_trans.immediate.weight = srn_trans.val;
-                break;
-            case SrnTransType::Exponetial:
-                gpn_trans.type = GpnTransType::Timed;
-                gpn_trans.timed.sampler = GpnExpSampler(srn_trans.val);
-                gpn_trans.timed.samplePolicy = GpnSamplePolicy::Resample;
-                break;
-        }
-        transProps.push_back(gpn_trans);
-    }
-    return GeneralPetriNet{.pnet = srn.pnet,
-                           .transProps = std::move(transProps)};
-}
-
 }  // namespace sanity::petrinet

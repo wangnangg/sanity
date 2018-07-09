@@ -11,7 +11,7 @@ class PetriNet;
 
 struct PetriNetState
 {
-    const void* net;
+    const PetriNet* net;
     const MarkingIntf* marking;
 };
 
@@ -127,8 +127,10 @@ class PetriNet
     std::vector<Transition> _transitions;
 
 public:
+    PetriNet() = default;
     PetriNet(uint place_count, MarkingDepBool g_enable,
              std::vector<Transition> trans);
+    virtual ~PetriNet() {}
     const Transition& getTransition(uint tid) const
     {
         return _transitions[_tid2pos[tid]];

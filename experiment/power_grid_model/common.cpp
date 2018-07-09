@@ -341,6 +341,59 @@ StochasticRewardNet exp2srn_sim(Context& context, Real bus_fail,
 
     return ct.create();
 }
+
+StochasticRewardNet exp2gpn_sim(Context& context, Real bus_fail,
+                                Real bus_repair, Real load_fail,
+                                Real load_repair, Real gen_fail,
+                                Real gen_repair, Real line_fail,
+                                Real line_repair)
+{
+    SrnCreator ct;
+    context.marking_map = std::vector<uint>();
+    // create bus
+    for (uint i = 0; i < context.model.buses.size(); i++)
+    {
+        createTwoStates(ct, bus_fail, bus_repair, true);
+        context.marking_map.push_back(i);
+        context.marking_map.push_back(i);
+    }
+
+    // create load
+    uint nload = 0;
+    for (uint i = 0; i < context.model.buses.size(); i++)
+    {
+        if (context.model.buses[i].load > 0)
+        {
+            createLoad(ct, load_fail, load_repair, nload, true, context);
+            nload += 1;
+            context.marking_map.push_back(i);
+            context.marking_map.push_back(i);
+            context.marking_map.push_back(i);
+        }
+    }
+    context.load_connected = std::vector<bool>(context.model.nload, true);
+
+    // create gen
+    for (uint i = 0; i < context.model.buses.size(); i++)
+    {
+        if (context.model.buses[i].generation > 0)
+        {
+            createTwoStates(ct, gen_fail, gen_repair, true);
+            context.marking_map.push_back(i);
+            context.marking_map.push_back(i);
+        }
+    }
+
+    // create line
+    for (uint i = 0; i < context.model.lines.size(); i++)
+    {
+        createTwoStates(ct, line_fail, line_repair, true);
+        context.marking_map.push_back(i);
+        context.marking_map.push_back(i);
+    }
+
+    return ct.create();
+}
 StochasticRewardNet exp2srn_flat(Context& context, Real bus_fail,
                                  Real bus_repair, Real load_fail,
                                  Real load_repair, Real gen_fail,
@@ -543,7 +596,7 @@ StochasticRewardNet exp2srn_diff(Context& context, Real bus_fail,
 Marking createInitMarking(const StochasticRewardNet& srn,
                           const Context& context)
 {
-    Marking mk(srn.pnet.placeCount(), 0);
+    Marking mk(srn.placeCount(), 0);
     for (uint pid = context.busStartMk(); pid < context.busEndMk(); pid += 2)
     {
         mk.setToken(pid, 1);

@@ -263,20 +263,29 @@ TEST(petrinet, gpn_simulate_two_server_queue_confidence)
 
 TEST(petrinet, gpn_simulate_two_server_queue_conversion)
 {
-    SrnCreator creator;
+    GeneralPetriNet gpn;
+    StochasticRewardNet srn;
+    Marking init;
+    GpnCreator creator;
     auto queue = creator.place(4);
     auto done = creator.place();
     creator.expTrans(1.0).iarc(queue).oarc(done);
     creator.expTrans(2.0).iarc(queue).oarc(done);
     creator.expTrans(1.0).iarc(done).oarc(queue);
-
-    auto srn = creator.create();
-    Marking init = creator.marking();
+    gpn = creator.create();
+    init = creator.marking();
+    {
+        SrnCreator creator;
+        auto queue = creator.place(4);
+        auto done = creator.place();
+        creator.expTrans(1.0).iarc(queue).oarc(done);
+        creator.expTrans(2.0).iarc(queue).oarc(done);
+        creator.expTrans(1.0).iarc(done).oarc(queue);
+        srn = creator.create();
+    }
 
     Interval queue_itv;
     {
-        auto gpn = srn2gpn(srn);
-
         auto sim = gpnSimulator(gpn, init, UniformSampler());
 
         Real start = 100;
@@ -329,7 +338,7 @@ TEST(petrinet, gpn_simulate_two_server_queue_conversion)
 
 TEST(petrinet, gpn_molloy_thesis)
 {
-    SrnCreator ct;
+    GpnCreator ct;
     auto p0 = ct.place(1);
     auto p1 = ct.place();
     auto p2 = ct.place();
@@ -342,10 +351,8 @@ TEST(petrinet, gpn_molloy_thesis)
     auto t3 = ct.expTrans(9.0).iarc(p3).oarc(p1).idx();
     auto t4 = ct.expTrans(5.0).iarc(p3).iarc(p4).oarc(p0).idx();
 
-    auto srn = ct.create();
+    auto gpn = ct.create();
     auto mk = ct.marking();
-
-    auto gpn = srn2gpn(srn);
 
     auto sim = gpnSimulator(gpn, mk, UniformSampler());
 
@@ -440,7 +447,7 @@ TEST(petrinet, gpn_software_mtta)
 
 TEST(petrinet, converted_gpn_software_mtta)
 {
-    SrnCreator ct;
+    GpnCreator ct;
     uint p0 = ct.place(4);
     uint p1 = ct.place();
     uint p2 = ct.place();
@@ -461,7 +468,7 @@ TEST(petrinet, converted_gpn_software_mtta)
     uint C = ct.expTrans(0.2).iarc(p4).oarc(p6).idx();
     uint D = ct.expTrans(7.0).iarc(p5).oarc(p7).idx();
 
-    auto gpn = srn2gpn(ct.create());
+    auto gpn = ct.create();
     auto mk = ct.byteMarking();
 
     auto sim = gpnSimulator(gpn, mk, UniformSampler());

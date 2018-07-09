@@ -80,10 +80,15 @@ public:
     friend class SrnCreator;
 };
 
-struct StochasticRewardNet
+class StochasticRewardNet : public PetriNet
 {
-    PetriNet pnet;
+public:
     std::vector<SrnTransProp> transProps;
+    StochasticRewardNet() = default;
+    StochasticRewardNet(const PetriNet& net, std::vector<SrnTransProp> props)
+        : PetriNet(net), transProps(std::move(props))
+    {
+    }
 };
 
 class SrnCreator

@@ -36,9 +36,9 @@ uint srnPlaceToken(PetriNetState state, uint pid)
 }
 Real srnTransRate(PetriNetState state, uint tid)
 {
-    auto net = (const StochasticRewardNet*)state.net;
+    auto net = dynamic_cast<const StochasticRewardNet*>(state.net);
     assert(net->transProps[tid].type == SrnTransType::Exponetial);
-    if (net->pnet.isTransitionEnabled(tid, state.marking))
+    if (net->isTransitionEnabled(tid, state.marking))
     {
         return net->transProps[tid].val(state);
     }

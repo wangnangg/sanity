@@ -16,7 +16,7 @@ using namespace graph;
 
 bool isVanMarking(const StochasticRewardNet& srn, const MarkingIntf* mk)
 {
-    int tid = srn.pnet.firstEanbledTrans(mk);
+    int tid = srn.firstEanbledTrans(mk);
     if (tid < 0)
     {
         return false;
@@ -85,13 +85,13 @@ MarkingListProb eliminateVanMarking(const StochasticRewardNet& srn,
         {
             Real prob_sum = 0.0;
             for (uint tid :
-                 srn.pnet.enabledTransitions(node_markings[curr_nid].get()))
+                 srn.enabledTransitions(node_markings[curr_nid].get()))
             {
                 assert(srn.transProps[tid].type == SrnTransType::Immediate);
                 Real p_weight = srn.transProps[tid].val(
                     {&srn, node_markings[curr_nid].get()});
-                auto newmk = srn.pnet.fireTransition(
-                    tid, node_markings[curr_nid].get());
+                auto newmk =
+                    srn.fireTransition(tid, node_markings[curr_nid].get());
                 int dst = findMarking(mk_map, newmk.get());
                 if (dst < 0)
                 {
@@ -178,14 +178,13 @@ ReducedReachGenResult genReducedReachGraph(const StochasticRewardNet& srn,
     uint curr_nid = 0;
     while (curr_nid < node_markings.size())
     {
-        for (uint tid :
-             srn.pnet.enabledTransitions(node_markings[curr_nid].get()))
+        for (uint tid : srn.enabledTransitions(node_markings[curr_nid].get()))
         {
             assert(srn.transProps[tid].type == SrnTransType::Exponetial);
             Real t_rate = srn.transProps[tid].val(
                 {&srn, node_markings[curr_nid].get()});
             auto newmk =
-                srn.pnet.fireTransition(tid, node_markings[curr_nid].get());
+                srn.fireTransition(tid, node_markings[curr_nid].get());
             if (isVanMarking(srn, newmk.get()))
             {
                 auto mark_prob_list =

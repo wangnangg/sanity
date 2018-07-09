@@ -112,10 +112,9 @@ GpnSimulator gpnSimulator(GeneralPetriNet net, const MarkingIntf& init_mk,
                                      GpnSimulator::State& state,
                                      GpnSimulator::EventQueue& queue) {
         state.currMarking = state.initMarking->clone();
-        state.remainingTime =
-            std::vector<Real>(state.net.pnet.transCount(), -1.0);
+        state.remainingTime = std::vector<Real>(state.net.transCount(), -1.0);
         state.enabledTrans =
-            state.net.pnet.enabledTransitions(state.currMarking.get());
+            state.net.enabledTransitions(state.currMarking.get());
 
         const auto& enabled_tids = state.enabledTrans;
         bool van = isVanMarking(state.net, enabled_tids);
@@ -144,11 +143,11 @@ GpnSimulator gpnSimulator(GeneralPetriNet net, const MarkingIntf& init_mk,
                                     GpnSimulator::EventQueue& queue) {
         auto prev_enabled = state.enabledTrans;
         uint firing_tid = evt.data;
-        state.currMarking = state.net.pnet.fireTransition(
-            firing_tid, state.currMarking.get());
+        state.currMarking =
+            state.net.fireTransition(firing_tid, state.currMarking.get());
         state.remainingTime[firing_tid] = -1.0;
         state.enabledTrans =
-            state.net.pnet.enabledTransitions(state.currMarking.get());
+            state.net.enabledTransitions(state.currMarking.get());
         auto& curr_enabled = state.enabledTrans;
 
         bool prev_van = isVanMarking(state.net, prev_enabled);

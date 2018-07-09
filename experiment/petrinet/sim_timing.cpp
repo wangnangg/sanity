@@ -10,7 +10,7 @@ using namespace sanity::petrinet;
 using namespace sanity::simulate;
 TEST(sim_timing, molloy_thesis)
 {
-    SrnCreator ct;
+    GpnCreator ct;
     auto p0 = ct.place(1);
     auto p1 = ct.place();
     auto p2 = ct.place();
@@ -23,10 +23,8 @@ TEST(sim_timing, molloy_thesis)
     auto t3 = ct.expTrans(9.0).iarc(p3).oarc(p1).idx();
     auto t4 = ct.expTrans(5.0).iarc(p3).iarc(p4).oarc(p0).idx();
 
-    auto srn = ct.create();
+    auto gpn = ct.create();
     auto mk = ct.marking();
-
-    auto gpn = srn2gpn(srn);
 
     auto sim = gpnSimulator(gpn, mk, UniformSampler());
 

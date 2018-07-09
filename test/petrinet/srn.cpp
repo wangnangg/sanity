@@ -15,8 +15,8 @@ TEST(petrinet, srn_create)
     creator.expTrans(1.0).iarc(p1).oarc(p2);
     creator.expTrans(2.0).iarc(p2).oarc(p1);
     auto srn = creator.create();
-    ASSERT_EQ(srn.pnet.transCount(), 2);
-    ASSERT_EQ(srn.pnet.placeCount(), 2);
+    ASSERT_EQ(srn.transCount(), 2);
+    ASSERT_EQ(srn.placeCount(), 2);
     ASSERT_EQ(srn.transProps.size(), 2);
 }
 
@@ -29,9 +29,9 @@ TEST(petrinet, srn_reach_gen)
     creator.expTrans(2.0).iarc(p2).oarc(p1);
     auto srn = creator.create();
 
-    Marking initmk(srn.pnet.placeCount());
+    Marking initmk(srn.placeCount());
     initmk.setToken(p1, 2);
-    auto rg = genReachGraph(srn.pnet, initmk);
+    auto rg = genReachGraph(srn, initmk);
     ASSERT_EQ(rg.graph.nodeCount(), 3);
     ASSERT_EQ(rg.nodeMarkings.size(), 3);
     ASSERT_EQ(rg.edgeTrans.size(), 4);
@@ -46,7 +46,7 @@ TEST(petrinet, srn_ratemat)
     creator.expTrans(2.0).iarc(p2).oarc(p1);
     auto srn = creator.create();
 
-    Marking initmk(srn.pnet.placeCount());
+    Marking initmk(srn.placeCount());
     initmk.setToken(p1, 2);
     auto rg = genReducedReachGraph(srn, initmk);
 
@@ -63,7 +63,7 @@ TEST(petrinet, srn_sor)
     creator.expTrans(2.0).iarc(p2).oarc(p1);
     auto srn = creator.create();
 
-    Marking initmk(srn.pnet.placeCount());
+    Marking initmk(srn.placeCount());
     initmk.setToken(p1, 2);
     auto rg = genReducedReachGraph(srn, initmk);
 
@@ -89,7 +89,7 @@ TEST(petrinet, srn_imme_reach_gen1)
     creator.immTrans(1.0).iarc(p1).oarc(p2);
     auto srn = creator.create();
 
-    Marking initmk(srn.pnet.placeCount());
+    Marking initmk(srn.placeCount());
     initmk.setToken(p1, 1);
     auto rg = genReducedReachGraph(srn, initmk);
     ASSERT_EQ(rg.graph.nodeCount(), 1);
@@ -108,7 +108,7 @@ TEST(petrinet, srn_imme_reach_gen2)
     creator.immTrans(3.0).iarc(p1).oarc(p3);
     auto srn = creator.create();
 
-    Marking initmk(srn.pnet.placeCount());
+    Marking initmk(srn.placeCount());
     initmk.setToken(p1, 1);
     auto rg = genReducedReachGraph(srn, initmk);
     ASSERT_EQ(rg.graph.nodeCount(), 2);
@@ -130,7 +130,7 @@ TEST(petrinet, srn_imme_reach_gen3)
     creator.immTrans(3.0).iarc(p1).oarc(p3);
     auto srn = creator.create();
 
-    Marking initmk(srn.pnet.placeCount());
+    Marking initmk(srn.placeCount());
     initmk.setToken(p0, 1);
     auto rg = genReducedReachGraph(srn, initmk);
     ASSERT_EQ(rg.graph.nodeCount(), 3);
