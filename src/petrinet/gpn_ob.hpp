@@ -149,4 +149,7 @@ public:
 uint gpnPlaceToken(PetriNetState state, uint pid);
 MarkingDepReal gpnPlaceTokenFunc(uint pid);
 
+bool gpnTransEnabled(PetriNetState state, uint tid);
+MarkingDepReal gpnTransEnabledFunc(uint tid);
+
 }  // namespace sanity::petrinet

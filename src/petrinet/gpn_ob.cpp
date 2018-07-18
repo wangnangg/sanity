@@ -180,4 +180,15 @@ MarkingDepReal gpnPlaceTokenFunc(uint pid)
     return [pid](PetriNetState state) { return gpnPlaceToken(state, pid); };
 }
 
+bool gpnTransEnabled(PetriNetState state, uint tid)
+{
+    return state.net->isTransitionEnabled(tid, state.marking);
+}
+MarkingDepReal gpnTransEnabledFunc(uint tid)
+{
+    return [tid](PetriNetState state) {
+        return gpnTransEnabled(state, tid) ? 1.0 : 0.0;
+    };
+}
+
 }  // namespace sanity::petrinet
