@@ -444,3 +444,40 @@ TEST(petrinet, srn_software_mtta)
     std::cout << "mtta: " << mtta << std::endl;
     ASSERT_NEAR(mtta, 17.67, 0.01);
 }
+
+TEST(petrinet, srn_ts_acyclic1)
+{
+    SrnCreator ct;
+    uint p0 = ct.place(2);
+    ct.expTrans([p0](PetriNetState st) {
+          return (Real)st.marking->nToken(p0) * 2.0;
+      })
+        .iarc(p0);
+    auto srn = ct.create();
+    auto mk = ct.marking();
+    auto rg = genReducedReachGraph(srn, mk);
+    {
+        auto sol =
+            srnTransientProb(rg.graph, rg.edgeRates, rg.initProbs, 0.0);
+        ASSERT_EQ(sol.size(), 3);
+        ASSERT_EQ(sol(0), 1.0);
+        ASSERT_EQ(sol(1), 0.0);
+        ASSERT_EQ(sol(2), 0.0);
+    }
+    {
+        auto sol =
+            srnTransientProb(rg.graph, rg.edgeRates, rg.initProbs, 1.0);
+        ASSERT_EQ(sol.size(), 3);
+        ASSERT_NEAR(sol(0), std::exp(-4.0 * 1.0), 1e-6);
+        ASSERT_GT(sol(1), 0.0);
+        ASSERT_GT(sol(2), 0.0);
+    }
+    {
+        auto sol =
+            srnTransientProb(rg.graph, rg.edgeRates, rg.initProbs, 100.0);
+        ASSERT_EQ(sol.size(), 3);
+        ASSERT_NEAR(sol(0), 0.0, 1e-6);
+        ASSERT_NEAR(sol(1), 0.0, 1e-6);
+        ASSERT_NEAR(sol(2), 1.0, 1e-6);
+    }
+}

@@ -15,9 +15,8 @@ std::tuple<GpnCreator, std::unordered_map<std::string, uint>,
            std::unordered_map<std::string, uint>>
 fabricModel(Real client_arrival_rate, uint client_queue_len,
             Real client_sdk_process_rate, Real endorse_rate, uint endorse_max,
-            Real transmit_rate, Real cons_rate, uint block_size,
-            Real validate_rate, uint vscc_th, Real mvcc_rate,
-            Real ledger_rate)
+            Real cons_rate, uint block_size, Real validate_rate, uint vscc_th,
+            Real mvcc_rate, Real ledger_rate)
 {
     GpnCreator ct;
     std::unordered_map<std::string, uint> n2i;
@@ -86,11 +85,7 @@ fabricModel(Real client_arrival_rate, uint client_queue_len,
                       .iarc(p1)
                       .oarc(p1_end)
                       .idx();
-    uint c0_i = ct.expTrans(transmit_rate)
-                    .iarc(p0_end)
-                    .iarc(p1_end)
-                    .oarc(tx_all)
-                    .idx();
+    uint c0_i = ct.immTrans().iarc(p0_end).iarc(p1_end).oarc(tx_all).idx();
     tn2i["c0_i"] = c0_i;
 
     uint t_cons = ct.expTrans(cons_rate)
@@ -144,7 +139,6 @@ TEST(fabric, max_thruput)
                     1e3 / 6.469,                   // client_sdk_process_rate
                     1e3 / 3.249,                   // endorse_rate
                     endorse_max,                   // endorse_max
-                    1e3 / 5.221,                   // transmit_rate
                     1e3 / cons_rate[block_size],   // cons_rate
                     block_size,                    // block_size
                     1e3 / 2.524,                   // validate_rate
