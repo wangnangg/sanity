@@ -16,6 +16,20 @@ Real srnProbReward(const StochasticRewardNet& srn,
     return r;
 }
 
+Real srnProbReward(const StochasticRewardNet& srn,
+                   linear::VectorConstView sol,
+                   const std::vector<std::unique_ptr<MarkingIntf>>& markings,
+                   const MarkingDepReal& reward_func)
+{
+    Real r = 0;
+    for (uint i = 0; i < sol.size(); i++)
+    {
+        const auto& mk = markings[i];
+        r += reward_func(PetriNetState{&srn, mk.get()}) * sol(i);
+    }
+    return r;
+}
+
 Real srnCumReward(const StochasticRewardNet& srn,
                   const SrnSteadyStateSol& sol,
                   const std::vector<std::unique_ptr<MarkingIntf>>& markings,
@@ -26,6 +40,23 @@ Real srnCumReward(const StochasticRewardNet& srn,
     {
         const auto& mk = markings[(uint)sol.matrix2node.forward(i)];
         r += reward_func(PetriNetState{&srn, mk.get()}) * sol.solution(i);
+    }
+    return r;
+}
+
+Real srnCumReward(const StochasticRewardNet& srn, linear::VectorConstView sol,
+                  const std::vector<std::unique_ptr<MarkingIntf>>& markings,
+                  const MarkingDepReal& reward_func)
+{
+    Real r = 0;
+    for (uint i = 0; i < sol.size(); i++)
+    {
+        const auto& mk = markings[i];
+        auto val = reward_func(PetriNetState{&srn, mk.get()});
+        if (val > 0)
+        {
+            r += val * sol(i);
+        }
     }
     return r;
 }

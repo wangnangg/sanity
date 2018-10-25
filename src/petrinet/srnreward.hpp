@@ -10,8 +10,17 @@ Real srnProbReward(const StochasticRewardNet& srn,
                    const std::vector<std::unique_ptr<MarkingIntf>>& markings,
                    const MarkingDepReal& reward_func);
 
+Real srnProbReward(const StochasticRewardNet& srn,
+                   linear::VectorConstView sol,
+                   const std::vector<std::unique_ptr<MarkingIntf>>& markings,
+                   const MarkingDepReal& reward_func);
+
 Real srnCumReward(const StochasticRewardNet& srn,
                   const SrnSteadyStateSol& sol,
+                  const std::vector<std::unique_ptr<MarkingIntf>>& markings,
+                  const MarkingDepReal& reward_func);
+
+Real srnCumReward(const StochasticRewardNet& srn, linear::VectorConstView sol,
                   const std::vector<std::unique_ptr<MarkingIntf>>& markings,
                   const MarkingDepReal& reward_func);
 
